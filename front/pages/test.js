@@ -1,6 +1,5 @@
 import AppLayout from "../components/AppLayout";
 import Head from "next/head";
-import Link from 'next/link';
 
 const Home = () => {
 
@@ -11,8 +10,7 @@ const Home = () => {
             </Head>
             <AppLayout>
                 <div>
-                    <h1>메인페이지</h1>
-                    <Link href="/test"><a>테스트페이지</a></Link>
+                    <div>테스트페이지</div>
                 </div>
 
             </AppLayout>
