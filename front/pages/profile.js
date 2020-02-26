@@ -1,9 +1,8 @@
 import AppLayout from "../components/AppLayout";
 import Head from "next/head";
-import Link from 'next/link';
 
-const Home = () => {
 
+const Profile = () => {
     return (
         <>
             <Head>
@@ -11,13 +10,12 @@ const Home = () => {
             </Head>
             <AppLayout>
                 <div>
-                    <h1>메인페이지</h1>
-                    <Link href="/register"><a>회원가입</a></Link>
+                    <div>프로필</div>
                 </div>
-
             </AppLayout>
+
         </>
     );
 };
 
-export default Home;
+export default Profile;

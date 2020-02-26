@@ -1,6 +1,12 @@
-import styled from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 import img from "../../public/background01.png";
 
+
+export const GlobalStyle = createGlobalStyle`
+    body {
+        background: #fafafa;
+    }
+`;
 
 export const Container = styled.section`
     background: #fafafa;
@@ -25,6 +31,7 @@ export const Inner = styled.section`
     width: 935px;
     height: 77px;
     margin: 0 auto;
+    cursor: pointer;
     display:flex;
     justify-content: space-between;
     align-items: center;
@@ -48,6 +55,7 @@ export const Sprite_insta_icon = styled.div`
     position: relative;
     margin-right: 30px;
     vertical-align: middle;
+    cursor: pointer;
     
     &:after {
         content: '';
