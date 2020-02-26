@@ -19,7 +19,7 @@ const Profile = () => {
     const [id, setId] = useState('');
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
-    const [passworCheck, setPasswordCheck] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
 
     useEffect(() => {
         console.log('useEffect...');
@@ -82,6 +82,16 @@ const Profile = () => {
         setPasswordCheck(e.target.value);
     };
 
+    const onSubmitForm = (e) => {
+
+        console.log('onSubmitForm...');
+        e.preventDefault();
+
+        // 비밀번호 체크
+        if(password !== passwordCheck) {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
+    };
 
     return (
         <>
@@ -93,6 +103,7 @@ const Profile = () => {
                 <main>
                     <RegisterMainContainer>
                         <Left>
+
                             <LeftContainer ref={leftRef}>
                                 <Slide className="show" src="../img/phone_img_01.jpg" alt=""/>
                                 <Slide src="../img/phone_img_02.jpg" alt=""/>
@@ -109,7 +120,7 @@ const Profile = () => {
                             <RightFormContainer>
                                 <RightFormContainerTitleImg/>
                                 <RightFormContainerFormSection>
-                                    <FormReg>
+                                    <FormReg onSubmit={onSubmitForm}>
                                         <FormTitle>
                                             친구들의 사진과 동영상을 보려면 가입하세요.
                                         </FormTitle>
@@ -128,13 +139,13 @@ const Profile = () => {
 
                                         <FormContainer>
                                             <FormInnder>
-                                                <FormInputField onChange={onChangePassword} type="password" placeholder="패스워드"/>
+                                                <FormInputField onChange={onChangePassword} type="password" placeholder="비밀번호"/>
                                             </FormInnder>
                                         </FormContainer>
 
                                         <FormContainer>
                                             <FormInnder>
-                                                <FormInputField onChange={onChangePasswordCheck} type="password" placeholder="패스워드 확인"/>
+                                                <FormInputField onChange={onChangePasswordCheck} type="password" placeholder="비밀번호 확인"/>
                                             </FormInnder>
                                         </FormContainer>
 
