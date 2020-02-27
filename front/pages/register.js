@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import Head from "next/head";
 import {GlobalStyle} from '../components/style/header'
 import {
@@ -6,11 +6,10 @@ import {
     Right, RightFormContainer, RightFormContainerTitleImg, RightFormContainerFormSection,
     FormReg, FormTitle, FormContainer, FormInnder, FormInputField, FormSubmitContainer, FormSubmitButton,
     FormTermsText, RightLoginContainer, LoginInner, RightAppsContainer, RightAppsText, RightAppsIcons
-}
-    from "../components/style/register"
+} from "../components/style/register"
 
 
-const Profile = () => {
+const Register = () => {
     const [container, setContainer] = useState(null);
     let [curNumber, setCurNumber] = useState(0);
     const [imgs, setImgs] = useState(null);
@@ -66,23 +65,25 @@ const Profile = () => {
     }, [container, imgs, curNumber]);
 
 
-    const onChangeId = (e) => {
+    const onChangeId = useCallback((e) => {
+        console.log('onChangeId e.target.value: ', e.target.value);
         setId(e.target.value);
-    };
+    }, []);
 
-    const onChangeNickname = (e) => {
+    const onChangeNickname = useCallback((e) => {
         setNickname(e.target.value);
-    };
+    }, []);
 
-    const onChangePassword = (e) => {
+    const onChangePassword = useCallback((e) => {
         setPassword(e.target.value);
-    };
+    }, []);
 
-    const onChangePasswordCheck = (e) => {
+    const onChangePasswordCheck = useCallback((e) => {
         setPasswordCheck(e.target.value);
-    };
+    }, []);
 
-    const onSubmitForm = (e) => {
+
+    const onSubmitForm = useCallback((e) => {
 
         console.log('onSubmitForm...');
         e.preventDefault();
@@ -91,7 +92,8 @@ const Profile = () => {
         if(password !== passwordCheck) {
             alert('비밀번호가 일치하지 않습니다.');
         }
-    };
+    }, [password, passwordCheck]);
+
 
     return (
         <>
@@ -192,4 +194,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default Register;
