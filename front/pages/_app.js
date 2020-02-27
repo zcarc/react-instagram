@@ -4,6 +4,11 @@ import AppLayout from "../components/AppLayout";
 import {GlobalStyle} from '../components/style/header'
 import PropTypes from 'prop-types';
 
+const withoutAppLayout = [
+    'Register',
+    'Login',
+];
+
 const Main = ( { Component } ) => {
     // console.dir(Component);
     // console.log(Component.name);
@@ -14,7 +19,7 @@ const Main = ( { Component } ) => {
               <link rel="stylesheet" href="/style/reset.css"/>
           </Head>
           <GlobalStyle/>
-          {Component.name === 'Register' ? <Component/> :
+          {withoutAppLayout.includes(Component.name) ? <Component/> :
               <AppLayout>
                   <Component/>
               </AppLayout>

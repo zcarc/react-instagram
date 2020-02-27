@@ -170,7 +170,7 @@ const Register = () => {
                             </RightFormContainer>
                             <RightLoginContainer>
                                 <LoginInner>
-                                    <div>계정이 있으신가요? <a href="">로그인</a></div>
+                                    <div>계정이 있으신가요? <a href="/login">로그인</a></div>
                                 </LoginInner>
                             </RightLoginContainer>
                             <RightAppsContainer>
