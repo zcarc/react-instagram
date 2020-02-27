@@ -4,8 +4,12 @@ import {
     ContentsContainer, Pic
 } from "../components/style/profile";
 
-
-
+const dummy = {
+    nickname: 'insta',
+    post: [],
+    follower: [],
+    following: [],
+};
 
 const Profile = () => {
     return (
@@ -24,21 +28,21 @@ const Profile = () => {
 
                         <div>
                             <FirstRow>
-                                <UserName>Username</UserName>
+                                <UserName>{dummy.nickname}</UserName>
                                 <a href="#">로그아웃</a>
                             </FirstRow>
                             <SecondRow>
                                 <li>
                                     <span>게시물</span>
-                                    {/*{{user.post_set.count}}*/}
+                                    <span> {dummy.post.length}</span>
                                 </li>
                                 <li>
                                     <span>팔로워</span>
-                                    {/*{{user.profile.follower_count}}*/}
+                                    <span> {dummy.follower.length}</span>
                                 </li>
                                 <li>
                                     <span>팔로우</span>
-                                    {/*{{user.profile.following_count}}*/}
+                                    <span> {dummy.following.length}</span>
                                 </li>
                             </SecondRow>
                             <ThirdRow>
