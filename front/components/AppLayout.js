@@ -5,6 +5,7 @@ import {GlobalStyle, Container, Header, Inner, A, Sprite_insta_icon, Sprite_writ
     RightIcons, Sprite_camera_icon, Sprite_compass_icon, Sprite_heart_icon_outline, Sprite_user_icon_outline }
     from './style/header'
 import {MainContainer} from './style/contents'
+import PropTypes from 'prop-types';
 
 
 const AppLayout = ( {children} ) => {
@@ -51,4 +52,7 @@ const AppLayout = ( {children} ) => {
     );
 };
 
+AppLayout.propTypes = {
+    Component: PropTypes.node,
+};
 export default AppLayout;

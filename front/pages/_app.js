@@ -2,10 +2,11 @@ import React from 'react';
 import Head from 'next/head'
 import AppLayout from "../components/AppLayout";
 import {GlobalStyle} from '../components/style/header'
+import PropTypes from 'prop-types';
 
-const Main = ( {Component } ) => {
-    console.dir(Component);
-    console.log(Component.name);
+const Main = ( { Component } ) => {
+    // console.dir(Component);
+    // console.log(Component.name);
 
     return (
       <>
@@ -21,6 +22,10 @@ const Main = ( {Component } ) => {
 
       </>
     );
+};
+
+Main.propTypes = {
+    Component: PropTypes.elementType,
 };
 
 export default Main;

@@ -1,12 +1,12 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
 import Head from "next/head";
-import {GlobalStyle} from '../components/style/header'
+import {GlobalStyle} from '../components/style/header';
 import {
     RegisterMainContainer, Left, LeftContainer, Slide,
     Right, RightFormContainer, RightFormContainerTitleImg, RightFormContainerFormSection,
     FormReg, FormTitle, FormContainer, FormInnder, FormInputField, FormSubmitContainer, FormSubmitButton,
     FormTermsText, RightLoginContainer, LoginInner, RightAppsContainer, RightAppsText, RightAppsIcons
-} from "../components/style/register"
+} from "../components/style/register";
 
 
 const Register = () => {
@@ -21,10 +21,9 @@ const Register = () => {
     const [passwordCheck, setPasswordCheck] = useState('');
 
     useEffect(() => {
-        console.log('useEffect...');
-
-        console.log('container:', container);
-        console.log('imgs:', imgs);
+        // console.log('useEffect...');
+        // console.log('container:', container);
+        // console.log('imgs:', imgs);
 
         let timer;
 
@@ -37,11 +36,11 @@ const Register = () => {
 
         if (imgs) {
 
-            console.log('curNumber: ', curNumber);
-            console.log('imgs[curNumber]: ', imgs[curNumber]);
+            // console.log('curNumber: ', curNumber);
+            // console.log('imgs[curNumber]: ', imgs[curNumber]);
 
             timer = setTimeout(() => {
-                console.log(`${curNumber}: imgs[curNumber]: `, imgs[curNumber]);
+                // console.log(`${curNumber}: imgs[curNumber]: `, imgs[curNumber]);
 
                 imgs[curNumber].classList.remove('show');
 
@@ -66,7 +65,7 @@ const Register = () => {
 
 
     const onChangeId = useCallback((e) => {
-        console.log('onChangeId e.target.value: ', e.target.value);
+        // console.log('onChangeId e.target.value: ', e.target.value);
         setId(e.target.value);
     }, []);
 
@@ -85,7 +84,7 @@ const Register = () => {
 
     const onSubmitForm = useCallback((e) => {
 
-        console.log('onSubmitForm...');
+        // console.log('onSubmitForm...');
         e.preventDefault();
 
         // 비밀번호 체크
