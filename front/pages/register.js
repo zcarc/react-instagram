@@ -28,14 +28,16 @@ const Register = () => {
         let timer;
 
         if (!container) {
+            // console.log('!container');
             setContainer(leftRef.current);
 
         } else if (!imgs) {
+            // console.log('!imgs');
             setImgs(container.children);
         }
 
         if (imgs) {
-
+            // console.log('imgs');
             // console.log('curNumber: ', curNumber);
             // console.log('imgs[curNumber]: ', imgs[curNumber]);
 

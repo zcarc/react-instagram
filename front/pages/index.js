@@ -7,6 +7,7 @@ const Home = () => {
             <div>
                 <h1>메인페이지</h1>
                 <Link href="/register"><a>회원가입</a></Link>
+                <Link href="/profile"><a>프로필</a></Link>
             </div>
         </>
     );
