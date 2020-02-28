@@ -8,13 +8,6 @@ export const GlobalStyle = createGlobalStyle`
     }
 `;
 
-export const Container = styled.section`
-    background: #fafafa;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-`;
-
 export const Header = styled.header`
     width: 100%;
     position: absolute;

@@ -44,7 +44,6 @@ export const Slide = styled.img`
 `;
 
 
-
 // Right
 
 export const Right = styled.div`

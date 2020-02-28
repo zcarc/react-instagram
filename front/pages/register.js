@@ -1,12 +1,11 @@
 import {useState, useEffect, useRef, useCallback} from 'react';
-import Head from "next/head";
-import {GlobalStyle} from '../components/style/header';
 import {
     RegisterMainContainer, Left, LeftContainer, Slide,
     Right, RightFormContainer, RightFormContainerTitleImg, RightFormContainerFormSection,
     FormReg, FormTitle, FormContainer, FormInnder, FormInputField, FormSubmitContainer, FormSubmitButton,
     FormTermsText, RightLoginContainer, LoginInner, RightAppsContainer, RightAppsText, RightAppsIcons
 } from "../components/style/register";
+import Link from "next/link";
 
 
 const Register = () => {
@@ -90,7 +89,7 @@ const Register = () => {
         e.preventDefault();
 
         // 비밀번호 체크
-        if(password !== passwordCheck) {
+        if (password !== passwordCheck) {
             alert('비밀번호가 일치하지 않습니다.');
         }
     }, [password, passwordCheck]);
@@ -98,15 +97,10 @@ const Register = () => {
 
     return (
         <>
-            <Head>
-                <link rel="stylesheet" href="/style/reset.css"/>
-            </Head>
-            <GlobalStyle/>
             <section>
                 <main>
                     <RegisterMainContainer>
                         <Left>
-
                             <LeftContainer ref={leftRef}>
                                 <Slide className="show" src="../img/phone_img_01.jpg" alt=""/>
                                 <Slide src="../img/phone_img_02.jpg" alt=""/>
@@ -121,7 +115,12 @@ const Register = () => {
 
                         <Right>
                             <RightFormContainer>
-                                <RightFormContainerTitleImg/>
+                                <Link href="/">
+                                    <a>
+                                        <RightFormContainerTitleImg/>
+                                    </a>
+                                </Link>
+
                                 <RightFormContainerFormSection>
                                     <FormReg onSubmit={onSubmitForm}>
                                         <FormTitle>
@@ -142,13 +141,15 @@ const Register = () => {
 
                                         <FormContainer>
                                             <FormInnder>
-                                                <FormInputField onChange={onChangePassword} type="password" placeholder="비밀번호"/>
+                                                <FormInputField onChange={onChangePassword} type="password"
+                                                                placeholder="비밀번호"/>
                                             </FormInnder>
                                         </FormContainer>
 
                                         <FormContainer>
                                             <FormInnder>
-                                                <FormInputField onChange={onChangePasswordCheck} type="password" placeholder="비밀번호 확인"/>
+                                                <FormInputField onChange={onChangePasswordCheck} type="password"
+                                                                placeholder="비밀번호 확인"/>
                                             </FormInnder>
                                         </FormContainer>
 

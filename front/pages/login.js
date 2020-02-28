@@ -6,8 +6,6 @@ import {
     FormReg,
     FormSubmitButton,
     FormSubmitContainer,
-    FormTermsText,
-    FormTitle,
     LoginInner, RegisterMainContainer, Right,
     RightAppsContainer, RightAppsIcons,
     RightAppsText,
@@ -16,8 +14,7 @@ import {
     RightFormContainerTitleImg,
     RightLoginContainer
 } from "../components/style/register";
-import Head from "next/head";
-import {GlobalStyle} from "../components/style/header";
+import Link from "next/link";
 
 
 const Login = () => {
@@ -46,16 +43,16 @@ const Login = () => {
 
     return (
         <>
-            <Head>
-                <link rel="stylesheet" href="/style/reset.css"/>
-            </Head>
-            <GlobalStyle/>
             <main>
                 <div style={{paddingTop: '80px'}}/>
                 <RegisterMainContainer>
                     <Right>
                         <RightFormContainer>
-                            <RightFormContainerTitleImg/>
+                            <Link href="/">
+                                <a>
+                                    <RightFormContainerTitleImg/>
+                                </a>
+                            </Link>
                             <div style={{paddingTop: '10px'}}/>
                             <RightFormContainerFormSection>
                                 <FormReg onSubmit={onSubmitForm}>

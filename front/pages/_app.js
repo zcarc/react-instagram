@@ -3,6 +3,7 @@ import Head from 'next/head'
 import AppLayout from "../components/AppLayout";
 import {GlobalStyle} from '../components/style/header'
 import PropTypes from 'prop-types';
+import Link from "next/link";
 
 const withoutAppLayout = [
     'Register',

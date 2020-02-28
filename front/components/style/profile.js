@@ -1,16 +1,10 @@
 import styled from "styled-components";
 
-export const MainContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    order: 1;
-`;
 
 export const Inner = styled.section`
     width:935px;
     position: relative;
 `;
-
 
 
 export const InnerTop = styled.div`
