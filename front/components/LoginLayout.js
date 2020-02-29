@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import {
     FormContainer, FormInnder, FormInputField,
     FormReg, FormSubmitButton, FormSubmitContainer, LoginInner,
@@ -9,11 +9,29 @@ import {
     RightFormContainerTitleImg, RightLoginContainer
 } from "./style/register";
 import Link from "next/link";
+import {useDispatch, useSelector} from "react-redux";
 
 const LoginLayout = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const {user} = useSelector(state => state.user);
+
+    console.log('LoginLayout user: ', user.nickname);
+
+    const action = {
+        type: 'LOG_IN',
+        data: {
+            nickname: 'actionUser01',
+        },
+    };
+
+    useEffect(() => {
+
+        dispatch(action);
+
+    }, []);
 
     const onChangeId = useCallback((e) => {
         // console.log('onChangeId e.target.value: ', e.target.value);
@@ -34,7 +52,10 @@ const LoginLayout = () => {
     }, [id, password]);
 
     return (
+
         <main>
+            {user && user.nickname}
+
             <div style={{paddingTop: '80px'}}/>
             <RegisterMainContainer>
                 <Right>
