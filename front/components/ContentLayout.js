@@ -12,7 +12,7 @@ import {
 } from "./style/content";
 
 const ContentLayout = ({dummy}) => {
-    console.log('dummy:', dummy);
+    // console.log('dummy:', dummy);
 
     return (
         <>

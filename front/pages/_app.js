@@ -5,7 +5,7 @@ import {GlobalStyle} from '../components/style/header'
 import PropTypes from 'prop-types';
 
 import reducer from '../reducers/index'
-import {createStore} from "redux";
+import {createStore, compose, applyMiddleware} from "redux";
 import {Provider} from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 
@@ -44,5 +44,7 @@ Main.propTypes = {
 export default withRedux((initialState, options) => {
     console.log('withRedux()...');
 
-    return createStore(reducer, initialState);
+    const composeEnhancers = typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    return createStore(reducer, initialState, composeEnhancers());
+
 })(Main);

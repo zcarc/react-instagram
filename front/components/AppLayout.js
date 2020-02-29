@@ -2,7 +2,6 @@ import {GlobalStyle} from './style/header'
 import {Container, MainContainer} from './style/common';
 import PropTypes from 'prop-types';
 import HeaderLayout from './HeaderLayout';
-import Link from "next/link";
 import React from "react";
 
 const AppLayout = ({children}) => {
