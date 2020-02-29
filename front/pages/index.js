@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Content from "../components/Content";
+import ContentLayout from "../components/ContentLayout";
 import React from "react";
 
 const dummy = {
@@ -29,8 +29,9 @@ const Home = () => {
                 <Link href="/login"><a>로그인</a></Link>
                 <Link href="/register"><a>회원가입</a></Link>
                 <Link href="/profile"><a>프로필</a></Link>
+                <Link href="/follow"><a>팔로우</a></Link>
             </div>
-            <Content dummy={dummy}/>
+            <ContentLayout dummy={dummy}/>
         </>
     );
 };

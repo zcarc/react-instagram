@@ -11,7 +11,7 @@ import {
     UserContainer
 } from "./style/content";
 
-const Content = ({dummy}) => {
+const ContentLayout = ({dummy}) => {
     console.log('dummy:', dummy);
 
     return (
@@ -122,4 +122,4 @@ const Content = ({dummy}) => {
 );
 };
 
-export default Content;
+export default ContentLayout;
