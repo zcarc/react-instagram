@@ -1,5 +1,3 @@
-import {default} from "react-redux/lib/utils/Subscription";
-
 const initialState = {
     isLoggedIn : false,
     user : {},
@@ -34,6 +32,9 @@ export default (state = initialState, action) => {
             user: null,
         }
       }
+
+      default:
+          return state;
 
   }
 };
