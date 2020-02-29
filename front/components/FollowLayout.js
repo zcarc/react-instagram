@@ -12,7 +12,7 @@ import {
 } from "./style/follow";
 import Link from "next/link";
 
-const FollowLayout = () => {
+const FollowLayout = ({follow}) => {
 
     return (
         <>
@@ -21,7 +21,7 @@ const FollowLayout = () => {
                     <FirstRow>
                         <StartEnd/>
                         <Center>
-                            <div>팔로잉</div>
+                            <div>{follow}</div>
                         </Center>
                         <StartEnd>
                             <Link href="/profile">
@@ -64,7 +64,8 @@ const FollowLayout = () => {
                                             </FollowingName>
                                         </FollowUser>
                                         <div>
-                                            <FollowToggleButton type="button">팔로잉</FollowToggleButton>
+                                            <FollowToggleButton type="button">{follow === '팔로워' ? '팔로우' : follow}</FollowToggleButton>
+                                            {/*<FollowToggleButton type="button">팔로잉</FollowToggleButton>*/}
                                         </div>
                                     </UserObjectInner>
                                 </UserObject>

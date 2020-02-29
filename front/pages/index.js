@@ -29,7 +29,8 @@ const Home = () => {
                 <Link href="/login"><a>로그인</a></Link>
                 <Link href="/register"><a>회원가입</a></Link>
                 <Link href="/profile"><a>프로필</a></Link>
-                <Link href="/follow"><a>팔로우</a></Link>
+                <Link href="/following"><a>팔로잉</a></Link>
+                <Link href="/followers"><a>팔로워</a></Link>
             </div>
             <ContentLayout dummy={dummy}/>
         </>

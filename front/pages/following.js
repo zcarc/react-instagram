@@ -9,14 +9,16 @@ const dummy = {
     following: [],
 };
 
-const Follow = () => {
+const follow = '팔로잉';
+
+const Following = () => {
 
     return (
         <>
             <ProfileLayout dummy={dummy}/>
-            <FollowLayout/>
+            <FollowLayout follow={follow}/>
         </>
     );
 };
 
-export default Follow;
+export default Following;

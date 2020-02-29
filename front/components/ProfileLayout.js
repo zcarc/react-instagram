@@ -30,11 +30,11 @@ const ProfileLayout = ({dummy}) => {
                             <span> {dummy.post.length}</span>
                         </li>
                         <li>
-                            <span>팔로워</span>
+                            <span><Link href="/followers"><a>팔로워</a></Link></span>
                             <span> {dummy.follower.length}</span>
                         </li>
                         <li>
-                            <span><Link href="/follow"><a>팔로우</a></Link></span>
+                            <span><Link href="/following"><a>팔로잉</a></Link></span>
                             <span> {dummy.following.length}</span>
                         </li>
                     </SecondRow>
