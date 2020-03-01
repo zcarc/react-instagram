@@ -21,7 +21,7 @@ function* signUp() {
             type: SIGN_UP_SUCCESS,
         });
 
-    }catch (e) {
+    } catch (e) {
 
         console.error(e);
         yield put({
@@ -52,7 +52,7 @@ function* login() {
             },
         });
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         yield put({
             type: LOG_IN_FAILURE,

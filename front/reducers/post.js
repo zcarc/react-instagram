@@ -7,7 +7,7 @@ const ADD_POST = 'ADD_POST';
 
 export default (state = initialState, action) => {
 
-    switch(action.type) {
+    switch (action.type) {
 
         case ADD_POST: {
             return {

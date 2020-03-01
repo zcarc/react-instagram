@@ -8,17 +8,18 @@ const dummyPost = {
             id: 1,
             nickname: 'react01',
         },
-        content:'첫번째 게시글',
-        img: 'https://images.unsplash.com/photo-1582739736802-8e8ce0258df5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80',
+        content: '첫번째 게시글',
+        img: '',
     }, {
         User: {
             id: 2,
             nickname: 'react02',
         },
-        content:'두번째 게시글',
+        content: '두번째 게시글',
         img: 'https://images.unsplash.com/photo-1582715750271-152d89e8a190?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
     },
-    ]};
+    ]
+};
 
 const Home = () => {
 

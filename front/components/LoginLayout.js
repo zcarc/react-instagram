@@ -23,7 +23,6 @@ const LoginLayout = () => {
     const {userData, isLoggedIn, isLoggingIn} = useSelector(state => state.user);
 
 
-
     console.log('LoginLayout... isLoggingIn: ', isLoggingIn);
     console.log('LoginLayout... isLoggedIn: ', isLoggedIn);
 
@@ -58,14 +57,14 @@ const LoginLayout = () => {
 
     const onLogoutForm = useCallback(() => {
         dispatch({
-           type: LOG_OUT_REQUEST,
-       });
+            type: LOG_OUT_REQUEST,
+        });
     }, []);
 
     return (
 
         <main>
-            {isLoggedIn && userData && <div>{userData.id}님이 로그인했습니다. <button onClick={onLogoutForm}>로그아웃</button></div> }
+            {isLoggedIn && userData && <div>{userData.id}님이 로그인했습니다. <button onClick={onLogoutForm}>로그아웃</button></div>}
 
             <div style={{paddingTop: '80px'}}/>
             <RegisterMainContainer>
@@ -95,7 +94,8 @@ const LoginLayout = () => {
 
                                 <FormContainer>
                                     <FormSubmitButton type="submit">
-                                        {!isLoggingIn ? <div>로그인</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isLoggingIn}/>}
+                                        {!isLoggingIn ? <div>로그인</div> :
+                                            <FadeLoader css={override} color={"#05dfd7"} loading={isLoggingIn}/>}
                                     </FormSubmitButton>
                                 </FormContainer>
                             </FormReg>

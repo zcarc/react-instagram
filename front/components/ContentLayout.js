@@ -21,7 +21,7 @@ const ContentLayout = ({dummyPost}) => {
 
                     {dummyPost.mainPosts.map((v) => {
                         return (
-                                <Contents>
+                            <Contents>
                                 <Top>
                                     <UserContainer>
                                         <ProfileImg>
@@ -110,7 +110,7 @@ const ContentLayout = ({dummyPost}) => {
                                     <UploadBtn>게시</UploadBtn>
                                 </CommentField>
                             </Contents>
-                            );
+                        );
                     })}
 
 
@@ -119,7 +119,7 @@ const ContentLayout = ({dummyPost}) => {
 
         </>
 
-);
+    );
 };
 
 export default ContentLayout;

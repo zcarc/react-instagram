@@ -1,7 +1,7 @@
 const initialState = {
-    isLoggedIn : false,
+    isLoggedIn: false,
     isLoggingIn: false,
-    userData : {},
+    userData: {},
     isSignedUp: false,
     isSigningUp: false,
     signUpError: '',
@@ -25,64 +25,64 @@ export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 
 export default (state = initialState, action) => {
 
-  switch(action.type) {
+    switch (action.type) {
 
-      case LOG_IN_REQUEST: {
-        return {
-            ...state,
-            isLoggingIn: true,
+        case LOG_IN_REQUEST: {
+            return {
+                ...state,
+                isLoggingIn: true,
+            }
         }
-      }
 
-      case LOG_IN_SUCCESS: {
-          return {
-              ...state,
-              isLoggedIn: true,
-              isLoggingIn: false,
-              userData: action.data,
-          }
-      }
-
-      case LOG_IN_FAILURE: {
-          return {
-              ...state,
-              isLoggingIn: false,
-          }
-      }
-
-      case LOG_OUT_REQUEST: {
-        return {
-            ...state,
-            isLoggedIn: false,
-            userData: null,
+        case LOG_IN_SUCCESS: {
+            return {
+                ...state,
+                isLoggedIn: true,
+                isLoggingIn: false,
+                userData: action.data,
+            }
         }
-      }
 
-      case SIGN_UP_REQUEST: {
-          return {
-              ...state,
-              isSigningUp: true,
-          }
-      }
+        case LOG_IN_FAILURE: {
+            return {
+                ...state,
+                isLoggingIn: false,
+            }
+        }
 
-      case SIGN_UP_SUCCESS: {
-          return {
-              ...state,
-              isSigningUp: false,
-              isSignedUp: true,
-          }
-      }
+        case LOG_OUT_REQUEST: {
+            return {
+                ...state,
+                isLoggedIn: false,
+                userData: null,
+            }
+        }
 
-      case SIGN_UP_FAILURE: {
-          return {
-              ...state,
-              isSigningUp: false,
-              signUpError: action.error,
-          }
-      }
+        case SIGN_UP_REQUEST: {
+            return {
+                ...state,
+                isSigningUp: true,
+            }
+        }
 
-      default:
-          return state;
+        case SIGN_UP_SUCCESS: {
+            return {
+                ...state,
+                isSigningUp: false,
+                isSignedUp: true,
+            }
+        }
 
-  }
+        case SIGN_UP_FAILURE: {
+            return {
+                ...state,
+                isSigningUp: false,
+                signUpError: action.error,
+            }
+        }
+
+        default:
+            return state;
+
+    }
 };
