@@ -42,12 +42,14 @@ const Register = () => {
 
             timer = setTimeout(() => {
                 // console.log(`${curNumber}: imgs[curNumber]: `, imgs[curNumber]);
+                // console.log('imgs[curNumber].nextElementSibling: ', imgs[curNumber].nextElementSibling);
 
                 imgs[curNumber].classList.remove('show');
 
                 if (imgs[curNumber].nextElementSibling) {
                     imgs[curNumber].nextElementSibling.classList.add('show');
-                    setCurNumber(curNumber === 4 ? 0 : (curNumber + 1));
+                    setCurNumber(curNumber + 1);
+                    // setCurNumber(curNumber === 4 ? 0 : (curNumber + 1));
 
                 } else {
                     imgs[0].classList.add('show');
@@ -92,6 +94,8 @@ const Register = () => {
         if (password !== passwordCheck) {
             alert('비밀번호가 일치하지 않습니다.');
         }
+
+
     }, [password, passwordCheck]);
 
 
