@@ -2,7 +2,7 @@ import Link from 'next/link';
 import ContentLayout from "../components/ContentLayout";
 import React from "react";
 
-const dummy = {
+const dummyPost = {
     mainPosts: [{
         User: {
             id: 1,
@@ -32,7 +32,7 @@ const Home = () => {
                 <Link href="/following"><a>팔로잉</a></Link>
                 <Link href="/followers"><a>팔로워</a></Link>
             </div>
-            <ContentLayout dummy={dummy}/>
+            <ContentLayout dummyPost={dummyPost}/>
         </>
     );
 };

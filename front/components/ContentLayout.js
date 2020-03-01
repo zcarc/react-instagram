@@ -11,7 +11,7 @@ import {
     UserContainer
 } from "./style/content";
 
-const ContentLayout = ({dummy}) => {
+const ContentLayout = ({dummyPost}) => {
     // console.log('dummy:', dummy);
 
     return (
@@ -19,7 +19,7 @@ const ContentLayout = ({dummy}) => {
             <Inner>
                 <ContentsBox>
 
-                    {dummy.mainPosts.map((v) => {
+                    {dummyPost.mainPosts.map((v) => {
                         return (
                                 <Contents>
                                 <Top>

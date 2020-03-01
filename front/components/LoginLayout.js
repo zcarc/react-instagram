@@ -1,4 +1,4 @@
-import {useState, useCallback, useEffect} from 'react';
+import {useState, useCallback} from 'react';
 import {
     FormContainer, FormInnder, FormInputField,
     FormReg, FormSubmitButton, FormSubmitContainer, LoginInner,
@@ -16,9 +16,9 @@ const LoginLayout = () => {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const {user} = useSelector(state => state.user);
+    const {user, isLoggedIn} = useSelector(state => state.user);
 
-    console.log('LoginLayout user: ', user.nickname);
+    // console.log('LoginLayout user: ', user.nickname);
 
     const action = {
         type: 'LOG_IN',
@@ -27,11 +27,6 @@ const LoginLayout = () => {
         },
     };
 
-    useEffect(() => {
-
-        dispatch(action);
-
-    }, []);
 
     const onChangeId = useCallback((e) => {
         // console.log('onChangeId e.target.value: ', e.target.value);
@@ -49,12 +44,14 @@ const LoginLayout = () => {
 
         e.preventDefault();
 
+        dispatch(action);
+
     }, [id, password]);
 
     return (
 
         <main>
-            {user && user.nickname}
+            {isLoggedIn && user && <div>{user.nickname}님이 로그인했습니다.</div>  }
 
             <div style={{paddingTop: '80px'}}/>
             <RegisterMainContainer>
