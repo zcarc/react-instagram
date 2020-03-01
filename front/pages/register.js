@@ -8,6 +8,10 @@ import {
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 
+import {SIGN_UP_REQUEST} from "../reducers/user";
+import FadeLoader from "react-spinners/FadeLoader";
+import {override} from "../components/style/common";
+
 
 const Register = () => {
     const [container, setContainer] = useState(null);
@@ -21,7 +25,8 @@ const Register = () => {
     const [passwordCheck, setPasswordCheck] = useState('');
 
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.user);
+
+    const {isSigningUp} = useSelector(state => state.user);
 
     useEffect(() => {
         // console.log('useEffect...');
@@ -100,7 +105,7 @@ const Register = () => {
         }
 
         dispatch({
-           type: 'SIGN_UP',
+           type: SIGN_UP_REQUEST,
            data: {
                id,
                password,
@@ -171,7 +176,9 @@ const Register = () => {
 
                                         <div>
                                             <FormSubmitContainer>
-                                                <FormSubmitButton type="submit">가입</FormSubmitButton>
+                                                <FormSubmitButton type="submit">
+                                                    {!isSigningUp ? <div>가입</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isSigningUp}/>}
+                                                </FormSubmitButton>
                                             </FormSubmitContainer>
                                         </div>
 
