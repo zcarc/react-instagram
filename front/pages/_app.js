@@ -9,6 +9,9 @@ import {createStore, compose, applyMiddleware} from "redux";
 import {Provider} from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from "../sagas/index";
+
 
 const withoutAppLayout = [
     'Register',
@@ -44,7 +47,16 @@ Main.propTypes = {
 export default withRedux((initialState, options) => {
     console.log('withRedux()...');
 
+    const sagaMiddleware = createSagaMiddleware();
+    const middleware = [sagaMiddleware];
+
     const composeEnhancers = typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    return createStore(reducer, initialState, composeEnhancers());
+
+    const store =  createStore(reducer, initialState, composeEnhancers(
+        applyMiddleware(...middleware),
+    ));
+    sagaMiddleware.run(rootSaga);
+
+    return store;
 
 })(Main);

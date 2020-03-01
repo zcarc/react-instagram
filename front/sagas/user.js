@@ -1,4 +1,4 @@
-import {all, takeLatest, fork, put} from 'redux-saga/effects';
+import {all, takeLatest, fork, call, put} from 'redux-saga/effects';
 import {LOG_IN, LOG_IN_FAILURE, LOG_IN_SUCCESS} from "../reducers/user";
 
 function loginAPI() {
