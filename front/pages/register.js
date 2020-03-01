@@ -6,6 +6,7 @@ import {
     FormTermsText, RightLoginContainer, LoginInner, RightAppsContainer, RightAppsText, RightAppsIcons
 } from "../components/style/register";
 import Link from "next/link";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const Register = () => {
@@ -18,6 +19,9 @@ const Register = () => {
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
+
+    const dispatch = useDispatch();
+    const { user } = useSelector(state => state.user);
 
     useEffect(() => {
         // console.log('useEffect...');
@@ -87,16 +91,24 @@ const Register = () => {
 
     const onSubmitForm = useCallback((e) => {
 
-        // console.log('onSubmitForm...');
+        console.log('onSubmitForm...');
         e.preventDefault();
 
         // 비밀번호 체크
         if (password !== passwordCheck) {
-            alert('비밀번호가 일치하지 않습니다.');
+            return alert('비밀번호가 일치하지 않습니다.');
         }
 
+        dispatch({
+           type: 'SIGN_UP',
+           data: {
+               id,
+               password,
+               nickname,
+           },
+        });
 
-    }, [password, passwordCheck]);
+    }, [password, passwordCheck, nickname]);
 
 
     return (

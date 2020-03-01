@@ -5,6 +5,7 @@ const initialState = {
 
 const LOG_IN = 'LOG_IN';
 const LOG_OUT = 'LOG_OUT';
+const SIGN_UP = 'SIGN_UP';
 
 // const action = {
 //     type: 'LOG_IN',
@@ -31,6 +32,13 @@ export default (state = initialState, action) => {
             isLoggedIn: false,
             user: null,
         }
+      }
+
+      case SIGN_UP: {
+          return {
+              ...state,
+              signUpData: action.data,
+          }
       }
 
       default:
