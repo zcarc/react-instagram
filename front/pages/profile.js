@@ -9,7 +9,7 @@ const dummy = {
 
 const Profile = () => {
     return (
-        <ProfileLayout dummy={dummy}/>
+        <ProfileLayout/>
     );
 };
 

@@ -15,7 +15,7 @@ const Following = () => {
 
     return (
         <>
-            <ProfileLayout dummy={dummy}/>
+            <ProfileLayout/>
             <FollowLayout follow={follow}/>
         </>
     );

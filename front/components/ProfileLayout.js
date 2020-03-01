@@ -1,3 +1,4 @@
+import {useEffect} from 'react';
 import {
     ContentsContainer,
     FirstRow, Inner,
@@ -9,8 +10,25 @@ import {
     UserName
 } from "./style/profile";
 import Link from "next/link";
+import {useSelector, useDispatch} from "react-redux";
 
-const ProfileLayout = ({dummy}) => {
+const ProfileLayout = () => {
+
+    const {user} = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({
+            type: 'LOG_IN',
+            data: {
+                nickname: 'profile01',
+                Post: [],
+                Followings: [],
+                Followers: [],
+            },
+        });
+    }, []);
+
     return (
         <Inner>
             <InnerTop>
@@ -21,21 +39,21 @@ const ProfileLayout = ({dummy}) => {
                 </InnerTopLeft>
                 <div>
                     <FirstRow>
-                        <UserName>{dummy.nickname}</UserName>
+                        <UserName>{user && user.nickname}</UserName>
                         <a href="#">로그아웃</a>
                     </FirstRow>
                     <SecondRow>
                         <li>
                             <span>게시물</span>
-                            <span> {dummy.post.length}</span>
+                            <span> {user.Post && user.Post.length}</span>
                         </li>
                         <li>
                             <span><Link href="/followers"><a>팔로워</a></Link></span>
-                            <span> {dummy.follower.length}</span>
+                            <span> {user.Followers && user.Followers.length}</span>
                         </li>
                         <li>
                             <span><Link href="/following"><a>팔로잉</a></Link></span>
-                            <span> {dummy.following.length}</span>
+                            <span> {user.Followings && user.Followings.length}</span>
                         </li>
                     </SecondRow>
                     <ThirdRow>
