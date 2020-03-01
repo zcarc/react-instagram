@@ -13,13 +13,14 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {override} from "./style/common";
 import FadeLoader from "react-spinners/FadeLoader";
+import {LOG_OUT_REQUEST} from "../reducers/user";
 
 const LoginLayout = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const {user, isLoggedIn, isLoggingIn} = useSelector(state => state.user);
+    const {userData, isLoggedIn, isLoggingIn} = useSelector(state => state.user);
 
 
 
@@ -55,10 +56,16 @@ const LoginLayout = () => {
 
     }, [id, password]);
 
+    const onLogoutForm = useCallback(() => {
+        dispatch({
+           type: LOG_OUT_REQUEST,
+       });
+    }, []);
+
     return (
 
         <main>
-            {isLoggedIn && user && <div>{user.nickname}님이 로그인했습니다.</div>  }
+            {isLoggedIn && userData && <div>{userData.id}님이 로그인했습니다. <button onClick={onLogoutForm}>로그아웃</button></div> }
 
             <div style={{paddingTop: '80px'}}/>
             <RegisterMainContainer>
