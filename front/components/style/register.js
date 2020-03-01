@@ -141,6 +141,10 @@ export const FormSubmitButton = styled.button`
     text-overflow: ellipsis;
     user-select: none;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 30px;
 `;
 
 export const FormTermsText = styled.p`

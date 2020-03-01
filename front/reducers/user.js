@@ -1,5 +1,6 @@
 const initialState = {
     isLoggedIn : false,
+    isLoggingIn: false,
     user : {},
 };
 
@@ -23,15 +24,24 @@ export default (state = initialState, action) => {
       case LOG_IN: {
         return {
             ...state,
-            isLoggedIn: true,
+            isLoggingIn: true,
             user: action.data,
         }
+      }
+
+      case LOG_IN_SUCCESS: {
+          return {
+              ...state,
+              isLoggedIn: true,
+              isLoggingIn: false,
+          }
       }
 
       case LOG_OUT: {
         return {
             ...state,
             isLoggedIn: false,
+            isLogging: false,
             user: null,
         }
       }

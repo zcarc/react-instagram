@@ -1,4 +1,4 @@
-import {all, takeLatest, fork, call, put} from 'redux-saga/effects';
+import {all, takeLatest, fork, call, put, delay} from 'redux-saga/effects';
 import {LOG_IN, LOG_IN_FAILURE, LOG_IN_SUCCESS} from "../reducers/user";
 
 function loginAPI() {
@@ -9,6 +9,7 @@ function* login() {
 
     try {
         yield call(loginAPI);
+        yield delay(1000);
         yield put({
             type: LOG_IN_SUCCESS,
         });

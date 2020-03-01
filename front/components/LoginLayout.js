@@ -11,12 +11,17 @@ import {
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 
+import {override} from "./style/common";
+import FadeLoader from "react-spinners/FadeLoader";
+
 const LoginLayout = () => {
 
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const {user, isLoggedIn} = useSelector(state => state.user);
+    const {user, isLoggedIn, isLoggingIn} = useSelector(state => state.user);
+
+
 
     // console.log('LoginLayout user: ', user.nickname);
 
@@ -79,12 +84,11 @@ const LoginLayout = () => {
                                     </FormInnder>
                                 </FormContainer>
 
-                                <div>
                                     <FormSubmitContainer>
-                                        <FormSubmitButton type="submit">로그인</FormSubmitButton>
+                                        <FormSubmitButton type="submit">
+                                            {!isLoggingIn ? <div>로그인</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isLoggingIn}/>}
+                                        </FormSubmitButton>
                                     </FormSubmitContainer>
-                                </div>
-
                             </FormReg>
                         </RightFormContainerFormSection>
                     </RightFormContainer>
