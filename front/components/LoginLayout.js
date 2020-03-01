@@ -23,12 +23,14 @@ const LoginLayout = () => {
 
 
 
-    // console.log('LoginLayout user: ', user.nickname);
+    console.log('LoginLayout... isLoggingIn: ', isLoggingIn);
+    console.log('LoginLayout... isLoggedIn: ', isLoggedIn);
 
     const action = {
-        type: 'LOG_IN',
+        type: 'LOG_IN_REQUEST',
         data: {
-            nickname: 'actionUser01',
+            id,
+            password,
         },
     };
 

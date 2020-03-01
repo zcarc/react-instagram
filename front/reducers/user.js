@@ -1,7 +1,7 @@
 const initialState = {
     isLoggedIn : false,
     isLoggingIn: false,
-    user : {},
+    userData : {},
 };
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
@@ -25,7 +25,6 @@ export default (state = initialState, action) => {
         return {
             ...state,
             isLoggingIn: true,
-            user: action.data,
         }
       }
 
@@ -33,6 +32,14 @@ export default (state = initialState, action) => {
           return {
               ...state,
               isLoggedIn: true,
+              isLoggingIn: false,
+              userData: action.data,
+          }
+      }
+
+      case LOG_IN_FAILURE: {
+          return {
+              ...state,
               isLoggingIn: false,
           }
       }
@@ -42,7 +49,7 @@ export default (state = initialState, action) => {
             ...state,
             isLoggedIn: false,
             isLogging: false,
-            user: null,
+            userData: null,
         }
       }
 

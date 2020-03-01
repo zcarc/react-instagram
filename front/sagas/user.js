@@ -12,6 +12,10 @@ function* login() {
         yield delay(1000);
         yield put({
             type: LOG_IN_SUCCESS,
+            data: {
+                id: 'sendId',
+                password: 'sendPassword',
+            },
         });
 
     }catch (e) {
