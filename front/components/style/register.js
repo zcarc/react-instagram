@@ -118,28 +118,15 @@ export const FormInputField = styled.input`
     }
 `;
 
-export const FormSubmitContainer = styled.div`
-    margin: 8px 40px;
-    flex: 0 0 auto;
-    justify-content: flex-start;
-    align-items: stretch;
-    align-content: stretch;
-`;
-
 export const FormSubmitButton = styled.button`
     border: 1px solid transparent;
     background-color: #3897f0;
     border-radius: 4px;
     color: #fff;
-    position: relative;
-    box-sizing: border-box;
     cursor: pointer;
-    display: block;
     font-weight: 600;
     padding: 5px 9px;
-    text-align: center;
     text-overflow: ellipsis;
-    user-select: none;
     width: 100%;
     display: flex;
     justify-content: center;

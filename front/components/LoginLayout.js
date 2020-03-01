@@ -1,7 +1,7 @@
 import {useState, useCallback} from 'react';
 import {
     FormContainer, FormInnder, FormInputField,
-    FormReg, FormSubmitButton, FormSubmitContainer, LoginInner,
+    FormReg, FormSubmitButton, LoginInner,
     RegisterMainContainer,
     Right, RightAppsContainer, RightAppsIcons, RightAppsText,
     RightFormContainer,
@@ -93,11 +93,11 @@ const LoginLayout = () => {
                                     </FormInnder>
                                 </FormContainer>
 
-                                    <FormSubmitContainer>
-                                        <FormSubmitButton type="submit">
-                                            {!isLoggingIn ? <div>로그인</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isLoggingIn}/>}
-                                        </FormSubmitButton>
-                                    </FormSubmitContainer>
+                                <FormContainer>
+                                    <FormSubmitButton type="submit">
+                                        {!isLoggingIn ? <div>로그인</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isLoggingIn}/>}
+                                    </FormSubmitButton>
+                                </FormContainer>
                             </FormReg>
                         </RightFormContainerFormSection>
                     </RightFormContainer>

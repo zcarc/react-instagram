@@ -2,7 +2,7 @@ import {useState, useEffect, useRef, useCallback} from 'react';
 import {
     RegisterMainContainer, Left, LeftContainer, Slide,
     Right, RightFormContainer, RightFormContainerTitleImg, RightFormContainerFormSection,
-    FormReg, FormTitle, FormContainer, FormInnder, FormInputField, FormSubmitContainer, FormSubmitButton,
+    FormReg, FormTitle, FormContainer, FormInnder, FormInputField, FormSubmitButton,
     FormTermsText, RightLoginContainer, LoginInner, RightAppsContainer, RightAppsText, RightAppsIcons
 } from "../components/style/register";
 import Link from "next/link";
@@ -174,13 +174,11 @@ const Register = () => {
                                             </FormInnder>
                                         </FormContainer>
 
-                                        <div>
-                                            <FormSubmitContainer>
-                                                <FormSubmitButton type="submit">
-                                                    {!isSigningUp ? <div>가입</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isSigningUp}/>}
-                                                </FormSubmitButton>
-                                            </FormSubmitContainer>
-                                        </div>
+                                        <FormContainer>
+                                            <FormSubmitButton type="submit">
+                                                {!isSigningUp ? <div>가입</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isSigningUp}/>}
+                                            </FormSubmitButton>
+                                        </FormContainer>
 
                                         <FormTermsText>
                                             가입하면 Instagram의
