@@ -85,20 +85,4 @@ export const PlusIcon = styled.div`
     }
 `;
 
-export const SubmitBtn = styled.input`
-    background: #3897f0;
-    border-color: #3897f0;
-    color: #fff;
-    border-radius: 3px;
-    border-style: solid;
-    border-width: 1px;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 28px;
-    outline: none;
-    width: 100%;
-    padding: 0;
-    margin-top: 10px;
-`;
-
 

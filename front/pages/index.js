@@ -1,27 +1,28 @@
 import Link from 'next/link';
 import ContentLayout from "../components/ContentLayout";
-import React from "react";
-
-const dummyPost = {
-    mainPosts: [{
-        User: {
-            id: 1,
-            nickname: 'react01',
-        },
-        content: '첫번째 게시글',
-        img: '',
-    }, {
-        User: {
-            id: 2,
-            nickname: 'react02',
-        },
-        content: '두번째 게시글',
-        img: '',
-    },
-    ]
-};
+import React, {useEffect} from "react";
+import {useDispatch, useStore} from "react-redux";
+import {WRITE_REDIRECTION} from "../reducers/post";
 
 const Home = () => {
+
+    const dispatch = useDispatch();
+    const store = useStore();
+    const isPostAdded = store.getState().post.isPostAdded;
+    console.log('index isPostAdded', isPostAdded);
+
+    useEffect(() => {
+
+        console.log('isPostAdded ',isPostAdded);
+
+        if(isPostAdded){
+            dispatch({
+                type: WRITE_REDIRECTION,
+            });
+        }
+
+
+    }, [isPostAdded]);
 
     return (
         <>
@@ -34,7 +35,7 @@ const Home = () => {
                 <Link href="/followers"><a>팔로워</a></Link>
                 <Link href="/write"><a>글쓰기</a></Link>
             </div>
-            <ContentLayout dummyPost={dummyPost}/>
+            <ContentLayout/>
         </>
     );
 };

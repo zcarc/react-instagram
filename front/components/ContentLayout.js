@@ -10,16 +10,22 @@ import {
     Top, UploadBtn,
     UserContainer
 } from "./style/content";
+import {useSelector, useStore} from "react-redux";
 
-const ContentLayout = ({dummyPost}) => {
+
+const ContentLayout = () => {
     // console.log('dummy:', dummy);
+
+    // const {mainPosts} = useSelector(state => state.post);
+    const mainPosts = useStore().getState().post.mainPosts;
+    console.log('ContentLayout... mainPosts ', mainPosts);
 
     return (
         <>
             <Inner>
                 <ContentsBox>
 
-                    {dummyPost.mainPosts.map((v) => {
+                    {mainPosts.map((v) => {
                         return (
                             <Contents>
                                 <Top>
