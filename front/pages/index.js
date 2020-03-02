@@ -32,6 +32,7 @@ const Home = () => {
                 <Link href="/profile"><a>프로필</a></Link>
                 <Link href="/following"><a>팔로잉</a></Link>
                 <Link href="/followers"><a>팔로워</a></Link>
+                <Link href="/write"><a>글쓰기</a></Link>
             </div>
             <ContentLayout dummyPost={dummyPost}/>
         </>

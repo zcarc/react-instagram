@@ -183,7 +183,7 @@ const Register = () => {
                                         <FormTermsText>
                                             가입하면 Instagram의
                                             <span>약관, 데이터 정책</span>
-                                            및
+                                            <div style={{display: 'inline-block', margin: '0 2px'}}>및</div>
                                             <span>쿠키 정책</span>에 동의하게 됩니다.
                                         </FormTermsText>
 
