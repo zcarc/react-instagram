@@ -11,7 +11,6 @@ import {
     UserContainer
 } from "./style/content";
 import {useSelector, useStore} from "react-redux";
-import CommentFormLayout from './CommentFormLayout';
 import CommentLayout from "./CommentLayout";
 
 
@@ -99,13 +98,7 @@ const ContentLayout = () => {
                                 </CommentContainer>
 
 
-                                <CommentContainer>
-                                    <CommentLayout/>
-                                </CommentContainer>
-
-                                <Timer>5일, 23시간</Timer>
-
-                                <CommentFormLayout key={v} comment={v}/>
+                                    <CommentLayout key={v.id} comment={v} />
                             </Contents>
                         );
                     })}
