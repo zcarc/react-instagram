@@ -9,7 +9,7 @@ export const RegisterMainContainer = styled.article`
     align-items: center;
     max-width: 935px;
     margin: 45px auto 0;
-    padding-bottom: 59px;
+    padding-bottom: 250px;
 `;
 
 // Left

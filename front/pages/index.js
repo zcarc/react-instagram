@@ -3,12 +3,14 @@ import ContentLayout from "../components/ContentLayout";
 import React, {useEffect} from "react";
 import {useDispatch, useStore} from "react-redux";
 import {WRITE_REDIRECTION} from "../reducers/post";
+import Router from 'next/router';
 
 const Home = () => {
 
     const dispatch = useDispatch();
     const store = useStore();
     const isPostAdded = store.getState().post.isPostAdded;
+    const isLoggedIn = store.getState().user.isLoggedIn;
     console.log('index isPostAdded', isPostAdded);
 
     useEffect(() => {
@@ -21,8 +23,12 @@ const Home = () => {
             });
         }
 
+        if(!isLoggedIn) {
+            Router.push('/register');
+        }
 
-    }, [isPostAdded]);
+
+    }, [isPostAdded, isLoggedIn]);
 
     return (
         <>
