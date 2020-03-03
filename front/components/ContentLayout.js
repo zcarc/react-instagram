@@ -11,6 +11,7 @@ import {
     UserContainer
 } from "./style/content";
 import {useSelector, useStore} from "react-redux";
+import CommentFormLayout from './CommentFormLayout';
 
 
 const ContentLayout = () => {
@@ -111,10 +112,7 @@ const ContentLayout = () => {
 
                                 <Timer>5일, 23시간</Timer>
 
-                                <CommentField>
-                                    <CommentFieldInput type="text" size="70px" placeholder="댓글 달기..." maxLength="40"/>
-                                    <UploadBtn>게시</UploadBtn>
-                                </CommentField>
+                                <CommentFormLayout/>
                             </Contents>
                         );
                     })}
