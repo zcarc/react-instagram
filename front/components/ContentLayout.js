@@ -17,8 +17,8 @@ import CommentLayout from "./CommentLayout";
 const ContentLayout = () => {
     // console.log('dummy:', dummy);
 
-    // const {mainPosts} = useSelector(state => state.post);
-    const mainPosts = useStore().getState().post.mainPosts;
+    const {mainPosts} = useSelector(state => state.post);
+    // const mainPosts = useStore().getState().post.mainPosts;
     console.log('ContentLayout... mainPosts ', mainPosts);
 
     return (
@@ -98,7 +98,7 @@ const ContentLayout = () => {
                                 </CommentContainer>
 
 
-                                    <CommentLayout key={v.id} comment={v} />
+                                <CommentLayout key={v.id} post={v}/>
                             </Contents>
                         );
                     })}
