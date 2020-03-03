@@ -1,6 +1,6 @@
 import {CommentField, CommentFieldInput, UploadBtn} from "./style/content";
 
-const ContentLayout = () => {
+const CommentFormLayout = () => {
     return(
         <CommentField>
             <CommentFieldInput type="text" size="70px" placeholder="댓글 달기..." maxLength="40"/>
@@ -9,4 +9,4 @@ const ContentLayout = () => {
     );
 };
 
-export default ContentLayout;
+export default CommentFormLayout;
