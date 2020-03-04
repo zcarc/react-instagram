@@ -107,13 +107,13 @@ const Register = () => {
         dispatch({
            type: SIGN_UP_REQUEST,
            data: {
-               id,
-               password,
-               nickname,
+               userId: id,
+               userPassword: password,
+               userNickname: nickname,
            },
         });
 
-    }, [password, passwordCheck, nickname]);
+    }, [id, password, passwordCheck, nickname]);
 
 
     return (

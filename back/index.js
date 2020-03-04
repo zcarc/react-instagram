@@ -1,17 +1,20 @@
 const express = require('express');
 const db = require('./models/index');
+const userAPIRouter = require('./routes/user');
+const morgan = require('morgan');
+const cors = require('cors');
 
 const app = express();
 
 db.sequelize.sync();
 
-app.get('/', (req, res) => {
-    res.send('Hello, server');
-});
+app.use(morgan('dev'));
+app.use(cors());
 
-app.get('/about', (req, res) => {
-    res.send('Hello, about');
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/user', userAPIRouter);
 
 app.listen(8080, () => {
     console.log('server is running on http://localhost:8080');

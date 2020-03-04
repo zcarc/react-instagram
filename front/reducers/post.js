@@ -64,7 +64,7 @@ export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
 export default (state = initialState, action) => {
 
-    console.log('reducers/post... state:', state);
+    // console.log('reducers/post... state:', state);
 
     switch (action.type) {
 
@@ -103,7 +103,7 @@ export default (state = initialState, action) => {
 
         case ADD_COMMENT_SUCCESS: {
 
-            console.log('reducers/post... ADD_COMMENT_SUCCESS... action.data.postId:', action.data.postId);
+            // console.log('reducers/post... ADD_COMMENT_SUCCESS... action.data.postId:', action.data.postId);
 
             const index =  state.mainPosts.findIndex(e => e.id === action.data.postId);
             const post = state.mainPosts[index];

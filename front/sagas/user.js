@@ -7,15 +7,27 @@ import {
     SIGN_UP_SUCCESS,
     SIGN_UP_FAILURE
 } from "../reducers/user";
+import axios from 'axios';
 
-function signUpAPI() {
+function signUpAPI(data) {
+
+    // const data2 = {
+    //     user: {
+    //         id: 1,
+    //         nick: 'test01',
+    //     }
+    // };
+
+    return axios.post('http://localhost:8080/api/user/', data);
 
 }
 
-function* signUp() {
+function* signUp(action) {
+
+    // console.log('sagas/user... action: ', action);
 
     try {
-        yield call(signUpAPI);
+        yield call(signUpAPI, action.data);
         yield delay(1000);
         yield put({
             type: SIGN_UP_SUCCESS,
