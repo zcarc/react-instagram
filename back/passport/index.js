@@ -11,6 +11,24 @@ module.exports = () => {
 
        return done(null, user.id);
     });
+    
+    passport.deserializeUser(async (id, done) => {
+       try {
+           console.log('deserializeUser...');
+           console.log('deserializeUser id: ', id);
+
+           const user = await db.User.findOne({
+               where: {id},
+           });
+
+           console.log('deserializeUser user.toJSON(): ', user && user.toJSON());
+           done(null, user);
+
+       } catch (e) {
+           console.error(e);
+           return done(e);
+       }
+    });
 
     passport.use(new LocalStrategy({
         usernameField: 'userId',

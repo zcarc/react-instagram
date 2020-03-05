@@ -4,15 +4,29 @@ const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const passport = require('passport');
 
+router.get('/', (req, res) => {
 
-router.post('/', async(req, res, next) => {
+    if (!req.user) {
+        return res.status(401).send('로그인이 필요합니다.');
+    }
+
+    const user = Object.assign({}, req.user.toJSON());
+    delete user.userPassword;
+
+    console.log('routes/user... LOAD_USER_REQUEST... user: ', user);
+
+    return res.json(user);
+});
+
+
+router.post('/', async (req, res, next) => {
 
     console.log('routes/user... req.body: ', req.body);
 
     try {
 
         const exUser = await db.User.findOne({
-            where:{
+            where: {
                 userId: req.body.userId,
             },
         });
@@ -20,7 +34,7 @@ router.post('/', async(req, res, next) => {
         // console.log('exUser: ', exUser);
         // console.log('exUser.toJSON(): ', exUser.toJSON());
 
-        if(exUser) {
+        if (exUser) {
             return res.status(403).send('이미 사용중인 아이디입니다.');
         }
 
@@ -38,7 +52,7 @@ router.post('/', async(req, res, next) => {
 
         return res.status(200).json(newUser);
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         return next(e);
     }
@@ -60,27 +74,36 @@ router.post('/login', async (req, res, next) => {
         // console.log('routes/user... passport.authenticate req.user: ', req.user);
         // console.log('routes/user... passport.authenticate req.session: ', req.session);
 
-        if(err){
+        if (err) {
             console.error(err);
             return next(err);
         }
 
-        if(info) {
+        if (info) {
             return res.status(401).send(info.reason);
         }
 
 
-        return req.login(user, (loginError) => {
+        return req.login(user, async (loginError) => {
 
             console.log('req.login()... user: ', user);
             console.log('req.login()... req.user: ', req.user); // db object
             console.log('req.login()... req.session: ', req.session); // { passport: { user: 1 } }
 
 
-            if(loginError) {
+            if (loginError) {
                 console.error(loginError);
                 next(loginError);
             }
+
+            const fullUser = await db.User.findOne({
+                where: {id: user.id},
+                include: [{
+                    model: db.Post,
+                    attributes: ['id'],
+                }]
+            });
+            console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
 
             const filteredUser = Object.assign({}, user.toJSON());
             delete filteredUser.userPassword;
@@ -89,7 +112,6 @@ router.post('/login', async (req, res, next) => {
             return res.json(filteredUser);
 
         });
-
 
 
     })(req, res, next);

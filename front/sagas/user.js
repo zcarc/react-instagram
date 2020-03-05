@@ -5,11 +5,44 @@ import {
     LOG_IN_SUCCESS,
     SIGN_UP_REQUEST,
     SIGN_UP_SUCCESS,
-    SIGN_UP_FAILURE
+    SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE
 } from "../reducers/user";
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8080/api/';
+
+
+function loadUserAPI() {
+
+    return axios.get('/user/', {
+        withCredentials: true,
+    });
+}
+
+function* loadUser() {
+
+    try {
+        const result = yield call(loadUserAPI);
+        console.log('loadUser... result: ', result);
+        // yield delay(800);
+        yield put({
+            type: LOAD_USER_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_USER_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchLoadUser() {
+    yield takeLatest(LOAD_USER_REQUEST, loadUser);
+}
 
 function signUpAPI(data) {
 
@@ -87,5 +120,6 @@ export default function* userSaga() {
     yield all([
         fork(watchLogin),
         fork(watchSignUp),
+        fork(watchLoadUser),
     ]);
 }

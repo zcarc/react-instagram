@@ -39,7 +39,7 @@ app.use(expressSession({
 }));
 
 app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.session());
 
 app.get('/', (req, res) => {
     console.log('back/index... req.user: ', req.user);
