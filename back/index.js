@@ -20,6 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
+app.get('/', (req, res) => {
+    console.log('back/index... req.user: ', req.user);
+    res.send('hello server');
+});
+
 app.use('/api/user', userAPIRouter);
 
 app.listen(8080, () => {

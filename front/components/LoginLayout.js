@@ -29,8 +29,8 @@ const LoginLayout = () => {
     const action = {
         type: 'LOG_IN_REQUEST',
         data: {
-            id,
-            password,
+            userId: id,
+            userPassword: password,
         },
     };
 

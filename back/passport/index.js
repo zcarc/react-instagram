@@ -4,10 +4,19 @@ const { Strategy: LocalStrategy } = require('passport-local');
 module.exports = () => {
 
     passport.use(new LocalStrategy({
-        usernameField: 'id',
-        passwordField: 'password',
-    }, (id, password, done) => {
-        console.log('LocalStrategy id: ', id);
+        usernameField: 'userId',
+        passwordField: 'userPassword',
+    }, (userId, userPassword, done) => {
+        console.log('LocalStrategy userId: ', userId);
+        console.log('LocalStrategy userPassword: ', userPassword);
+
+        try {
+
+            done(null, { userId, userPassword });
+
+        }catch (e) {
+
+        }
     }));
 
 };

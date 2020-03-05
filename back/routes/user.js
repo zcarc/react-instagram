@@ -18,6 +18,7 @@ router.post('/', async(req, res, next) => {
         });
 
         // console.log('exUser: ', exUser);
+        // console.log('exUser.toJSON(): ', exUser.toJSON());
 
         if(exUser) {
             return res.status(403).send('이미 사용중인 아이디입니다.');
@@ -46,14 +47,15 @@ router.post('/', async(req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
 
-    console.log('routes/user... req: ', req);
+    console.log('routes/user... req.body: ', req.body);
 
 
     passport.authenticate('local', (err, user, info) => {
 
-        console.log('routes/user... passport.authenticate err: ', err);
-        console.log('routes/user... passport.authenticate user: ', user);
-        console.log('routes/user... passport.authenticate info: ', info);
+        // if not exists,
+        console.log('routes/user... passport.authenticate err: ', err); // null
+        console.log('routes/user... passport.authenticate user: ', user); // false
+        console.log('routes/user... passport.authenticate info: ', info); // undefined
 
     })(req, res, next);
 
