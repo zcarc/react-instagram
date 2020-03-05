@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const passport = require('passport');
 
+// load user
 router.get('/', (req, res) => {
 
     if (!req.user) {
@@ -18,7 +19,7 @@ router.get('/', (req, res) => {
     return res.json(user);
 });
 
-
+// register
 router.post('/', async (req, res, next) => {
 
     console.log('routes/user... req.body: ', req.body);
@@ -116,6 +117,15 @@ router.post('/login', async (req, res, next) => {
 
     })(req, res, next);
 
+});
+
+router.post('/logout', (req, res, next) => {
+    console.log('/logout...');
+
+    req.logout();
+    req.session.destroy();
+
+    res.send('You have been logged out.');
 });
 
 module.exports = router;

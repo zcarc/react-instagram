@@ -5,11 +5,37 @@ import {
     LOG_IN_SUCCESS,
     SIGN_UP_REQUEST,
     SIGN_UP_SUCCESS,
-    SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE
+    SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, LOG_OUT_SUCCESS, LOG_OUT_REQUEST
 } from "../reducers/user";
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8080/api/';
+
+function logoutAPI() {
+
+    return axios.post('/user/logout', {}, {
+        withCredentials: true,
+    });
+
+}
+
+function* logout() {
+
+    try {
+        yield call(logoutAPI);
+        yield put({
+            type: LOG_OUT_SUCCESS,
+        });
+
+    } catch (e) {
+        console.error(e);
+    }
+
+}
+
+function* watchLogout() {
+    yield takeLatest(LOG_OUT_REQUEST, logout);
+}
 
 
 function loadUserAPI() {
@@ -121,5 +147,6 @@ export default function* userSaga() {
         fork(watchLogin),
         fork(watchSignUp),
         fork(watchLoadUser),
+        fork(watchLogout),
     ]);
 }
