@@ -3,6 +3,8 @@ const db = require('./models/index');
 const userAPIRouter = require('./routes/user');
 const morgan = require('morgan');
 const cors = require('cors');
+// const cookieParser = require('cookie-parser');
+const expressSession = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./passport/index');
 
@@ -13,10 +15,28 @@ db.sequelize.sync();
 passportConfig();
 
 app.use(morgan('dev'));
-app.use(cors());
+app.use(cors({
+    origin: true,
+    credentials: true,
+}));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// app.use(cookieParser('cookie'));
+app.use(expressSession({
+    resave: false,
+    saveUninitialized: false,
+
+    secret: 'cookie',
+    cookie: {
+        httpOnly: true,
+        secure: false,
+    },
+    name: 'cookieName',
+
+}));
 
 app.use(passport.initialize());
 // app.use(passport.session());

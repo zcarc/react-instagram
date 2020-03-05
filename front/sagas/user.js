@@ -21,7 +21,7 @@ function signUpAPI(data) {
     // };
 
     // axios retuns a promise
-    return axios.post('/user', data);
+    return axios.post('/user/', data);
 }
 
 function* signUp(action) {
@@ -51,7 +51,11 @@ function* watchSignUp() {
 }
 
 function loginAPI(data) {
-    return axios.post('/user/login', data);
+    return axios.post('/user/login', data,{
+        withCredentials: true,
+    });
+
+    // return axios.post('/user/login', data);
 }
 
 function* login(action) {
