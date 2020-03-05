@@ -9,6 +9,8 @@ import {
 } from "../reducers/user";
 import axios from 'axios';
 
+axios.defaults.baseURL = 'http://localhost:8080/api/';
+
 function signUpAPI(data) {
 
     // const data2 = {
@@ -18,8 +20,8 @@ function signUpAPI(data) {
     //     }
     // };
 
-    return axios.post('http://localhost:8080/api/user/', data);
-
+    // axios retuns a promise
+    return axios.post('/user', data);
 }
 
 function* signUp(action) {
@@ -27,7 +29,8 @@ function* signUp(action) {
     // console.log('sagas/user... action: ', action);
 
     try {
-        yield call(signUpAPI, action.data);
+        const result = yield call(signUpAPI, action.data);
+        console.log('result: ', result);
         yield delay(1000);
         yield put({
             type: SIGN_UP_SUCCESS,
@@ -47,14 +50,14 @@ function* watchSignUp() {
     yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-function loginAPI() {
-
+function loginAPI(data) {
+    return axios.post('/user/login', data);
 }
 
-function* login() {
+function* login(action) {
 
     try {
-        yield call(loginAPI);
+        yield call(loginAPI, action.data);
         yield delay(1000);
         yield put({
             type: LOG_IN_SUCCESS,

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models/index');
+const passport = require('passport');
 
 
 router.post('/', async(req, res, next) => {
@@ -30,7 +31,9 @@ router.post('/', async(req, res, next) => {
             userNickname: req.body.userNickname,
         });
 
-        console.log('newUser: ', newUser);
+        // console.log('newUser: ', newUser);
+        console.log('newUser.toJSON(): ', newUser.toJSON());
+
 
         return res.status(200).json(newUser);
 
@@ -38,6 +41,21 @@ router.post('/', async(req, res, next) => {
         console.error(e);
         return next(e);
     }
+
+});
+
+router.post('/login', async (req, res, next) => {
+
+    console.log('routes/user... req: ', req);
+
+
+    passport.authenticate('local', (err, user, info) => {
+
+        console.log('routes/user... passport.authenticate err: ', err);
+        console.log('routes/user... passport.authenticate user: ', user);
+        console.log('routes/user... passport.authenticate info: ', info);
+
+    })(req, res, next);
 
 });
 

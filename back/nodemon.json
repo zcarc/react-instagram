@@ -4,7 +4,8 @@
     "nodemon.json",
     "config",
     "models",
-    "routes"
+    "routes",
+    "passport"
   ],
   "exec": "node index.js",
   "ext": "js json"
