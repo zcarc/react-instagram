@@ -57,14 +57,13 @@ function loginAPI(data) {
 function* login(action) {
 
     try {
-        yield call(loginAPI, action.data);
-        yield delay(1000);
+        const result = yield call(loginAPI, action.data);
+        // console.log('sagas/user... login axios result: ', result); // user data: result.data
+        // console.log('sagas/user... login axios result.data: ', result.data);
+        yield delay(800);
         yield put({
             type: LOG_IN_SUCCESS,
-            data: {
-                id: 'sendId',
-                password: 'sendPassword',
-            },
+            data: result.data,
         });
 
     } catch (e) {

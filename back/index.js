@@ -3,6 +3,7 @@ const db = require('./models/index');
 const userAPIRouter = require('./routes/user');
 const morgan = require('morgan');
 const cors = require('cors');
+const passport = require('passport');
 const passportConfig = require('./passport/index');
 
 const app = express();
@@ -17,11 +18,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(passport.initialize());
+app.use(passport.initialize());
 // app.use(passport.session());
 
 app.get('/', (req, res) => {
     console.log('back/index... req.user: ', req.user);
+    console.log('back/index... req.session: ', req.session);
     res.send('hello server');
 });
 

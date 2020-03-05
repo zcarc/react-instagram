@@ -5,6 +5,13 @@ const bcrypt = require('bcrypt');
 
 module.exports = () => {
 
+    passport.serializeUser( (user, done) => {
+       console.log('serializeUser()... user: ', user);
+        console.log('serializeUser()... user.id: ', user.id);
+
+       return done(null, user.id);
+    });
+
     passport.use(new LocalStrategy({
         usernameField: 'userId',
         passwordField: 'userPassword',
@@ -13,6 +20,8 @@ module.exports = () => {
         console.log('LocalStrategy userPassword: ', userPassword);
 
         try {
+
+            // throw new Error('에러');
 
             // if not exists
             const user =  await db.User.findOne({
@@ -37,8 +46,6 @@ module.exports = () => {
 
             console.log('비밀번호가 다릅니다.');
             return done(null, false,  { reason: '비밀번호가 다릅니다.' });
-
-            // done(null, { userId, userPassword });
 
         }catch (e) {
             console.error(e);

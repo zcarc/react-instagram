@@ -57,6 +57,41 @@ router.post('/login', async (req, res, next) => {
         console.log('routes/user... passport.authenticate user: ', user); // false
         console.log('routes/user... passport.authenticate info: ', info); // undefined
 
+        // console.log('routes/user... passport.authenticate req.user: ', req.user);
+        // console.log('routes/user... passport.authenticate req.session: ', req.session);
+
+        if(err){
+            console.error(err);
+            return next(err);
+        }
+
+        if(info) {
+            return res.status(401).send(info.reason);
+        }
+
+
+        return req.login(user, (loginError) => {
+
+            console.log('req.login()... user: ', user);
+            console.log('req.login()... req.user: ', req.user); // db object
+            console.log('req.login()... req.session: ', req.session); // { passport: { user: 1 } }
+
+
+            if(loginError) {
+                console.error(loginError);
+                next(loginError);
+            }
+
+            const filteredUser = Object.assign({}, user.toJSON());
+            delete filteredUser.userPassword;
+            // console.log('deleted userPassword filteredUser: ', filteredUser);
+
+            return res.json(filteredUser);
+
+        });
+
+
+
     })(req, res, next);
 
 });
