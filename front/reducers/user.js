@@ -58,15 +58,13 @@ export default (state = initialState, action) => {
         case LOG_OUT_REQUEST: {
             return {
                 ...state,
-                isLoggedIn: false,
-                userData: null,
             }
         }
 
         case LOG_OUT_SUCCESS: {
             return {
                 ...state,
-                isLoggedIn: true,
+                isLoggedIn: false,
                 userData: null,
             }
         }

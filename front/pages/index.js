@@ -1,10 +1,8 @@
 import Link from 'next/link';
 import ContentLayout from "../components/ContentLayout";
 import React, {useEffect} from "react";
-import {useDispatch, useSelector, useStore} from "react-redux";
+import {useDispatch, useStore} from "react-redux";
 import {WRITE_REDIRECTION} from "../reducers/post";
-import Router from 'next/router';
-import {LOAD_USER_REQUEST} from "../reducers/user";
 
 const Home = () => {
 
@@ -12,24 +10,8 @@ const Home = () => {
     const store = useStore();
     const isPostAdded = store.getState().post.isPostAdded;
     const isLoggedIn = store.getState().user.isLoggedIn;
-    const {userData} = useSelector(state => state.user);
-
-    console.log('userData: ', userData);
-    console.log('index isPostAdded', isPostAdded);
 
     useEffect(() => {
-
-        console.log('isPostAdded ',isPostAdded);
-
-        if(!userData) {
-
-            console.log('!userData');
-
-            dispatch({
-                type: LOAD_USER_REQUEST,
-            });
-
-        }
 
         if(isPostAdded){
             dispatch({
@@ -40,7 +22,6 @@ const Home = () => {
         // if(!isLoggedIn) {
         //     Router.push('/register');
         // }
-
 
     }, [isPostAdded, isLoggedIn]);
 

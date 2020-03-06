@@ -5,9 +5,21 @@ import {
     RightIcons, Sprite_camera_icon, Sprite_compass_icon, Sprite_heart_icon_outline, Sprite_user_icon_outline
 }
     from './style/header'
+import {useCallback} from 'react';
+import {useDispatch} from "react-redux";
+import {LOG_OUT_REQUEST} from "../reducers/user";
 
 
-const HeaderLayout = () => {
+const HeaderLayout = ({userData}) => {
+
+    const dispatch = useDispatch();
+
+    const onLogout = useCallback(() =>{
+        dispatch({
+            type: LOG_OUT_REQUEST,
+        });
+    }, []);
+
     return (
         <>
             <Header>
@@ -33,7 +45,12 @@ const HeaderLayout = () => {
                         <Sprite_camera_icon/>
                         <Sprite_compass_icon/>
                         <Sprite_heart_icon_outline/>
-                        <Link href="/profile"><a><Sprite_user_icon_outline/></a></Link>
+                        {!userData
+                            ? <Link href="/login"><a><Sprite_user_icon_outline/></a></Link>
+                            : <Link href="/profile"><a><Sprite_user_icon_outline/></a></Link>
+                        }
+                        {userData && <button onClick={onLogout}>로그아웃</button>}
+
                     </RightIcons>
 
                 </Inner>

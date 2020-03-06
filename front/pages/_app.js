@@ -13,32 +13,25 @@ import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 
 
-const withoutAppLayout = [
-    'Register',
-    'Login',
-];
+const Main = ({Component, store}) => {
+    // console.dir(Component);
+    // console.log('Component.name: ', Component.name);
 
-const Main = ({Component, store}) =>
-// console.dir(Component);
-// console.log(Component.name);
-
-
-    (
+    return (
         <>
             <Provider store={store}>
                 <Head>
                     <link rel="stylesheet" href="/style/reset.css"/>
                 </Head>
                 <GlobalStyle/>
-                {withoutAppLayout.includes(Component.name) ? <Component/>
-                    : (
-                        <AppLayout>
-                            <Component/>
-                        </AppLayout>
-                    )}
+                <AppLayout>
+                    <Component pageName={Component.name}/>
+                </AppLayout>
             </Provider>
         </>
     );
+};
+
 Main.propTypes = {
     Component: PropTypes.elementType.isRequired,
     store: PropTypes.object.isRequired,
