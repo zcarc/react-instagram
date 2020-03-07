@@ -40,7 +40,7 @@ const AppLayout = ({children}) => {
                                 {children}
                             </MainContainer>
                         </>
-                    )};
+                    )}
             </Container>
         </>
 

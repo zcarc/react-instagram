@@ -1,4 +1,4 @@
-import {all, fork, takeLatest, put, delay} from 'redux-saga/effects'
+import {all, fork, takeLatest, put, delay, call} from 'redux-saga/effects'
 import {
     ADD_COMMENT_REQUEST,
     ADD_COMMENT_SUCCESS,
@@ -6,6 +6,7 @@ import {
     ADD_POST_REQUEST,
     ADD_POST_SUCCESS
 } from "../reducers/post";
+import axios from 'axios';
 
 function* addComment(action) {
 
@@ -32,9 +33,18 @@ function* watchAddComment() {
     yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
-function* addPost() {
+function addPostAPI(data) {
+    // console.log('addPostAPI data: ', data);
+
+    return axios.post('/post', data, {
+        withCredentials: true,
+    });
+}
+
+function* addPost(action) {
 
     try {
+        yield call(addPostAPI, action.data);
         yield delay(1000);
         yield put({
             type: ADD_POST_SUCCESS,
