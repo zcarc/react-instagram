@@ -4,9 +4,37 @@ import {
     ADD_COMMENT_SUCCESS,
     ADD_POST_FAILURE,
     ADD_POST_REQUEST,
-    ADD_POST_SUCCESS
+    ADD_POST_SUCCESS, LOAD_MAIN_POSTS_FAILURE, LOAD_MAIN_POSTS_REQUEST, LOAD_MAIN_POSTS_SUCCESS
 } from "../reducers/post";
 import axios from 'axios';
+
+function loadMainPostsAPI() {
+
+    return axios.get('/posts');
+}
+
+function* loadMainPosts() {
+
+    try {
+        const loadedPosts = yield call(loadMainPostsAPI);
+        // console.log('loadedPosts: ', loadedPosts);
+        yield put({
+            type: LOAD_MAIN_POSTS_SUCCESS,
+            data: loadedPosts.data,
+        });
+
+    }catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_MAIN_POSTS_FAILURE,
+            error: e,
+        });
+    }
+}
+
+function* watchLoadMainPosts() {
+    yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
+}
 
 function* addComment(action) {
 
@@ -68,6 +96,7 @@ export default function* postSaga () {
     yield all([
         fork(watchAddPost),
         fork(watchAddComment),
+        fork(watchLoadMainPosts),
     ]);
 
 }

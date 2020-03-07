@@ -29,7 +29,7 @@ const CommentLayout = ({post}) => {
                     <CommentContainer>
                         <Comment>
                             <CommentDetail>
-                                <Nickname>{e.User.nickname}</Nickname>
+                                <Nickname>{e.User.userNickname}</Nickname>
                                 <div>{e.content}</div>
                             </CommentDetail>
                         </Comment>

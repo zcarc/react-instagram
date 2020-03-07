@@ -1,32 +1,41 @@
 import {
-    BottomIcons, Comment, CommentContainer, CommentDetail, CommentField, CommentFieldInput,
+    BottomIcons, Comment, CommentContainer, CommentDetail,
     Contents,
     ContentsBox, ImgSection,
     Inner, LeftIcons, Reactions, Nickname,
     ProfileImg, ProfileUser, SpriteBookmarkOutline, SpriteBubbleIcon, SpriteHeartIconOutline,
-    SpriteMoreIcon, SpriteShareIcon, SpriteSmallHeartIconOutline, Timer,
+    SpriteMoreIcon, SpriteShareIcon,
     ToggleBox,
     ToggleBoxLi, LiInput,
-    Top, UploadBtn,
+    Top,
     UserContainer
 } from "./style/content";
-import {useSelector, useStore} from "react-redux";
+import {useEffect} from 'react';
+import {useSelector, useDispatch} from "react-redux";
 import CommentLayout from "./CommentLayout";
+import {LOAD_MAIN_POSTS_REQUEST} from "../reducers/post";
 
 
 const ContentLayout = () => {
     // console.log('dummy:', dummy);
 
     const {mainPosts} = useSelector(state => state.post);
+    const dispatch = useDispatch();
     // const mainPosts = useStore().getState().post.mainPosts;
-    console.log('ContentLayout... mainPosts ', mainPosts);
+    // console.log('ContentLayout... mainPosts ', mainPosts);
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_MAIN_POSTS_REQUEST,
+        });
+    }, []);
 
     return (
         <>
             <Inner>
                 <ContentsBox>
 
-                    {mainPosts.map((v) => {
+                    {mainPosts && mainPosts.map((v) => {
                         return (
                             <Contents>
                                 <Top>
@@ -35,7 +44,7 @@ const ContentLayout = () => {
                                             <img src="/img/profile_photo.jpg" alt="프로필이미지"/>
                                         </ProfileImg>
                                         <ProfileUser>
-                                            <div>{v.User.nickname}</div>
+                                            <div>{v.User.userNickname}</div>
                                         </ProfileUser>
 
                                         <div>
@@ -88,7 +97,7 @@ const ContentLayout = () => {
                                 <CommentContainer>
                                     <Comment>
                                         <CommentDetail>
-                                            <Nickname>{v.User.nickname}</Nickname>
+                                            <Nickname>{v.User.userNickname}</Nickname>
                                             {/* desc */}
                                             <div>
                                                 {v.content}
