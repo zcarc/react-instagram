@@ -13,9 +13,10 @@ import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 
 
-const Main = ({Component, store}) => {
+const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
     // console.log('Component.name: ', Component.name);
+    // console.log('Main... pageProps: ', pageProps);
 
     return (
         <>
@@ -25,7 +26,7 @@ const Main = ({Component, store}) => {
                 </Head>
                 <GlobalStyle/>
                 <AppLayout>
-                    <Component pageName={Component.name}/>
+                    <Component {...pageProps} pageName={Component.name} />
                 </AppLayout>
             </Provider>
         </>
@@ -35,12 +36,30 @@ const Main = ({Component, store}) => {
 Main.propTypes = {
     Component: PropTypes.elementType.isRequired,
     store: PropTypes.object.isRequired,
+    pageProps: PropTypes.object.isRequired,
+};
+
+Main.getInitialProps = async (context) => {
+    // console.log('_app... context: ', context);
+    // console.log('_app... context.ctx: ', context.ctx);
+    // console.log('_app... context.Component: ', context.Component);
+    // console.log('_app... JSON.stringify(context.Component): ', JSON.stringify(context.Component));
+
+    // const { Component, ctx } = context;
+
+    let pageProps = null;
+
+    if(context.Component.getInitialProps) {
+        pageProps = await context.Component.getInitialProps(context.ctx);
+        // console.log('_app.js pageProps: ', pageProps);
+    }
+    return { pageProps };
 };
 
 // eslint-disable-next-line no-unused-vars
 export default withRedux((initialState, options) => {
     // eslint-disable-next-line no-console
-    console.log('withRedux()...');
+    // console.log('withRedux()...');
 
     const sagaMiddleware = createSagaMiddleware();
     const middleware = [sagaMiddleware];
