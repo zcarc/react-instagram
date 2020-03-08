@@ -14,6 +14,7 @@ import {useEffect} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import CommentLayout from "./CommentLayout";
 import {LOAD_MAIN_POSTS_REQUEST} from "../reducers/post";
+import Link from "next/link";
 
 
 const ContentLayout = () => {
@@ -98,9 +99,25 @@ const ContentLayout = () => {
                                     <Comment>
                                         <CommentDetail>
                                             <Nickname>{v.User.userNickname}</Nickname>
+
                                             {/* desc */}
                                             <div>
-                                                {v.content}
+                                                {/*{v.content.split(/#[^\s#]+/g).map((w) => {*/}
+                                                {/*    console.log('v.content: ', v.content);*/}
+                                                {/*    console.log('w: ', w);*/}
+                                                {/*    if(w.match(/#[^\s#]+/)) {*/}
+                                                {/*        return (*/}
+                                                {/*          <Link href="#" key={w}><a>{w}</a></Link>*/}
+                                                {/*        );*/}
+                                                {/*    }*/}
+                                                {/*    return w;*/}
+                                                {/*})}*/}
+                                                {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
+                                                    if(s.match(/#[^s#]+/)){
+                                                        return <Link href="#" key={s}><a>{s}</a></Link>;
+                                                    }
+                                                    return <span>{s}</span>;
+                                                })}
                                             </div>
                                         </CommentDetail>
                                     </Comment>

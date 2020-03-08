@@ -152,6 +152,7 @@ export const CommentContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
+    white-space: pre;
 `;
 
 export const Comment = styled.div`
