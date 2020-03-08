@@ -1,7 +1,10 @@
-{
+const dotenv = require('dotenv');
+dotenv.config();
+
+module.exports = {
   "development": {
     "username": "react_user",
-    "password": "1234",
+    "password": process.env.DB_password,
     "database": "react",
     "host": "127.0.0.1",
     "dialect": "mysql",
