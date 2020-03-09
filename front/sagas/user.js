@@ -5,9 +5,45 @@ import {
     LOG_IN_SUCCESS,
     SIGN_UP_REQUEST,
     SIGN_UP_SUCCESS,
-    SIGN_UP_FAILURE, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, LOG_OUT_SUCCESS, LOG_OUT_REQUEST
+    SIGN_UP_FAILURE,
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAILURE,
+    LOG_OUT_SUCCESS,
+    LOG_OUT_REQUEST,
+    USER_EXISTS_REQUEST, USER_EXISTS_SUCCESS, USER_EXISTS_FAILURE
 } from "../reducers/user";
 import axios from 'axios';
+
+function userExistsAPI() {
+
+    return axios.get('/user/', {
+        withCredentials: true,
+    });
+}
+
+function* userExists() {
+
+    try {
+        const result = yield call(userExistsAPI);
+        yield put({
+            type: USER_EXISTS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: USER_EXISTS_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchUserExists() {
+    yield takeLatest(USER_EXISTS_REQUEST, userExists);
+}
 
 
 
@@ -38,22 +74,25 @@ function* watchLogout() {
 }
 
 
-function loadUserAPI() {
+function loadUserAPI(data) {
 
-    return axios.get('/user/', {
+    console.log('loadUserAPI data: ', data);
+
+    return axios.get(`/user/${data || 0}/`, {
         withCredentials: true,
     });
 }
 
-function* loadUser() {
+function* loadUser(action) {
 
     try {
-        const result = yield call(loadUserAPI);
+        const result = yield call(loadUserAPI, action.data);
         console.log('loadUser... result: ', result);
         // yield delay(800);
         yield put({
             type: LOAD_USER_SUCCESS,
             data: result.data,
+            me: !action.data,
         });
 
     } catch (e) {
@@ -144,6 +183,7 @@ function* watchLogin() {
 
 export default function* userSaga() {
     yield all([
+        fork(watchUserExists),
         fork(watchLogin),
         fork(watchSignUp),
         fork(watchLoadUser),

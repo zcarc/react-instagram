@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 
 
-const HeaderLayout = ({userData}) => {
+const HeaderLayout = ({isLoggedIn}) => {
 
     const dispatch = useDispatch();
 
@@ -45,11 +45,11 @@ const HeaderLayout = ({userData}) => {
                         <Sprite_camera_icon/>
                         <Sprite_compass_icon/>
                         <Sprite_heart_icon_outline/>
-                        {!userData
+                        {!isLoggedIn
                             ? <Link href="/login"><a><Sprite_user_icon_outline/></a></Link>
                             : <Link href="/profile"><a><Sprite_user_icon_outline/></a></Link>
                         }
-                        {userData && <button onClick={onLogout}>로그아웃</button>}
+                        {isLoggedIn && <button onClick={onLogout}>로그아웃</button>}
 
                     </RightIcons>
 

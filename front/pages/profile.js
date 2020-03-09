@@ -1,16 +1,13 @@
 import ProfileLayout from "../components/ProfileLayout";
 
-const dummy = {
-    nickname: 'insta',
-    post: [],
-    follower: [],
-    following: [],
+const Profile = ( {id} ) => {
+    return (
+        <ProfileLayout id={id}/>
+    );
 };
 
-const Profile = () => {
-    return (
-        <ProfileLayout/>
-    );
+Profile.getInitialProps = (context) => {
+    return { id: parseInt(context.query.id) };
 };
 
 export default Profile;

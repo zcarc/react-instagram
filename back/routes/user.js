@@ -19,6 +19,46 @@ router.get('/', (req, res) => {
     return res.json(user);
 });
 
+// load user info
+router.get('/:id', async (req, res, next) => {
+
+    if(!req.user) {
+        return res.status(401).send('로그인이 필요합니다.');
+    }
+
+    // const test = req.params.id || req.user.id;
+    // console.log('routes/user... load user info... req.user: ', req.user);
+    // console.log('routes/user... load user info... req.params: ', req.params);
+    // console.log('routes/user... load user info... test: ', test);
+
+
+    try {
+
+        const anUserInfo = await db.User.findOne({
+            where: {
+                id: parseInt(req.params.id) || parseInt(req.user.id),
+            },
+            include: [{
+                model: db.Post,
+                attributes: ['id'],
+            }],
+            attributes: ['id', 'userNickname'],
+        });
+
+        console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
+
+        const jsonAnUserInfo = anUserInfo.toJSON();
+        jsonAnUserInfo.Posts =  jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
+
+        res.json(jsonAnUserInfo);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+
+});
+
 // load specific user posts
 router.get('/:id/posts', async (req, res, next) => {
 

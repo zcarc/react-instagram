@@ -11,21 +11,17 @@ import {
 } from "./style/profile";
 import Link from "next/link";
 import {useSelector, useDispatch} from "react-redux";
+import {LOAD_USER_REQUEST} from "../reducers/user";
 
-const ProfileLayout = () => {
+const ProfileLayout = ( {id} ) => {
 
-    const {user} = useSelector(state => state.user);
+    const {userData} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch({
-            type: 'LOG_IN',
-            data: {
-                nickname: 'profile01',
-                Post: [],
-                Followings: [],
-                Followers: [],
-            },
+            type: LOAD_USER_REQUEST,
+            data: id,
         });
     }, []);
 
@@ -39,21 +35,21 @@ const ProfileLayout = () => {
                 </InnerTopLeft>
                 <div>
                     <FirstRow>
-                        <UserName>{user && user.nickname}</UserName>
+                        <UserName>{userData && userData.userNickname}</UserName>
                         <a href="#">로그아웃</a>
                     </FirstRow>
                     <SecondRow>
                         <li>
                             <span>게시물</span>
-                            <span> {user.Post && user.Post.length}</span>
+                            <span> {userData && userData.Posts}</span>
                         </li>
                         <li>
                             <span><Link href="/followers"><a>팔로워</a></Link></span>
-                            <span> {user.Followers && user.Followers.length}</span>
+                            <span> {1}</span>
                         </li>
                         <li>
                             <span><Link href="/following"><a>팔로잉</a></Link></span>
-                            <span> {user.Followings && user.Followings.length}</span>
+                            <span> {1}</span>
                         </li>
                     </SecondRow>
                     <ThirdRow>

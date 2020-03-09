@@ -1,11 +1,16 @@
 const initialState = {
     isLoggedIn: false,
     isLoggingIn: false,
-    userData: null,
     isSignedUp: false,
     isSigningUp: false,
     signUpError: '',
+    me: false,
+    userData: null,
 };
+
+export const USER_EXISTS_REQUEST = 'USER_EXISTS_REQUEST';
+export const USER_EXISTS_SUCCESS = 'USER_EXISTS_SUCCESS';
+export const USER_EXISTS_FAILURE = 'USER_EXISTS_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -31,6 +36,27 @@ export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 export default (state = initialState, action) => {
 
     switch (action.type) {
+
+        case USER_EXISTS_REQUEST: {
+            return {
+                ...state,
+                isLoggedIn: false,
+            }
+        }
+
+        case USER_EXISTS_SUCCESS: {
+            return {
+                ...state,
+                isLoggedIn: !!action.data,
+            }
+        }
+
+        case USER_EXISTS_FAILURE: {
+            return {
+                ...state,
+                isLoggingIn: false,
+            }
+        }
 
         case LOG_IN_REQUEST: {
             return {
@@ -95,7 +121,6 @@ export default (state = initialState, action) => {
         case LOAD_USER_REQUEST: {
             return {
                 ...state,
-                isLoggedIn: false,
             };
         }
 
@@ -104,7 +129,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 userData: action.data,
-                isLoggedIn: true,
+                me: action.me,
             };
 
         }
@@ -112,7 +137,6 @@ export default (state = initialState, action) => {
         case LOAD_USER_FAILURE: {
             return {
                 ...state,
-                isLoggedIn: false,
             };
         }
 

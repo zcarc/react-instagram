@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import HeaderLayout from './HeaderLayout';
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {LOAD_USER_REQUEST} from "../reducers/user";
+import {USER_EXISTS_REQUEST} from "../reducers/user";
 
 
 const withoutAppLayout = [
@@ -14,13 +14,13 @@ const withoutAppLayout = [
 
 const AppLayout = ({children}) => {
 
-    const {userData} = useSelector(state => state.user);
+    const {isLoggedIn} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!userData) {
+        if (!isLoggedIn) {
             dispatch({
-                type: LOAD_USER_REQUEST,
+                type: USER_EXISTS_REQUEST,
             });
         }
     }, []);
@@ -35,7 +35,7 @@ const AppLayout = ({children}) => {
                 {withoutAppLayout.includes(children.props.pageName) ? <>{children}</>
                     : (
                         <>
-                            <HeaderLayout userData={userData}/>
+                            <HeaderLayout isLoggedIn={isLoggedIn}/>
                             <MainContainer>
                                 {children}
                             </MainContainer>
