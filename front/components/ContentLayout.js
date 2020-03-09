@@ -28,11 +28,11 @@ const ContentLayout = ({ mainPosts }) => {
                                 <Top>
                                     <UserContainer>
                                         <ProfileImg>
-                                            <Link href={`/profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg" alt="프로필이미지"/></a></Link>
+                                            <Link href={ {pathname: '/profile', query: { id: v.UserId }} } as={`profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg" alt="프로필이미지"/></a></Link>
                                         </ProfileImg>
                                         <ProfileUser>
                                             <div>
-                                                <Link href={`/user/${v.User.id}`}><a style={{color: 'black'}}>{v.User.userNickname}</a></Link>
+                                                <Link href={ {pathname: '/user', query: { id: v.User.id }} } as={`/user/${v.User.id}`}><a style={{color: 'black'}}>{v.User.userNickname}</a></Link>
                                             </div>
                                         </ProfileUser>
 
@@ -102,7 +102,7 @@ const ContentLayout = ({ mainPosts }) => {
                                                 {/*})}*/}
                                                 {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
                                                     if(s.match(/#[^s#]+/)){
-                                                        return <Link href={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
+                                                        return <Link href={ {pathname: '/hashtag', query: { tag: s.slice(1) }} } as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
                                                     }
                                                     return <span>{s}</span>;
                                                 })}
