@@ -3,13 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const passport = require('passport');
+const { isLoggedIn } = require('./middleware');
 
 // load user session
-router.get('/', (req, res) => {
-
-    if (!req.user) {
-        return res.status(401).send('로그인이 필요합니다.');
-    }
+router.get('/', isLoggedIn, (req, res) => {
 
     const user = Object.assign({}, req.user.toJSON());
     delete user.userPassword;
@@ -20,11 +17,7 @@ router.get('/', (req, res) => {
 });
 
 // load user info
-router.get('/:id', async (req, res, next) => {
-
-    if(!req.user) {
-        return res.status(401).send('로그인이 필요합니다.');
-    }
+router.get('/:id', isLoggedIn, async (req, res, next) => {
 
     // const test = req.params.id || req.user.id;
     // console.log('routes/user... load user info... req.user: ', req.user);

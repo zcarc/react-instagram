@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/index');
+const { isLoggedIn } = require('./middleware');
 
 // add post
-router.post('/',async (req, res, next) => {
+router.post('/', isLoggedIn, async (req, res, next) => {
 
     console.log('routes/post... /post... req.body: ', req.body);
     console.log('routes/post... /post... req.user.toJSON(): ', req.user && req.user.toJSON());
@@ -89,13 +90,9 @@ router.post('/',async (req, res, next) => {
 });
 
 // add comment
-router.post('/:id/comment',async (req, res, next) => {
+router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
 
     console.log('comment req.body: ', req.body);
-
-    if(!req.user) {
-        return res.status(401).send('로그인이 필요합니다.');
-    }
 
     try {
 
