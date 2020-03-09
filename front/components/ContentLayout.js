@@ -28,7 +28,7 @@ const ContentLayout = ({ mainPosts }) => {
                                 <Top>
                                     <UserContainer>
                                         <ProfileImg>
-                                            <img src="/img/profile_photo.jpg" alt="프로필이미지"/>
+                                            <Link href={`/profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg" alt="프로필이미지"/></a></Link>
                                         </ProfileImg>
                                         <ProfileUser>
                                             <div>
