@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
         const posts = await db.Post.findAll({
             include: [{
                 model: db.User,
-                attributes: ['userNickname'],
+                attributes: ['id','userNickname'],
             }],
         });
         // console.log('posts: ', posts);

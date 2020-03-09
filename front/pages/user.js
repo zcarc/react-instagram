@@ -1,8 +1,28 @@
 import PropTypes from "prop-types";
+import {useDispatch, useSelector} from "react-redux";
+import React, {useEffect} from "react";
+import {LOAD_USER_POSTS_REQUEST} from "../reducers/post";
+import ContentLayout from "../components/ContentLayout";
 
 const User = ( { id } ) => {
-    // console.log('User... id: ', id);
-    return <div>123 , {id} </div>;
+
+    const dispatch = useDispatch();
+
+    const { mainPosts } = useSelector(state => state.post);
+
+    useEffect(() => {
+        dispatch({
+            type: LOAD_USER_POSTS_REQUEST,
+            data: id,
+        });
+    }, []);
+
+    return (
+        <>
+            <ContentLayout mainPosts={mainPosts}/>
+        </>
+    );
+
 };
 
 User.propTypes = {

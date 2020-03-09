@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const passport = require('passport');
 
-// load user
+// load user session
 router.get('/', (req, res) => {
 
     if (!req.user) {
@@ -17,6 +17,31 @@ router.get('/', (req, res) => {
     console.log('routes/user... LOAD_USER_REQUEST... user: ', user);
 
     return res.json(user);
+});
+
+// load specific user posts
+router.get('/:id/posts', async (req, res, next) => {
+
+    try {
+        const userPosts = await db.Post.findAll({
+            where: {
+                UserId: req.params.id,
+            },
+            include: [{
+                model: db.User,
+                attributes: ['id', 'userNickname'],
+            }],
+        });
+
+        // console.log('JSON.stringify(userPosts): ', JSON.stringify(userPosts));
+
+        res.json(userPosts);
+
+    }catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
 });
 
 // register

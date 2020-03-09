@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import ContentLayout from "../components/ContentLayout";
 import React, {useEffect} from "react";
-import {useDispatch, useStore} from "react-redux";
-import {WRITE_REDIRECTION} from "../reducers/post";
+import {useDispatch, useSelector, useStore} from "react-redux";
+import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
 
 const Home = () => {
 
@@ -11,7 +11,16 @@ const Home = () => {
     const isPostAdded = store.getState().post.isPostAdded;
     const isLoggedIn = store.getState().user.isLoggedIn;
 
+    const {mainPosts} = useSelector(state => state.post);
+    // const mainPosts = useStore().getState().post.mainPosts;
+    // console.log('ContentLayout... mainPosts ', mainPosts);
+
+
     useEffect(() => {
+
+        dispatch({
+            type: LOAD_MAIN_POSTS_REQUEST,
+        });
 
         if(isPostAdded){
             dispatch({
@@ -36,7 +45,7 @@ const Home = () => {
                 <Link href="/followers"><a>팔로워</a></Link>
                 <Link href="/write"><a>글쓰기</a></Link>
             </div>
-            <ContentLayout/>
+            <ContentLayout mainPosts={mainPosts}/>
         </>
     );
 };

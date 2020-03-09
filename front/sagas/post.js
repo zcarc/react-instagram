@@ -4,9 +4,69 @@ import {
     ADD_COMMENT_SUCCESS,
     ADD_POST_FAILURE,
     ADD_POST_REQUEST,
-    ADD_POST_SUCCESS, LOAD_MAIN_POSTS_FAILURE, LOAD_MAIN_POSTS_REQUEST, LOAD_MAIN_POSTS_SUCCESS
+    ADD_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
+    LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
+    LOAD_MAIN_POSTS_FAILURE,
+    LOAD_MAIN_POSTS_REQUEST,
+    LOAD_MAIN_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS
 } from "../reducers/post";
 import axios from 'axios';
+
+function loadUserPostsAPI(data) {
+
+    return axios.get(`/user/${data}/posts`);
+}
+
+function* loadUserPosts(action) {
+
+    try {
+        const loadedUserPosts = yield call(loadUserPostsAPI, action.data);
+        // console.log('loadedPosts: ', loadedPosts);
+        yield put({
+            type: LOAD_USER_POSTS_SUCCESS,
+            data: loadedUserPosts.data,
+        });
+
+    }catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_USER_POSTS_FAILURE,
+            error: e,
+        });
+    }
+}
+
+function* watchLoadUserPosts() {
+    yield takeLatest(LOAD_USER_POSTS_REQUEST, loadUserPosts);
+}
+
+function loadHashtagPostsAPI(data) {
+
+    return axios.get(`/hashtag/${data}`);
+}
+
+function* loadHashtagPosts(action) {
+
+    try {
+        const loadedHashtagPosts = yield call(loadHashtagPostsAPI, action.data);
+        // console.log('loadedPosts: ', loadedPosts);
+        yield put({
+            type: LOAD_HASHTAG_POSTS_SUCCESS,
+            data: loadedHashtagPosts.data,
+        });
+
+    }catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_HASHTAG_POSTS_FAILURE,
+            error: e,
+        });
+    }
+}
+
+function* watchLoadHashtagPosts() {
+    yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+}
 
 function loadMainPostsAPI() {
 
@@ -97,6 +157,8 @@ export default function* postSaga () {
         fork(watchAddPost),
         fork(watchAddComment),
         fork(watchLoadMainPosts),
+        fork(watchLoadHashtagPosts),
+        fork(watchLoadUserPosts),
     ]);
 
 }

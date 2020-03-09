@@ -10,26 +10,12 @@ import {
     Top,
     UserContainer
 } from "./style/content";
-import {useEffect} from 'react';
-import {useSelector, useDispatch} from "react-redux";
 import CommentLayout from "./CommentLayout";
-import {LOAD_MAIN_POSTS_REQUEST} from "../reducers/post";
 import Link from "next/link";
 
 
-const ContentLayout = () => {
+const ContentLayout = ({ mainPosts }) => {
     // console.log('dummy:', dummy);
-
-    const {mainPosts} = useSelector(state => state.post);
-    const dispatch = useDispatch();
-    // const mainPosts = useStore().getState().post.mainPosts;
-    // console.log('ContentLayout... mainPosts ', mainPosts);
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_MAIN_POSTS_REQUEST,
-        });
-    }, []);
 
     return (
         <>
@@ -45,7 +31,9 @@ const ContentLayout = () => {
                                             <img src="/img/profile_photo.jpg" alt="프로필이미지"/>
                                         </ProfileImg>
                                         <ProfileUser>
-                                            <div>{v.User.userNickname}</div>
+                                            <div>
+                                                <Link href={`/user/${v.User.id}`}><a style={{color: 'black'}}>{v.User.userNickname}</a></Link>
+                                            </div>
                                         </ProfileUser>
 
                                         <div>
@@ -114,7 +102,7 @@ const ContentLayout = () => {
                                                 {/*})}*/}
                                                 {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
                                                     if(s.match(/#[^s#]+/)){
-                                                        return <Link href="#" key={s}><a>{s}</a></Link>;
+                                                        return <Link href={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
                                                     }
                                                     return <span>{s}</span>;
                                                 })}
