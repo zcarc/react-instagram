@@ -9,7 +9,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const store = useStore();
     const isPostAdded = store.getState().post.isPostAdded;
-    const isLoggedIn = store.getState().user.isLoggedIn;
+    // const isLoggedIn = store.getState().user.isLoggedIn;
 
     const {mainPosts} = useSelector(state => state.post);
     // const mainPosts = useStore().getState().post.mainPosts;
@@ -32,7 +32,7 @@ const Home = () => {
         //     Router.push('/register');
         // }
 
-    }, [isPostAdded, isLoggedIn]);
+    }, [isPostAdded]);
 
     return (
         <>

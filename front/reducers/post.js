@@ -74,6 +74,11 @@ export const LOAD_USER_POSTS_REQUEST = 'LOAD_USER_POSTS_REQUEST';
 export const LOAD_USER_POSTS_SUCCESS = 'LOAD_USER_POSTS_SUCCESS';
 export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
 
+export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST';
+export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
+export const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE';
+
+
 
 export default (state = initialState, action) => {
 
@@ -109,25 +114,22 @@ export default (state = initialState, action) => {
         case ADD_COMMENT_REQUEST: {
             return {
                 ...state,
-                isAddingPost: true,
-                isPostAdded: false,
             }
         }
 
         case ADD_COMMENT_SUCCESS: {
 
-            // console.log('reducers/post... ADD_COMMENT_SUCCESS... action.data.postId:', action.data.postId);
+            console.log('reducers/post... ADD_COMMENT_SUCCESS... action.data.postId:', action.data);
 
             const index =  state.mainPosts.findIndex(e => e.id === action.data.postId);
             const post = state.mainPosts[index];
-            const comments = [...post.comments, dummyComment];
+            console.log('reducers/post... ADD_COMMENT_SUCCESS... post:', post);
+            const comments = [...post.comments, action.data.comment];
             const mainPosts = [...state.mainPosts];
             mainPosts[index] = {...post, comments};
 
             return {
                 ...state,
-                isAddingComment: false,
-                isPostAdded: true,
                 mainPosts,
             }
         }
@@ -135,9 +137,19 @@ export default (state = initialState, action) => {
         case ADD_COMMENT_FAILURE: {
             return {
                 ...state,
-                isAddingComment: false,
-                isPostAdded: false,
             }
+        }
+
+        case LOAD_COMMENTS_SUCCESS: {
+            const postIndex = state.mainPosts.findIndex(v => v.id === action.data.postId);
+            const post = state.mainPosts[postIndex];
+            const comments = action.data.comments;
+            const mainPosts = [...state.mainPosts];
+            mainPosts[postIndex] = { ...post, comments };
+            return {
+                ...state,
+                mainPosts,
+            };
         }
 
         case LOAD_MAIN_POSTS_REQUEST:

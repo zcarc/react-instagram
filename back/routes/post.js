@@ -36,7 +36,7 @@ router.post('/',async (req, res, next) => {
             // console.log('resultMap: ', resultMap);
 
             // returns an array that has objects.
-            const resultNM = await newPost.addHashtags( result.map(hashTagRow => hashTagRow[0]) );
+            const resultNM = await newPost.addHashtag( result.map(hashTagRow => hashTagRow[0]) );
             // console.log('resultNM: ', resultNM);
 
             // hashTags.map((tag) => {
@@ -86,6 +86,97 @@ router.post('/',async (req, res, next) => {
         next(e);
     }
 
+});
+
+// add comment
+router.post('/:id/comment',async (req, res, next) => {
+
+    console.log('comment req.body: ', req.body);
+
+    if(!req.user) {
+        return res.status(401).send('로그인이 필요합니다.');
+    }
+
+    try {
+
+        const post = await db.Post.findOne({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        if(!post) {
+            return res.status(401).send('해당 게시글은 존재하지 않습니다.');
+        }
+
+        const newComment = await db.Comment.create({
+            PostId: post.id,
+            UserId: req.user.id,
+            content: req.body.content,
+        });
+
+        console.log('newComment.toJSON(): ', newComment.toJSON());
+
+        // await post.addComment(newComment.id);
+
+        const commentIncludingUser = await db.Comment.findOne({
+            where: {
+                id: newComment.id,
+            },
+            include: [{
+                model: db.User,
+                attributes: ['id', 'userNickname'],
+            }],
+        });
+
+        console.log('commentIncludingUser.toJSON(): ', commentIncludingUser.toJSON());
+
+        res.json(commentIncludingUser);
+
+
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+
+});
+
+// load comments
+router.get('/:id/comments', async (req, res, next) => {
+    try {
+
+        console.log('comments req.params.id: ', req.params.id);
+
+        const post = await db.Post.findOne({ where: { id: req.params.id } });
+
+        if (!post) {
+            return res.status(401).send('해당 게시글은 존재하지 않습니다.');
+
+        }
+
+        const comments = await db.Comment.findAll({
+
+            where: {
+                PostId: req.params.id,
+            },
+
+            include: [{
+                model: db.User,
+                attributes: ['id', 'userNickname'],
+            }],
+
+            order: [['createdAt', 'ASC']],
+        });
+
+        console.log('comments: ', comments);
+
+        res.json(comments);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
 });
 
 module.exports = router;

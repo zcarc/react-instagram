@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Post = sequelize.define('Post', {
+    const Comment = sequelize.define('Comment', {
         content: {
             type: DataTypes.TEXT,
             allowNull: false,
@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8mb4_general_ci',
     });
 
-    Post.associate = (db) => {
-        db.Post.belongsTo(db.User);
-
-        db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag'});
-        db.Post.hasMany(db.Comment);
+    Comment.associate = (db) => {
+        db.Comment.belongsTo(db.User);
+        db.Comment.belongsTo(db.Post);
     };
 
 
-    return Post;
+
+
+    return Comment;
 };

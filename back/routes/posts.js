@@ -17,6 +17,7 @@ router.get('/', async (req, res, next) => {
                 model: db.User,
                 attributes: ['id','userNickname'],
             }],
+            order: [['createdAt', 'DESC']],
         });
         // console.log('posts: ', posts);
         console.log('JSON.stringify(posts): ', JSON.stringify(posts));
