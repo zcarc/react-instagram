@@ -12,6 +12,7 @@ import {
 } from "./style/content";
 import CommentLayout from "./CommentLayout";
 import Link from "next/link";
+import PostImageLayout from "./PostImageLayout";
 
 
 const ContentLayout = ({ mainPosts }) => {
@@ -55,7 +56,10 @@ const ContentLayout = ({ mainPosts }) => {
 
                                 <ImgSection>
                                     <div>
-                                        <img src={v.img ? v.img : "/img/post_photo_01.jpg"} alt="post_img"/>
+                                        {/*<img src="/img/post_photo_01.jpg" alt="post_img"/>*/}
+                                        {v.Images && v.Images[0] ? <PostImageLayout images={v.Images}/>
+                                                     : <img src="/img/post_photo_01.jpg" alt="post_img"/>}
+
                                     </div>
                                 </ImgSection>
 

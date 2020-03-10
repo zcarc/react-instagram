@@ -11,7 +11,7 @@ import reducer from '../reducers/index';
 import {GlobalStyle} from '../components/style/header';
 import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
-
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);

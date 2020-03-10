@@ -27,7 +27,7 @@ const WriteLayout = () => {
 
         const newForm = new FormData();
 
-        imageNames.map((image) => {
+        imageNames && imageNames.forEach((image) => {
             newForm.append('image', image);
         });
 
