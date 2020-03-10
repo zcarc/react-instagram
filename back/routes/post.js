@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const router = express.Router();
 const db = require('../models/index');
 const { isLoggedIn } = require('./middleware');
@@ -174,6 +176,35 @@ router.get('/:id/comments', async (req, res, next) => {
         console.error(e);
         next(e);
     }
+});
+
+const upload = multer({
+    storage: multer.diskStorage({
+
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname);
+            const basename = path.basename(file.originalname, ext);
+
+            // console.log('ext: ', ext);
+            // console.log('basename: ', basename);
+
+            done(null, basename + new Date().valueOf() + ext);
+        },
+    }),
+
+    limits: {fileSize: 20 * 1024 * 1024},
+
+});
+
+router.post('/images', upload.array('image'), (req, res) => {
+    console.log('images req.body: ', req.body);
+    console.log('images req.files: ', req.files);
+
+    res.json(req.files.map((f) => f.filename));
 });
 
 module.exports = router;

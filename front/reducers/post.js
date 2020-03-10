@@ -5,6 +5,7 @@ const initialState = {
     isAddingComment: false,
     isCommentAdded: false,
     mainPosts: '',
+    imageNames: '',
     // mainPosts: [{
     //     id: 1,
     //     User: {
@@ -77,6 +78,12 @@ export const LOAD_USER_POSTS_FAILURE = 'LOAD_USER_POSTS_FAILURE';
 export const LOAD_COMMENTS_REQUEST = 'LOAD_COMMENTS_REQUEST';
 export const LOAD_COMMENTS_SUCCESS = 'LOAD_COMMENTS_SUCCESS';
 export const LOAD_COMMENTS_FAILURE = 'LOAD_COMMENTS_FAILURE';
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
+
+export const CLOSE_IMAGE = 'CLOSE_IMAGE';
 
 
 
@@ -176,6 +183,38 @@ export default (state = initialState, action) => {
             return {
                 ...state,
             }
+        }
+
+        case UPLOAD_IMAGES_REQUEST: {
+
+            return {
+                ...state,
+            };
+        }
+
+        case UPLOAD_IMAGES_SUCCESS: {
+
+            console.log('UPLOAD_IMAGES_SUCCESS: ', action.data);
+
+            return {
+                ...state,
+                imageNames: [...state.imageNames, ...action.data],
+            };
+        }
+
+        case UPLOAD_IMAGES_FAILURE: {
+
+            return {
+                ...state,
+            };
+        }
+
+        case CLOSE_IMAGE: {
+
+            return {
+                ...state,
+                imageNames: state.imageNames.filter( (v, i) => action.imageIndex !== i ),
+            };
         }
 
         default:

@@ -5,13 +5,53 @@ import {
     ADD_COMMENT_SUCCESS,
     ADD_POST_FAILURE,
     ADD_POST_REQUEST,
-    ADD_POST_SUCCESS, LOAD_COMMENTS_FAILURE, LOAD_COMMENTS_REQUEST, LOAD_COMMENTS_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE,
-    LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS,
+    ADD_POST_SUCCESS,
+    LOAD_COMMENTS_FAILURE,
+    LOAD_COMMENTS_REQUEST,
+    LOAD_COMMENTS_SUCCESS,
+    LOAD_HASHTAG_POSTS_FAILURE,
+    LOAD_HASHTAG_POSTS_REQUEST,
+    LOAD_HASHTAG_POSTS_SUCCESS,
     LOAD_MAIN_POSTS_FAILURE,
     LOAD_MAIN_POSTS_REQUEST,
-    LOAD_MAIN_POSTS_SUCCESS, LOAD_USER_POSTS_FAILURE, LOAD_USER_POSTS_REQUEST, LOAD_USER_POSTS_SUCCESS
+    LOAD_MAIN_POSTS_SUCCESS,
+    LOAD_USER_POSTS_FAILURE,
+    LOAD_USER_POSTS_REQUEST,
+    LOAD_USER_POSTS_SUCCESS, UPLOAD_IMAGES_FAILURE,
+    UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS
 } from "../reducers/post";
 import axios from 'axios';
+
+function uploadImagesAPI(formData) {
+    return axios.post('post/images', formData, {
+        withCredentials: true,
+    });
+}
+
+function* uploadImages(action) {
+    // console.log('uploadImages action: ', action);
+
+    try {
+        const result = yield call(uploadImagesAPI, action.data);
+        console.log('uploadImages result.data: ', result.data);
+        yield put({
+            type: UPLOAD_IMAGES_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: UPLOAD_IMAGES_FAILURE,
+            error: e,
+        });
+    }
+}
+
+function* watchUploadImages() {
+    yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
+}
+
 
 function loadCommentsAPI(data) {
     return axios.get(`/post/${data}/comments`);
@@ -197,6 +237,7 @@ export default function* postSaga () {
         fork(watchLoadHashtagPosts),
         fork(watchLoadUserPosts),
         fork(watchLoadComments),
+        fork(watchUploadImages),
     ]);
 
 }
