@@ -5,15 +5,38 @@ const router = express.Router();
 const db = require('../models/index');
 const { isLoggedIn } = require('./middleware');
 
+const upload = multer({
+    storage: multer.diskStorage({
+
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname);
+            const basename = path.basename(file.originalname, ext);
+
+            // console.log('ext: ', ext);
+            // console.log('basename: ', basename);
+
+            done(null, basename + new Date().valueOf() + ext);
+        },
+    }),
+
+    limits: {fileSize: 20 * 1024 * 1024},
+
+});
+
 // add post
-router.post('/', isLoggedIn, async (req, res, next) => {
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
     console.log('routes/post... /post... req.body: ', req.body);
+    console.log('routes/post... /post... req.body.image: ', req.body.image);
     console.log('routes/post... /post... req.user.toJSON(): ', req.user && req.user.toJSON());
 
     try {
 
-        const content = req.body.postDesc;
+        const content = req.body.desc;
 
         const newPost = await db.Post.create({
             content,
@@ -63,12 +86,34 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
         }
 
+        if(req.body.image) {
+
+            if(Array.isArray(req.body.image)) {
+                const images = await Promise.all(req.body.image.map((image) => {
+                    return db.Image.create({ src: image });
+                }));
+                console.log('#JSON.stringify(images): ', JSON.stringify(images));
+                newPost.addImage(images);
+
+            } else {
+
+                const image = await db.Image.create({ src: req.body.image });
+                console.log('#JSON.stringify(image): ', JSON.stringify(image));
+                newPost.addImage(image);
+
+            }
+
+        }
+
+
 
         // case 1.
         // const user = await db.Post.findOne({
         //     where: { id: newPost.id },
         //     include: [{
         //         model: db.User,
+        //     }, {
+        //         model: db.Image,
         //     }],
         // });
         //
@@ -178,28 +223,7 @@ router.get('/:id/comments', async (req, res, next) => {
     }
 });
 
-const upload = multer({
-    storage: multer.diskStorage({
-
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname);
-            const basename = path.basename(file.originalname, ext);
-
-            // console.log('ext: ', ext);
-            // console.log('basename: ', basename);
-
-            done(null, basename + new Date().valueOf() + ext);
-        },
-    }),
-
-    limits: {fileSize: 20 * 1024 * 1024},
-
-});
-
+// add images using multer
 router.post('/images', upload.array('image'), (req, res) => {
     console.log('images req.body: ', req.body);
     console.log('images req.files: ', req.files);

@@ -106,6 +106,7 @@ export default (state = initialState, action) => {
                 isAddingPost: false,
                 isPostAdded: true,
                 mainPosts: [...dummy.mainPosts, ...state.mainPosts],
+                imageNames: '',
             }
         }
 

@@ -25,11 +25,17 @@ const WriteLayout = () => {
     const onSubmitForm = useCallback((e) => {
         e.preventDefault();
 
+        const newForm = new FormData();
+
+        imageNames.map((image) => {
+            newForm.append('image', image);
+        });
+
+        newForm.append('desc', desc);
+
         dispatch({
             type: ADD_POST_REQUEST,
-            data: {
-                postDesc: desc,
-            },
+            data: newForm,
         });
     }, [desc]);
 

@@ -16,6 +16,8 @@ router.get('/', async (req, res, next) => {
             include: [{
                 model: db.User,
                 attributes: ['id','userNickname'],
+            }, {
+                model: db.Image,
             }],
             order: [['createdAt', 'DESC']],
         });
