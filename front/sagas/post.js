@@ -5,7 +5,13 @@ import {
     ADD_COMMENT_SUCCESS,
     ADD_POST_FAILURE,
     ADD_POST_REQUEST,
-    ADD_POST_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS,
+    ADD_POST_SUCCESS,
+    BOOKMARK_FAILURE,
+    BOOKMARK_REQUEST,
+    BOOKMARK_SUCCESS,
+    LIKE_POST_FAILURE,
+    LIKE_POST_REQUEST,
+    LIKE_POST_SUCCESS,
     LOAD_COMMENTS_FAILURE,
     LOAD_COMMENTS_REQUEST,
     LOAD_COMMENTS_SUCCESS,
@@ -17,10 +23,49 @@ import {
     LOAD_MAIN_POSTS_SUCCESS,
     LOAD_USER_POSTS_FAILURE,
     LOAD_USER_POSTS_REQUEST,
-    LOAD_USER_POSTS_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE,
-    UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS
+    LOAD_USER_POSTS_SUCCESS,
+    UNLIKE_POST_FAILURE,
+    UNLIKE_POST_REQUEST,
+    UNLIKE_POST_SUCCESS,
+    UPLOAD_IMAGES_FAILURE,
+    UPLOAD_IMAGES_REQUEST,
+    UPLOAD_IMAGES_SUCCESS
 } from "../reducers/post";
 import axios from 'axios';
+
+
+function bookmarkAPI(postId) {
+    return axios.post(`post/${postId}/bookmark`, {}, {
+        withCredentials: true,
+    });
+}
+
+function* bookmark(action) {
+
+    try {
+
+        const result = yield call(bookmarkAPI, action.data);
+        // console.log('bookmark result: ', result);
+        yield put({
+            type: BOOKMARK_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: BOOKMARK_FAILURE,
+            error: e,
+        });
+
+        alert(e.response && e.response.data);
+
+    }
+}
+
+function* watchBookmark() {
+    yield takeLatest(BOOKMARK_REQUEST, bookmark);
+}
 
 function unLikePostAPI(postId) {
 
@@ -273,10 +318,11 @@ function addPostAPI(data) {
 function* addPost(action) {
 
     try {
-        yield call(addPostAPI, action.data);
+        const result = yield call(addPostAPI, action.data);
         yield delay(1000);
         yield put({
             type: ADD_POST_SUCCESS,
+            data: result.data,
         });
 
     }catch (e) {
@@ -304,6 +350,7 @@ export default function* postSaga () {
         fork(watchUploadImages),
         fork(watchLikePost),
         fork(watchUnLikePost),
+        fork(watchBookmark),
     ]);
 
 }

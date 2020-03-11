@@ -59,6 +59,7 @@ router.get('/:id/posts', async (req, res, next) => {
         const userPosts = await db.Post.findAll({
             where: {
                 UserId: req.params.id,
+                BookmarkId: null,
             },
             include: [{
                 model: db.User,
@@ -71,11 +72,12 @@ router.get('/:id/posts', async (req, res, next) => {
                 attributes: ['id'],
                 through: 'Like',
             }],
+            order: [['createdAt', 'DESC']],
         });
 
         // console.log('JSON.stringify(userPosts): ', JSON.stringify(userPosts));
 
-        res.json(userPosts);
+        return res.json(userPosts);
 
     }catch (e) {
         console.error(e);

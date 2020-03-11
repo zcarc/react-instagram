@@ -23,13 +23,27 @@ router.get('/', async (req, res, next) => {
                 as: 'Likers',
                 attributes: ['id'],
                 through: 'Like',
+            }, {
+                model: db.Post,
+                as: 'Bookmark',
+                include: [{
+                    model: db.User,
+                    attributes: ['id', 'userNickname'],
+                }, {
+                    model: db.Image,
+                }, {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
+                    through: 'Like',
+                }],
             }],
             order: [['createdAt', 'DESC']],
         });
         // console.log('posts: ', posts);
         console.log('JSON.stringify(posts): ', JSON.stringify(posts));
 
-        res.json(posts);
+        return res.json(posts);
 
     }catch (e) {
         console.error(e);

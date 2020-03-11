@@ -21,12 +21,27 @@ router.get('/:tag', async (req, res, next) => {
                 as: 'Likers',
                 attributes: ['id'],
                 through: 'Like',
+            }, {
+                model: db.Post,
+                as: 'Bookmark',
+                include: [{
+                    model: db.User,
+                    attributes: ['id', 'userNickname'],
+                }, {
+                    model: db.Image,
+                }, {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
+                    through: 'Like',
+                }],
             }],
+            order: [['createdAt', 'DESC']],
 
         });
         console.log('hashtagPosts: ', JSON.stringify(hashtagPosts));
 
-        res.json(hashtagPosts);
+        return res.json(hashtagPosts);
 
     } catch (e) {
         console.error(e);

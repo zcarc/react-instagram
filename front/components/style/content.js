@@ -140,6 +140,7 @@ export const SpriteBookmarkOutline = styled.div`
     background: url(${img}) no-repeat -237px -286px;
     width: 19px;
     height: 24px;
+    cursor: pointer;
 `;
 
 export const Reactions = styled.div`

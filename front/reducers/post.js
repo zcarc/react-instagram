@@ -6,51 +6,7 @@ const initialState = {
     isCommentAdded: false,
     mainPosts: '',
     imageNames: '',
-    // mainPosts: [{
-    //     id: 1,
-    //     User: {
-    //         id: 1,
-    //         nickname: 'react01',
-    //     },
-    //     content: '첫번째 게시글',
-    //     img: '',
-    //     comments: [],
-    // }, {
-    //     id: 2,
-    //     User: {
-    //         id: 2,
-    //         nickname: 'react02',
-    //     },
-    //     content: '두번째 게시글',
-    //     img: '',
-    //     comments: [],
-    // },
-    // ]
 };
-
-const dummy = {
-    mainPosts: [{
-        id: 3,
-        User: {
-            id: 3,
-            nickname: 'dummy03',
-        },
-        content: '더미데이터',
-        img: '',
-        comments: [],
-    }],
-};
-
-const dummyComment = {
-    id: 1,
-    User: {
-        id: 1,
-        nickname: 'dummyCommentUser01',
-    },
-    content: '더미 댓글 01',
-    createdAt: new Date(),
-};
-
 
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -93,6 +49,10 @@ export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
 
+export const BOOKMARK_REQUEST = 'BOOKMARK_REQUEST';
+export const BOOKMARK_SUCCESS = 'BOOKMARK_SUCCESS';
+export const BOOKMARK_FAILURE = 'BOOKMARK_FAILURE';
+
 
 
 export default (state = initialState, action) => {
@@ -113,7 +73,7 @@ export default (state = initialState, action) => {
                 ...state,
                 isAddingPost: false,
                 isPostAdded: true,
-                mainPosts: [...dummy.mainPosts, ...state.mainPosts],
+                mainPosts: [action.data, ...state.mainPosts],
                 imageNames: '',
             }
         }
@@ -267,6 +227,28 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 mainPosts,
+            };
+        }
+
+        case BOOKMARK_REQUEST: {
+
+            return {
+                ...state,
+            };
+        }
+
+        case BOOKMARK_SUCCESS: {
+
+            return {
+                ...state,
+                mainPosts: [action.data, ...state.mainPosts],
+            };
+        }
+
+        case BOOKMARK_FAILURE: {
+
+            return {
+                ...state,
             };
         }
 

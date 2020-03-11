@@ -127,7 +127,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
         const filteredUser = Object.assign({}, user.toJSON());
         delete filteredUser.userPassword;
 
-        res.json(filteredUser);
+        return res.json(filteredUser);
 
     } catch (e) {
         console.error(e);
@@ -175,7 +175,7 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
 
         console.log('commentIncludingUser.toJSON(): ', commentIncludingUser.toJSON());
 
-        res.json(commentIncludingUser);
+        return res.json(commentIncludingUser);
 
 
 
@@ -215,7 +215,7 @@ router.get('/:id/comments', async (req, res, next) => {
 
         console.log('comments: ', comments);
 
-        res.json(comments);
+        return res.json(comments);
 
     } catch (e) {
         console.error(e);
@@ -228,7 +228,7 @@ router.post('/images', isLoggedIn, upload.array('image'), (req, res) => {
     console.log('images req.body: ', req.body);
     console.log('images req.files: ', req.files);
 
-    res.json(req.files.map((f) => f.filename));
+    return res.json(req.files.map((f) => f.filename));
 });
 
 // add like
@@ -242,14 +242,14 @@ router.post('/:postId/like', isLoggedIn, async(req, res, next) => {
         });
 
         if(!post) {
-            res.status(404).send('게시글이 존재하지 않습니다.');
+            return res.status(404).send('게시글이 존재하지 않습니다.');
         }
 
 
         const addLikers = await post.addLikers(req.user.id);
         // console.log('JSON.stringify(addLikers): ', JSON.stringify(addLikers));
 
-        res.json({ userId: req.user.id })
+        return res.json({ userId: req.user.id })
 
     } catch (e) {
         console.error(e);
@@ -269,7 +269,7 @@ router.delete('/:postId/like', isLoggedIn, async(req, res, next) => {
         });
 
         if(!post) {
-            res.status(404).send('게시글이 존재하지 않습니다.');
+            return res.status(404).send('게시글이 존재하지 않습니다.');
         }
 
         const removeLikers = await post.removeLikers(req.user.id);
@@ -282,6 +282,87 @@ router.delete('/:postId/like', isLoggedIn, async(req, res, next) => {
         next(e);
     }
 
+});
+
+// add bookmark
+router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
+
+    try {
+
+        const post = await db.Post.findOne({
+            where: {
+                id: req.params.postId
+            },
+            include: [{
+                model: db.Post,
+                as: 'Bookmark',
+            }],
+        });
+        console.log('JSON.stringify(post): ', JSON.stringify(post));
+        console.log('JSON.stringify(post.Bookmark && post.Bookmark.UserId): ', JSON.stringify(post.Bookmark && post.Bookmark.UserId));
+        console.log('JSON.stringify(req.user.id): ', JSON.stringify(req.user.id));
+
+        if(!post) {
+            return res.status(404).send('게시글이 존재하지 않습니다.');
+        }
+
+        if(req.user.id === post.UserId) {
+            return res.status(403).send('자신의 글은 저장할 수 없습니다.');
+
+        } else if(post.Bookmark && post.Bookmark.UserId === req.user.id) {
+            return res.status(403).send('원본 게시글의 작성자이므로 저장할 수 없습니다.');
+        }
+
+        const bookmarkTargetId = post.BookmarkId || post.id;
+
+        const isAlreadyBookmarked = await db.Post.findOne({
+            where: {
+                UserId: req.user.id,
+                BookmarkId: bookmarkTargetId,
+            },
+        });
+        console.log('JSON.stringify(isAlreadyBookmarked): ', JSON.stringify(isAlreadyBookmarked));
+
+        if(isAlreadyBookmarked) {
+            return res.status(403).send('이미 등록된 글입니다.');
+        }
+
+        const newBookmark = await db.Post.create({
+            UserId: req.user.id,
+            BookmarkId: post.id,
+            content: ' ',
+        });
+        console.log('JSON.stringify(newBookmark): ', JSON.stringify(newBookmark));
+
+        const bookmarkWithPrevPost = await db.Post.findOne({
+            where: {id: newBookmark.id},
+            include: [{
+                model: db.User,
+                attributes: ['id', 'userNickname'],
+            }, {
+                model: db.Post,
+                as: 'Bookmark',
+                include: [{
+                    model: db.User,
+                    attributes: ['id', 'userNickname'],
+                }, {
+                    model: db.Image,
+                }, {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
+                    through: 'Like',
+                }],
+            }]
+        });
+        console.log('JSON.stringify(bookmarkWithPrevPost): ', JSON.stringify(bookmarkWithPrevPost));
+
+        return res.json(bookmarkWithPrevPost);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
 });
 
 module.exports = router;
