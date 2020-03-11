@@ -224,11 +224,64 @@ router.get('/:id/comments', async (req, res, next) => {
 });
 
 // add images using multer
-router.post('/images', upload.array('image'), (req, res) => {
+router.post('/images', isLoggedIn, upload.array('image'), (req, res) => {
     console.log('images req.body: ', req.body);
     console.log('images req.files: ', req.files);
 
     res.json(req.files.map((f) => f.filename));
+});
+
+// add like
+router.post('/:postId/like', isLoggedIn, async(req, res, next) => {
+
+    try {
+        const post = await db.Post.findOne({
+            where: {
+                id: req.params.postId,
+            },
+        });
+
+        if(!post) {
+            res.status(404).send('게시글이 존재하지 않습니다.');
+        }
+
+
+        const addLikers = await post.addLikers(req.user.id);
+        // console.log('JSON.stringify(addLikers): ', JSON.stringify(addLikers));
+
+        res.json({ userId: req.user.id })
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+
+});
+
+// delete like
+router.delete('/:postId/like', isLoggedIn, async(req, res, next) => {
+
+    try {
+        const post = await db.Post.findOne({
+            where: {
+                id: req.params.postId,
+            },
+        });
+
+        if(!post) {
+            res.status(404).send('게시글이 존재하지 않습니다.');
+        }
+
+        const removeLikers = await post.removeLikers(req.user.id);
+        console.log('JSON.stringify(removeLikers): ', JSON.stringify(removeLikers));
+
+        res.json({ userId: req.user.id })
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+
 });
 
 module.exports = router;

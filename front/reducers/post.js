@@ -85,6 +85,14 @@ export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
 export const CLOSE_IMAGE = 'CLOSE_IMAGE';
 
+export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
+export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
+export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
+
+export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
+export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
+export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
 
 
 export default (state = initialState, action) => {
@@ -217,6 +225,51 @@ export default (state = initialState, action) => {
                 imageNames: state.imageNames.filter( (v, i) => action.imageIndex !== i ),
             };
         }
+
+        case LIKE_POST_REQUEST:
+        case UNLIKE_POST_REQUEST: {
+
+            return {
+                ...state,
+            };
+        }
+
+        case LIKE_POST_SUCCESS: {
+
+            const index = state.mainPosts.findIndex(p => p.id === action.data.postId);
+            const post = state.mainPosts[index];
+            const Likers = [ { id: action.data.userId }, ...post.Likers ];
+            const mainPosts = [...state.mainPosts];
+            mainPosts[index] = {...post, Likers};
+
+            return {
+                ...state,
+                mainPosts,
+            };
+        }
+
+        case LIKE_POST_FAILURE:
+        case UNLIKE_POST_FAILURE: {
+
+            return {
+                ...state,
+            };
+        }
+
+        case UNLIKE_POST_SUCCESS: {
+
+            const index = state.mainPosts.findIndex(p => p.id === action.data.postId);
+            const post = state.mainPosts[index];
+            const Likers = post.Likers.filter(v => v.id !== action.data.userId);
+            const mainPosts = [...state.mainPosts];
+            mainPosts[index] = {...post, Likers};
+
+            return {
+                ...state,
+                mainPosts,
+            };
+        }
+
 
         default:
             return state;

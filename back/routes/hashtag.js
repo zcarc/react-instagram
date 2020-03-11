@@ -16,6 +16,11 @@ router.get('/:tag', async (req, res, next) => {
                 attributes: ['id', 'userNickname'],
             }, {
                 model: db.Image,
+            }, {
+                model: db.User,
+                as: 'Likers',
+                attributes: ['id'],
+                through: 'Like',
             }],
 
         });

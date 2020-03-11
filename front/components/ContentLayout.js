@@ -1,3 +1,4 @@
+import {useCallback} from 'react';
 import {
     BottomIcons, Comment, CommentContainer, CommentDetail,
     Contents,
@@ -8,15 +9,47 @@ import {
     ToggleBox,
     ToggleBoxLi, LiInput,
     Top,
-    UserContainer
+    UserContainer, SpriteFullHeartIconOutline
 } from "./style/content";
 import CommentLayout from "./CommentLayout";
 import Link from "next/link";
 import PostImageLayout from "./PostImageLayout";
+import {useDispatch, useSelector} from "react-redux";
+import {LIKE_POST_REQUEST, UNLIKE_POST_REQUEST} from "../reducers/post";
+
+
+
 
 
 const ContentLayout = ({ mainPosts }) => {
-    // console.log('dummy:', dummy);
+
+
+    const { isLoggedIn, userSessionData } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    const onToggleLike = useCallback((v) => () => {
+
+        console.log('ContentLayout onToggleLike isLoggedIn: ', isLoggedIn);
+        console.log('ContentLayout onToggleLike v: ', v);
+
+        if(!isLoggedIn){
+            return alert('로그인이 필요합니다.');
+        }
+
+        if( v.Likers.find(v => v.id === userSessionData.id) ) {
+            dispatch({
+                type: UNLIKE_POST_REQUEST,
+                data: v.id,
+            });
+
+        } else {
+            dispatch({
+                type: LIKE_POST_REQUEST,
+                data: v.id,
+            });
+        }
+
+    }, [isLoggedIn, userSessionData && userSessionData.id]);
 
     return (
         <>
@@ -66,7 +99,11 @@ const ContentLayout = ({ mainPosts }) => {
                                 <BottomIcons>
                                     <LeftIcons>
                                         <div>
-                                            <SpriteHeartIconOutline/>
+                                            {userSessionData && v.Likers.find(v => v.id === userSessionData.id)
+                                                ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>
+                                                : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>
+                                            }
+
                                         </div>
                                         <div>
                                             <a href="#">

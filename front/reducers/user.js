@@ -5,7 +5,7 @@ const initialState = {
     isSigningUp: false,
     signUpError: '',
     me: false,
-    userData: null,
+    userSessionData: null,
 };
 
 export const USER_EXISTS_REQUEST = 'USER_EXISTS_REQUEST';
@@ -48,6 +48,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isLoggedIn: !!action.data,
+                userSessionData: action.data,
             }
         }
 
@@ -70,7 +71,7 @@ export default (state = initialState, action) => {
                 ...state,
                 isLoggedIn: true,
                 isLoggingIn: false,
-                userData: action.data,
+                userSessionData: action.data,
             }
         }
 
@@ -91,7 +92,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isLoggedIn: false,
-                userData: null,
+                userSessionData: '',
             }
         }
 
@@ -128,7 +129,7 @@ export default (state = initialState, action) => {
 
             return {
                 ...state,
-                userData: action.data,
+                userSessionDataData: action.data,
                 me: action.me,
             };
 

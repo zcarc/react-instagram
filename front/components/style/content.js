@@ -114,6 +114,13 @@ export const SpriteHeartIconOutline = styled.div`
     height: 22px;
 `;
 
+export const SpriteFullHeartIconOutline = styled.div`
+    display: inline-block;
+    background: url(${img}) no-repeat -26px -261px;
+    width: 24px;
+    height: 22px;
+`;
+
 export const SpriteBubbleIcon = styled.div`
     display: inline-block;
     background: url(${img}) no-repeat -239px -202px;

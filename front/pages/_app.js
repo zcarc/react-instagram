@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
 import {createStore, compose, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import withRedux from 'next-redux-wrapper';
 
 import createSagaMiddleware from 'redux-saga';
@@ -12,6 +12,7 @@ import {GlobalStyle} from '../components/style/header';
 import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {USER_EXISTS_REQUEST} from "../reducers/user";
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);

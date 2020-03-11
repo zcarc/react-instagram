@@ -14,7 +14,7 @@ const withoutAppLayout = [
 
 const AppLayout = ({children}) => {
 
-    const {isLoggedIn} = useSelector(state => state.user);
+    const { isLoggedIn } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -24,9 +24,6 @@ const AppLayout = ({children}) => {
             });
         }
     }, []);
-
-    // console.log('children: ', children);
-    // console.log('children.props.pageName: ', children.props.pageName);
 
     return (
         <>
