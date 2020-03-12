@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
 
 import {createStore, compose, applyMiddleware} from 'redux';
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import {Provider} from 'react-redux';
 import withRedux from 'next-redux-wrapper';
+import withReduxSaga from "next-redux-saga";
 
 import createSagaMiddleware from 'redux-saga';
 import reducer from '../reducers/index';
@@ -12,7 +13,6 @@ import {GlobalStyle} from '../components/style/header';
 import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import {USER_EXISTS_REQUEST} from "../reducers/user";
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
@@ -37,7 +37,7 @@ const Main = ({Component, store, pageProps}) => {
 Main.propTypes = {
     Component: PropTypes.elementType.isRequired,
     store: PropTypes.object.isRequired,
-    pageProps: PropTypes.object.isRequired,
+    pageProps: PropTypes.object,
 };
 
 Main.getInitialProps = async (context) => {
@@ -58,7 +58,7 @@ Main.getInitialProps = async (context) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-export default withRedux((initialState, options) => {
+const configureStore = ((initialState, options) => {
     // eslint-disable-next-line no-console
     // console.log('withRedux()...');
 
@@ -70,7 +70,10 @@ export default withRedux((initialState, options) => {
     const store = createStore(reducer, initialState, composeEnhancers(
         applyMiddleware(...middleware),
     ));
-    sagaMiddleware.run(rootSaga);
+
+    store.sagaTask = sagaMiddleware.run(rootSaga);
 
     return store;
-})(Main);
+});
+
+export default withRedux(configureStore)(withReduxSaga(Main));

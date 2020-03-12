@@ -19,10 +19,6 @@ const Home = () => {
 
     useEffect(() => {
 
-        dispatch({
-            type: LOAD_MAIN_POSTS_REQUEST,
-        });
-
         if(isPostAdded){
             dispatch({
                 type: WRITE_REDIRECTION,
@@ -55,6 +51,15 @@ const Home = () => {
 
         </>
     );
+};
+
+Home.getInitialProps = (context) => {
+    console.log('hoem context: ', Object.keys(context));
+
+    context.store.dispatch({
+        type: LOAD_MAIN_POSTS_REQUEST,
+    });
+
 };
 
 export default Home;
