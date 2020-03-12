@@ -11,11 +11,11 @@ import {
 } from "./style/profile";
 import Link from "next/link";
 import {useSelector, useDispatch} from "react-redux";
-import {LOAD_USER_REQUEST} from "../reducers/user";
+import {LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_USER_REQUEST} from "../reducers/user";
 
 const ProfileLayout = ( {id} ) => {
 
-    const {userData} = useSelector(state => state.user);
+    const {userSessionData, followerList, followingList} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -23,7 +23,19 @@ const ProfileLayout = ( {id} ) => {
             type: LOAD_USER_REQUEST,
             data: id,
         });
-    }, []);
+
+        console.log("userSessionData && userSessionData.id: ", userSessionData && userSessionData.id);
+
+        dispatch({
+            type: LOAD_FOLLOWINGS_REQUEST,
+            data: id,
+        });
+
+        dispatch({
+            type: LOAD_FOLLOWERS_REQUEST,
+            data: id,
+        });
+    }, [id]);
 
     return (
         <Inner>
@@ -35,21 +47,21 @@ const ProfileLayout = ( {id} ) => {
                 </InnerTopLeft>
                 <div>
                     <FirstRow>
-                        <UserName>{userData && userData.userNickname}</UserName>
+                        <UserName>{userSessionData && userSessionData.userNickname}</UserName>
                         <a href="#">로그아웃</a>
                     </FirstRow>
                     <SecondRow>
                         <li>
                             <span>게시물</span>
-                            <span> {userData && userData.Posts}</span>
+                            <span> {userSessionData && userSessionData.Posts.length}</span>
                         </li>
                         <li>
                             <span><Link href="/followers"><a>팔로워</a></Link></span>
-                            <span> {1}</span>
+                            <span>{followerList && followerList.length}</span>
                         </li>
                         <li>
                             <span><Link href="/following"><a>팔로잉</a></Link></span>
-                            <span> {1}</span>
+                            <span> {followingList && followingList.length}</span>
                         </li>
                     </SecondRow>
                     <ThirdRow>

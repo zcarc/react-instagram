@@ -40,7 +40,6 @@ router.get('/:id', isLoggedIn, async (req, res, next) => {
     // console.log('routes/user... load user info... req.params: ', req.params);
     // console.log('routes/user... load user info... test: ', test);
 
-
     try {
 
         const anUserInfo = await db.User.findOne({
@@ -259,6 +258,79 @@ router.delete('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
         console.error(e);
         next(e);
     }
+});
+
+router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
+
+    try {
+        const user = await db.User.findOne({
+            where: { id: req.params.userId },
+            attributes: ['id'],
+        });
+
+        if(!user) {
+            return res.status('404').send('존재하지 않는 사용자입니다.');
+        }
+
+        const userFollowings = await user.getFollowings({
+            attributes: ['id', 'userNickname'],
+        });
+
+        console.log('userFollowings: ', JSON.stringify(userFollowings));
+
+        return res.json(userFollowings);
+
+    }catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
+});
+
+router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
+
+    try {
+        const user = await db.User.findOne({
+            where: { id: req.params.userId },
+            attributes: ['id'],
+        });
+
+        if(!user) {
+            return res.status('404').send('존재하지 않는 사용자입니다.');
+        }
+
+        const userFollowers = await user.getFollowers({
+            attributes: ['id', 'userNickname'],
+        });
+
+        console.log('userFollowers: ', JSON.stringify(userFollowers));
+
+        return res.json(userFollowers);
+
+    }catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
+});
+
+router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => {
+
+    try {
+        const user = await db.User.findOne({
+            where: { id: req.user.id },
+            attributes: ['id'],
+        });
+
+        await user.removeFollower(req.params.userId);
+
+        return res.send(req.params.userId);
+
+    }catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
 });
 
 module.exports = router;

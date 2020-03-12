@@ -7,6 +7,8 @@ const initialState = {
     me: false,
     userSessionData: null,
     followSuccess: false,
+    followingList: [],
+    followerList: [],
 };
 
 export const USER_EXISTS_REQUEST = 'USER_EXISTS_REQUEST';
@@ -36,6 +38,18 @@ export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
 export const UNFOLLOW_USER_FAILURE = 'UNFOLLOW_USER_REQUEST';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+
+export const LOAD_FOLLOWINGS_REQUEST = 'LOAD_FOLLOWINGS_REQUEST';
+export const LOAD_FOLLOWINGS_SUCCESS = 'LOAD_FOLLOWINGS_SUCCESS';
+export const LOAD_FOLLOWINGS_FAILURE = 'LOAD_FOLLOWINGS_FAILURE';
+
+export const LOAD_FOLLOWERS_REQUEST = 'LOAD_FOLLOWERS_REQUEST';
+export const LOAD_FOLLOWERS_SUCCESS = 'LOAD_FOLLOWERS_SUCCESS';
+export const LOAD_FOLLOWERS_FAILURE = 'LOAD_FOLLOWERS_FAILURE';
+
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 
 export default (state = initialState, action) => {
@@ -134,7 +148,7 @@ export default (state = initialState, action) => {
 
             return {
                 ...state,
-                userSessionDataData: action.data,
+                userSessionData: action.data,
                 me: action.me,
             };
 
@@ -194,6 +208,59 @@ export default (state = initialState, action) => {
                     Posts: [{ id: action.data.id }, ...state.userSessionData.Posts],
                 },
             }
+        }
+
+        case LOAD_FOLLOWINGS_REQUEST:
+        case LOAD_FOLLOWERS_REQUEST: {
+            return {
+                ...state,
+            };
+        }
+        case LOAD_FOLLOWINGS_SUCCESS: {
+            return {
+                ...state,
+                followingList: action.data,
+            };
+        }
+
+        case LOAD_FOLLOWERS_SUCCESS: {
+
+            return {
+                ...state,
+                followerList: action.data,
+            };
+
+        }
+
+        case LOAD_FOLLOWINGS_FAILURE:
+        case LOAD_FOLLOWERS_FAILURE: {
+            return {
+                ...state,
+            };
+        }
+
+        case REMOVE_FOLLOWER_REQUEST: {
+            return {
+                ...state,
+            };
+        }
+        case REMOVE_FOLLOWER_SUCCESS: {
+            return {
+                ...state,
+                userSessionData: {
+                    Followers: state.userSessionData.Followers.filter(e => e.id !== action.data),
+                },
+                followerList: state.followerList.filter(e => e.id !== action.data),
+            };
+        }
+
+        case REMOVE_FOLLOWER_FAILURE: {
+
+            return {
+                ...state,
+                followerList: action.data,
+            };
+
         }
 
 

@@ -16,9 +16,85 @@ import {
     USER_EXISTS_FAILURE,
     FOLLOW_USER_REQUEST,
     FOLLOW_USER_FAILURE,
-    FOLLOW_USER_SUCCESS, UNFOLLOW_USER_FAILURE, UNFOLLOW_USER_SUCCESS, UNFOLLOW_USER_REQUEST
+    FOLLOW_USER_SUCCESS,
+    UNFOLLOW_USER_FAILURE,
+    UNFOLLOW_USER_SUCCESS,
+    UNFOLLOW_USER_REQUEST,
+    LOAD_FOLLOWINGS_SUCCESS,
+    LOAD_FOLLOWINGS_FAILURE,
+    LOAD_FOLLOWINGS_REQUEST,
+    LOAD_FOLLOWERS_FAILURE,
+    LOAD_FOLLOWERS_SUCCESS,
+    LOAD_FOLLOWERS_REQUEST
 } from "../reducers/user";
 import axios from 'axios';
+
+
+function loadFollowersAPI(userId) {
+
+    return axios.get(`/user/${userId}/followers`, {
+        withCredentials: true,
+    });
+}
+
+function* loadFollowers(action) {
+
+    try {
+        const result = yield call(loadFollowersAPI, action.data);
+
+        console.log('sagas loadFollowers result: ', JSON.stringify(result));
+
+        yield put({
+            type: LOAD_FOLLOWERS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_FOLLOWERS_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchLoadFollowers() {
+    yield takeLatest(LOAD_FOLLOWERS_REQUEST, loadFollowers);
+}
+
+function loadFollowingsAPI(userId) {
+
+    return axios.get(`/user/${userId}/followings`, {
+        withCredentials: true,
+    });
+}
+
+function* loadFollowings(action) {
+
+    try {
+        const result = yield call(loadFollowingsAPI, action.data);
+
+        console.log('sagas loadFollowings result: ', JSON.stringify(result));
+
+        yield put({
+            type: LOAD_FOLLOWINGS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_FOLLOWINGS_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchLoadFollowings() {
+    yield takeLatest(LOAD_FOLLOWINGS_REQUEST, loadFollowings);
+}
 
 function unFollowAPI(postUserId) {
 
@@ -114,8 +190,6 @@ function* watchUserExists() {
     yield takeLatest(USER_EXISTS_REQUEST, userExists);
 }
 
-
-
 function logoutAPI() {
 
     return axios.post('/user/logout', {}, {
@@ -141,7 +215,6 @@ function* logout() {
 function* watchLogout() {
     yield takeLatest(LOG_OUT_REQUEST, logout);
 }
-
 
 function loadUserAPI(data) {
 
@@ -259,5 +332,8 @@ export default function* userSaga() {
         fork(watchLogout),
         fork(watchFollow),
         fork(watchUnFollow),
+        fork(watchLoadFollowings),
+        fork(watchLoadFollowers),
+        // fork(watchRemoveFollower),
     ]);
 }
