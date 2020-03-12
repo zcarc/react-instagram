@@ -35,6 +35,8 @@ export const UNFOLLOW_USER_REQUEST = 'UNFOLLOW_USER_REQUEST';
 export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
 export const UNFOLLOW_USER_FAILURE = 'UNFOLLOW_USER_REQUEST';
 
+export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
+
 
 export default (state = initialState, action) => {
 
@@ -182,6 +184,16 @@ export default (state = initialState, action) => {
                     Followings: state.userSessionData.Followings.filter(e => e.id !== action.data),
                 },
             };
+        }
+
+        case ADD_POST_TO_ME: {
+            return {
+                ...state,
+                userSessionData: {
+                    ...state.userSessionData,
+                    Posts: [{ id: action.data.id }, ...state.userSessionData.Posts],
+                },
+            }
         }
 
 

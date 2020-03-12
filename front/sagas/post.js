@@ -32,6 +32,7 @@ import {
     UPLOAD_IMAGES_SUCCESS
 } from "../reducers/post";
 import axios from 'axios';
+import {ADD_POST_TO_ME} from "../reducers/user";
 
 
 function bookmarkAPI(postId) {
@@ -320,8 +321,14 @@ function* addPost(action) {
     try {
         const result = yield call(addPostAPI, action.data);
         yield delay(1000);
+
         yield put({
             type: ADD_POST_SUCCESS,
+            data: result.data,
+        });
+
+        yield put({
+            type: ADD_POST_TO_ME,
             data: result.data,
         });
 
