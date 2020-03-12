@@ -89,23 +89,55 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
         if(req.body.image) {
 
             if(Array.isArray(req.body.image)) {
+
                 const images = await Promise.all(req.body.image.map((image) => {
                     return db.Image.create({ src: image });
                 }));
                 console.log('#JSON.stringify(images): ', JSON.stringify(images));
-                newPost.addImage(images);
+
+                await newPost.addImage(images);
 
             } else {
 
                 const image = await db.Image.create({ src: req.body.image });
                 console.log('#JSON.stringify(image): ', JSON.stringify(image));
-                newPost.addImage(image);
+
+                await newPost.addImage(image);
 
             }
 
         }
 
+        const posted = await db.Post.findOne({
+            where: {id: newPost.id},
+            include: [{
+                model: db.User,
+                attributes: ['id','userNickname'],
+            }, {
+                model: db.Image,
+            }, {
+                model: db.User,
+                as: 'Likers',
+                attributes: ['id'],
+                through: 'Like',
+            }, {
+                model: db.Post,
+                as: 'Bookmark',
+                include: [{
+                    model: db.User,
+                    attributes: ['id', 'userNickname'],
+                }, {
+                    model: db.Image,
+                }, {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
+                    through: 'Like',
+                }],
+            }],
+        });
 
+        return res.json(posted);
 
         // case 1.
         // const user = await db.Post.findOne({
@@ -122,12 +154,12 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
         // case 2.
         // returns an object not array.
-        const user = await newPost.getUser();
-
-        const filteredUser = Object.assign({}, user.toJSON());
-        delete filteredUser.userPassword;
-
-        return res.json(filteredUser);
+        // const user = await newPost.getUser();
+        //
+        // const filteredUser = Object.assign({}, user.toJSON());
+        // delete filteredUser.userPassword;
+        //
+        // return res.json(filteredUser);
 
     } catch (e) {
         console.error(e);

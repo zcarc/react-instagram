@@ -1,46 +1,41 @@
-import {useCallback} from 'react';
+import {useCallback, useRef, useEffect} from 'react';
 import {
     BottomIcons, Comment, CommentContainer, CommentDetail,
     Contents,
-    ContentsBox, ImgSection,
-    Inner, LeftIcons, Reactions, Nickname,
+    ImgSection,
+    LeftIcons, Reactions, Nickname,
     ProfileImg, ProfileUser, SpriteBookmarkOutline, SpriteBubbleIcon, SpriteHeartIconOutline,
     SpriteMoreIcon, SpriteShareIcon,
-    ToggleBox,
-    ToggleBoxLi, LiInput,
     Top,
-    UserContainer, SpriteFullHeartIconOutline
+    UserContainer, SpriteFullHeartIconOutline, ContentMoreContainer
 } from "./style/content";
 import CommentLayout from "./CommentLayout";
-import Link from "next/link";
 import PostImageLayout from "./PostImageLayout";
+import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 import {
     BOOKMARK_REQUEST,
     LIKE_POST_REQUEST,
     UNLIKE_POST_REQUEST
 } from "../reducers/post";
+import {FollowingContainer, Inner as FollowInner, SecondRow} from "./style/follow";
+import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
 
+const ContentLayout = ({v}) => {
 
-
-
-
-const ContentLayout = ({ mainPosts }) => {
-
-
-    const { isLoggedIn, userSessionData } = useSelector(state => state.user);
+    const {isLoggedIn, userSessionData, followSuccess} = useSelector(state => state.user);
     const dispatch = useDispatch();
-
+    const moreRef = useRef('');
     const onToggleLike = useCallback((v) => () => {
 
         console.log('ContentLayout onToggleLike isLoggedIn: ', isLoggedIn);
         console.log('ContentLayout onToggleLike v: ', v);
 
-        if(!isLoggedIn){
+        if (!isLoggedIn) {
             return alert('로그인이 필요합니다.');
         }
 
-        if( v.Likers.find(v => v.id === userSessionData.id) ) {
+        if (v.Likers.find(v => v.id === userSessionData.id)) {
             dispatch({
                 type: UNLIKE_POST_REQUEST,
                 data: v.id,
@@ -54,11 +49,9 @@ const ContentLayout = ({ mainPosts }) => {
         }
 
     }, [isLoggedIn, userSessionData && userSessionData.id]);
-
-
     const onBookmark = useCallback((v) => () => {
 
-        if(!isLoggedIn) {
+        if (!isLoggedIn) {
             return alert('로그인이 필요합니다.');
         }
 
@@ -68,263 +61,209 @@ const ContentLayout = ({ mainPosts }) => {
         });
 
     }, [isLoggedIn]);
+    const onClickMoreButton = useCallback(() => {
+        moreRef.current.style.opacity = 1;
+        moreRef.current.style.visibility = 'visible';
+    }, []);
+    const onClickCloseButton = useCallback((e) => {
+        e.stopPropagation();
 
+        moreRef.current.style.opacity = 0;
+        moreRef.current.style.visibility = 'hidden';
+    }, []);
+
+    const onClickFollowButton = useCallback((v) => (e) => {
+        e.stopPropagation();
+
+        dispatch({
+            type: FOLLOW_USER_REQUEST,
+            data: v.User.id,
+        });
+
+    }, []);
+
+    const onClickUnFollowButton = useCallback((v) => (e) => {
+        e.stopPropagation();
+
+        console.log("onClickUnFollowButton... v: ", v);
+
+        dispatch({
+            type: UNFOLLOW_USER_REQUEST,
+            data: v.User.id,
+        });
+
+    }, []);
+
+    useEffect(() => {
+
+        if(followSuccess) {
+            moreRef.current.style.opacity = 0;
+            moreRef.current.style.visibility = 'hidden';
+        }
+
+    }, [followSuccess]);
 
     return (
         <>
-            <Inner>
-                <ContentsBox>
+            <Contents>
+                <Top>
+                    <UserContainer>
+                        <ProfileImg>
+                            <Link href={{pathname: '/profile', query: {id: v.UserId}}}
+                                  as={`profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg"
+                                                                     alt="프로필이미지"/></a></Link>
+                        </ProfileImg>
+                        <ProfileUser>
+                            <div>
+                                <Link href={{pathname: '/user', query: {id: v.UserId}}}
+                                      as={`/user/${v.UserId}`}><a
+                                    style={{color: 'black'}}>{v.User.userNickname}</a></Link>
+                            </div>
+                        </ProfileUser>
 
-                    {mainPosts && mainPosts.map((v) => {
-                        return (
-                            v.BookmarkId
-                                    ? <Contents>
-                                        <Top>
-                                            <UserContainer>
-                                                <ProfileImg>
-                                                    <Link href={ {pathname: '/profile', query: { id: v.UserId }} } as={`profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg" alt="프로필이미지"/></a></Link>
-                                                </ProfileImg>
-                                                <ProfileUser>
-                                                    <div>
-                                                        <Link href={ {pathname: '/user', query: { id: v.UserId }} } as={`/user/${v.UserId}`}><a style={{color: 'black'}}>{v.User.userNickname}</a></Link>
-                                                    </div>
-                                                </ProfileUser>
+                        <div>
+                            <form action="#" method="post">
+                                <input type="submit" value="삭제"/>
+                            </form>
+                        </div>
 
-                                                <div>
-                                                    <form action="#" method="post">
-                                                        <input type="submit" value="삭제"/>
-                                                    </form>
-                                                </div>
+                    </UserContainer>
 
-                                            </UserContainer>
-
-                                            <SpriteMoreIcon>
-                                                <ToggleBox>
-                                                    <ToggleBoxLi>
-                                                        <LiInput type="submit" value="팔로우"/>
-                                                    </ToggleBoxLi>
-                                                </ToggleBox>
-                                            </SpriteMoreIcon>
-                                        </Top>
-                                        <div style={{fontSize: '12px', padding: '10px 0', borderTop: '1px solid #dbdbdb', paddingLeft: '10px'}}>
-                                            *<span style={{fontWeight: 600}}>{v.Bookmark.User.userNickname}</span>님의 게시글입니다.
-                                        </div>
-                                        <ImgSection>
-                                            <div>
-                                                {v.Bookmark.Images && v.Bookmark.Images[0]
-                                                    ? <PostImageLayout images={v.Bookmark.Images}/>
-                                                    : <img src="/img/post_photo_01.jpg" alt="post_img"/>}
-                                                {/*{v.BookmarkId*/}
-                                                {/*    ? (*/}
-                                                {/*        v.Bookmark.Images && v.Bookmark.Images[0]*/}
-                                                {/*            ? <PostImageLayout images={v.Bookmark.Images}/>*/}
-                                                {/*            : <img src="/img/post_photo_01.jpg" alt="post_img"/>*/}
-                                                {/*    )*/}
-                                                {/*    : (*/}
-                                                {/*        v.Images && v.Images[0]*/}
-                                                {/*            ? <PostImageLayout images={v.Images}/>*/}
-                                                {/*            : <img src="/img/post_photo_01.jpg" alt="post_img"/>*/}
-                                                {/*    )*/}
-                                                {/*}*/}
-                                            </div>
-                                        </ImgSection>
-
-                                        <BottomIcons>
-                                            <LeftIcons>
-                                                <div>
-                                                    {v.Bookmark.Likers.find(v => v.id === userSessionData.id)
-                                                        ? <SpriteFullHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>
-                                                        : <SpriteHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>}
-                                                    {/*{userSessionData && v.BookmarkId*/}
-                                                    {/*    ? (*/}
-                                                    {/*        v.Bookmark.Likers.find(v => v.id === userSessionData.id)*/}
-                                                    {/*            ? <SpriteFullHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>*/}
-                                                    {/*            : <SpriteHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>*/}
-                                                    {/*    )*/}
-                                                    {/*    : (*/}
-                                                    {/*        v.Likers.find(v => v.id === userSessionData.id)*/}
-                                                    {/*            ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>*/}
-                                                    {/*            : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>*/}
-                                                    {/*    )*/}
-                                                    {/*}*/}
-
-                                                </div>
-                                                <div>
-                                                    <a href="#">
-                                                        <SpriteBubbleIcon/>
-                                                    </a>
-                                                </div>
-
-                                                <SpriteShareIcon/>
-                                            </LeftIcons>
-
-                                            <div>
-                                                <SpriteBookmarkOutline onClick={onBookmark(v)}/>
-                                            </div>
-                                        </BottomIcons>
-
-                                        <Reactions>
-                                            <span>좋아요 1개</span>
-                                            <span>북마크 0개</span>
-                                        </Reactions>
-
-                                        <CommentContainer>
-                                            <Comment>
-                                                <CommentDetail>
-                                                    <Nickname>{v.User.userNickname}</Nickname>
-
-                                                    {/* desc */}
-                                                    <div>
-                                                        {/*{v.content.split(/#[^\s#]+/g).map((w) => {*/}
-                                                        {/*    console.log('v.content: ', v.content);*/}
-                                                        {/*    console.log('w: ', w);*/}
-                                                        {/*    if(w.match(/#[^\s#]+/)) {*/}
-                                                        {/*        return (*/}
-                                                        {/*          <Link href="#" key={w}><a>{w}</a></Link>*/}
-                                                        {/*        );*/}
-                                                        {/*    }*/}
-                                                        {/*    return w;*/}
-                                                        {/*})}*/}
-                                                        {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
-                                                            if(s.match(/#[^s#]+/)){
-                                                                return <Link href={ {pathname: '/hashtag', query: { tag: s.slice(1) }} } as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
-                                                            }
-                                                            return <span>{s}</span>;
-                                                        })}
-                                                    </div>
-                                                </CommentDetail>
-                                            </Comment>
-                                        </CommentContainer>
+                    <ContentMoreContainer onClick={onClickMoreButton}>
+                        <SpriteMoreIcon>
+                            <FollowingContainer ref={moreRef} style={{opacity: 0, visibility: 'hidden'}}>
+                                <FollowInner style={{minHeight: 'initial'}}>
 
 
-                                        <CommentLayout key={v.id} post={v}/>
-                                    </Contents>
-                                    : <Contents>
-                                        <Top>
-                                            <UserContainer>
-                                                <ProfileImg>
-                                                    <Link href={ {pathname: '/profile', query: { id: v.UserId }} } as={`profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg" alt="프로필이미지"/></a></Link>
-                                                </ProfileImg>
-                                                <ProfileUser>
-                                                    <div>
-                                                        <Link href={ {pathname: '/user', query: { id: v.UserId }} } as={`/user/${v.UserId}`}><a style={{color: 'black'}}>{v.User.userNickname}</a></Link>
-                                                    </div>
-                                                </ProfileUser>
+                                    {!isLoggedIn || v.User.id === userSessionData.id
+                                        ? null
+                                        : (
+                                            userSessionData && userSessionData.Followings && userSessionData.Followings.find(e => e.id === v.User.id)
+                                                ? (
+                                                    <SecondRow onClick={onClickUnFollowButton(v)}
+                                                               style={{cursor: 'pointer', color: 'red'}}>
+                                                        <span>언팔로우</span>
+                                                    </SecondRow>
+                                                )
+                                                : (
+                                                    <SecondRow onClick={onClickFollowButton(v)}
+                                                               style={{cursor: 'pointer'}}>
+                                                        <span>팔로우</span>
+                                                    </SecondRow>
+                                                )
+                                        )}
 
-                                                <div>
-                                                    <form action="#" method="post">
-                                                        <input type="submit" value="삭제"/>
-                                                    </form>
-                                                </div>
+                                    <SecondRow onClick={onClickCloseButton} style={{cursor: 'pointer'}}>
+                                        <span>취소</span>
+                                    </SecondRow>
+                                </FollowInner>
+                            </FollowingContainer>
 
-                                            </UserContainer>
+                        </SpriteMoreIcon>
+                    </ContentMoreContainer>
 
-                                            <SpriteMoreIcon>
-                                                <ToggleBox>
-                                                    <ToggleBoxLi>
-                                                        <LiInput type="submit" value="팔로우"/>
-                                                    </ToggleBoxLi>
-                                                </ToggleBox>
-                                            </SpriteMoreIcon>
-                                        </Top>
+                </Top>
 
-                                        <ImgSection>
-                                            <div>
-                                                {v.Images && v.Images[0]
-                                                    ? <PostImageLayout images={v.Images}/>
-                                                    : <img src="/img/post_photo_01.jpg" alt="post_img"/>}
-                                                {/*{v.BookmarkId*/}
-                                                {/*    ? (*/}
-                                                {/*        v.Bookmark.Images && v.Bookmark.Images[0]*/}
-                                                {/*            ? <PostImageLayout images={v.Bookmark.Images}/>*/}
-                                                {/*            : <img src="/img/post_photo_01.jpg" alt="post_img"/>*/}
-                                                {/*    )*/}
-                                                {/*    : (*/}
-                                                {/*        v.Images && v.Images[0]*/}
-                                                {/*            ? <PostImageLayout images={v.Images}/>*/}
-                                                {/*            : <img src="/img/post_photo_01.jpg" alt="post_img"/>*/}
-                                                {/*    )*/}
-                                                {/*}*/}
-                                            </div>
-                                        </ImgSection>
+                {v.BookmarkId &&
+                <div style={{
+                    fontSize: '12px',
+                    padding: '10px 0',
+                    borderTop: '1px solid #dbdbdb',
+                    paddingLeft: '10px'
+                }}>
+                    *<span style={{fontWeight: 600}}>{v.Bookmark.User.userNickname}</span>님의 게시글입니다.
+                </div>}
 
-                                        <BottomIcons>
-                                            <LeftIcons>
-                                                <div>
-                                                    {v.Likers.find(v => v.id === userSessionData.id)
-                                                        ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>
-                                                        : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>}
-                                                    {/*{userSessionData && v.BookmarkId*/}
-                                                    {/*    ? (*/}
-                                                    {/*        v.Bookmark.Likers.find(v => v.id === userSessionData.id)*/}
-                                                    {/*            ? <SpriteFullHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>*/}
-                                                    {/*            : <SpriteHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>*/}
-                                                    {/*    )*/}
-                                                    {/*    : (*/}
-                                                    {/*        v.Likers.find(v => v.id === userSessionData.id)*/}
-                                                    {/*            ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>*/}
-                                                    {/*            : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>*/}
-                                                    {/*    )*/}
-                                                    {/*}*/}
+                <ImgSection>
+                    <div>
+                        {v.BookmarkId && v.BookmarkId
+                            ? (
+                                v.Bookmark.Images && v.Bookmark.Images[0]
+                                    ? <PostImageLayout images={v.Bookmark.Images}/>
+                                    : <img src="/img/post_photo_01.jpg" alt="post_img"/>
 
 
-                                                </div>
-                                                <div>
-                                                    <a href="#">
-                                                        <SpriteBubbleIcon/>
-                                                    </a>
-                                                </div>
+                            )
+                            : (
+                                v.Images && v.Images[0]
+                                    ? <PostImageLayout images={v.Images}/>
+                                    : <img src="/img/post_photo_01.jpg" alt="post_img"/>
+                            )
+                        }
+                    </div>
+                </ImgSection>
 
-                                                <SpriteShareIcon/>
-                                            </LeftIcons>
-
-                                            <div>
-                                                <SpriteBookmarkOutline onClick={onBookmark(v)}/>
-                                            </div>
-                                        </BottomIcons>
-
-                                        <Reactions>
-                                            <span>좋아요 1개</span>
-                                            <span>북마크 0개</span>
-                                        </Reactions>
-
-                                        <CommentContainer>
-                                            <Comment>
-                                                <CommentDetail>
-                                                    <Nickname>{v.User.userNickname}</Nickname>
-
-                                                    {/* desc */}
-                                                    <div>
-                                                        {/*{v.content.split(/#[^\s#]+/g).map((w) => {*/}
-                                                        {/*    console.log('v.content: ', v.content);*/}
-                                                        {/*    console.log('w: ', w);*/}
-                                                        {/*    if(w.match(/#[^\s#]+/)) {*/}
-                                                        {/*        return (*/}
-                                                        {/*          <Link href="#" key={w}><a>{w}</a></Link>*/}
-                                                        {/*        );*/}
-                                                        {/*    }*/}
-                                                        {/*    return w;*/}
-                                                        {/*})}*/}
-                                                        {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
-                                                            if(s.match(/#[^s#]+/)){
-                                                                return <Link href={ {pathname: '/hashtag', query: { tag: s.slice(1) }} } as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
-                                                            }
-                                                            return <span>{s}</span>;
-                                                        })}
-                                                    </div>
-                                                </CommentDetail>
-                                            </Comment>
-                                        </CommentContainer>
+                <BottomIcons>
+                    <LeftIcons>
+                        <div>
+                            {v.BookmarkId && v.BookmarkId
+                                ? (
+                                    v.Bookmark.Likers.find(v => v.id === userSessionData.id)
+                                        ? <SpriteFullHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>
+                                        : <SpriteHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>
+                                )
+                                : (
+                                    v.Likers.find(v => v.id === userSessionData.id)
+                                        ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>
+                                        : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>
+                                )
+                            }
+                        </div>
 
 
-                                        <CommentLayout key={v.id} post={v}/>
-                                    </Contents>
-                        );
-                    })}
+                        <div>
+                            <a href="#">
+                                <SpriteBubbleIcon/>
+                            </a>
+                        </div>
+
+                        <SpriteShareIcon/>
+                    </LeftIcons>
+
+                    <div>
+                        <SpriteBookmarkOutline onClick={onBookmark(v)}/>
+                    </div>
+                </BottomIcons>
+
+                <Reactions>
+                    <span>좋아요 1개</span>
+                    <span>북마크 0개</span>
+                </Reactions>
+
+                <CommentContainer>
+                    <Comment>
+                        <CommentDetail>
+                            <Nickname>{v.User.userNickname}</Nickname>
+
+                            {/* desc */}
+                            <div>
+                                {/*{v.content.split(/#[^\s#]+/g).map((w) => {*/}
+                                {/*    console.log('v.content: ', v.content);*/}
+                                {/*    console.log('w: ', w);*/}
+                                {/*    if(w.match(/#[^\s#]+/)) {*/}
+                                {/*        return (*/}
+                                {/*          <Link href="#" key={w}><a>{w}</a></Link>*/}
+                                {/*        );*/}
+                                {/*    }*/}
+                                {/*    return w;*/}
+                                {/*})}*/}
+
+                                {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
+                                    if (s.match(/#[^s#]+/)) {
+                                        return <Link href={{pathname: '/hashtag', query: {tag: s.slice(1)}}}
+                                                     as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
+                                    }
+                                    return <span>{s}</span>;
+                                })}
+
+                            </div>
+                        </CommentDetail>
+                    </Comment>
+                </CommentContainer>
 
 
-                </ContentsBox>
-            </Inner>
+                <CommentLayout key={v.id} post={v}/>
+            </Contents>
 
         </>
 

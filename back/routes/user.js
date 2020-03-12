@@ -6,14 +6,30 @@ const passport = require('passport');
 const { isLoggedIn } = require('./middleware');
 
 // load user session
-router.get('/', isLoggedIn, (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
 
-    const user = Object.assign({}, req.user.toJSON());
-    delete user.userPassword;
+    // const user = Object.assign({}, req.user.toJSON());
+    // delete user.userPassword;
+    // console.log('routes/user... LOAD_USER_REQUEST... user: ', user);
 
-    console.log('routes/user... LOAD_USER_REQUEST... user: ', user);
+    const fullUser = await db.User.findOne({
+        where: {id: req.user.id},
+        include: [{
+            model: db.Post,
+            attributes: ['id'],
+        }, {
+            model: db.User,
+            as: 'Followings',
+            attributes: ['id'],
+        }, {
+            model: db.User,
+            as: 'Followers',
+            attributes: ['id'],
+        }],
+        attributes: ['id', 'userId', 'userNickname'],
+    });
 
-    return res.json(user);
+    return res.json(fullUser);
 });
 
 // load user info
@@ -161,23 +177,39 @@ router.post('/login', async (req, res, next) => {
 
             if (loginError) {
                 console.error(loginError);
-                next(loginError);
+                return next(loginError);
             }
 
-            const fullUser = await db.User.findOne({
-                where: {id: user.id},
-                include: [{
-                    model: db.Post,
-                    attributes: ['id'],
-                }]
-            });
-            console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
+            try {
 
-            const filteredUser = Object.assign({}, user.toJSON());
-            delete filteredUser.userPassword;
-            // console.log('deleted userPassword filteredUser: ', filteredUser);
+                const fullUser = await db.User.findOne({
+                    where: {id: user.id},
+                    include: [{
+                        model: db.Post,
+                        attributes: ['id'],
+                    }, {
+                        model: db.User,
+                        as: 'Followings',
+                        attributes: ['id'],
+                    }, {
+                        model: db.User,
+                        as: 'Followers',
+                        attributes: ['id'],
+                    }],
+                    attributes: ['id', 'userId', 'userNickname'],
+                });
+                console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
 
-            return res.json(filteredUser);
+                // const filteredUser = Object.assign({}, user.toJSON());
+                // delete filteredUser.userPassword;
+                // console.log('deleted userPassword filteredUser: ', filteredUser);
+
+                return res.json(fullUser);
+
+            } catch (e) {
+                console.error(e);
+                next(e);
+            }
 
         });
 
@@ -186,13 +218,47 @@ router.post('/login', async (req, res, next) => {
 
 });
 
-router.post('/logout', (req, res, next) => {
+router.post('/logout', isLoggedIn, (req, res, next) => {
     console.log('/logout...');
 
     req.logout();
     req.session.destroy();
 
     res.send('You have been logged out.');
+});
+
+router.post('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await db.User.findOne({
+            where: {id: req.user.id},
+        });
+        console.log('/id:/follow... user.toJSON(): ', user.toJSON());
+
+        await user.addFollowing(req.params.postUserId);
+
+        return res.send(req.params.postUserId);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
+
+router.delete('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await db.User.findOne({
+            where: {id: req.user.id},
+        });
+        console.log('/postUserId/follow... user.toJSON(): ', user.toJSON());
+
+        await user.removeFollowing(req.params.postUserId);
+
+        return res.send(req.params.postUserId);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
 });
 
 module.exports = router;

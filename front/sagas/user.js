@@ -11,9 +11,78 @@ import {
     LOAD_USER_FAILURE,
     LOG_OUT_SUCCESS,
     LOG_OUT_REQUEST,
-    USER_EXISTS_REQUEST, USER_EXISTS_SUCCESS, USER_EXISTS_FAILURE
+    USER_EXISTS_REQUEST,
+    USER_EXISTS_SUCCESS,
+    USER_EXISTS_FAILURE,
+    FOLLOW_USER_REQUEST,
+    FOLLOW_USER_FAILURE,
+    FOLLOW_USER_SUCCESS, UNFOLLOW_USER_FAILURE, UNFOLLOW_USER_SUCCESS, UNFOLLOW_USER_REQUEST
 } from "../reducers/user";
 import axios from 'axios';
+
+function unFollowAPI(postUserId) {
+
+    return axios.delete(`/user/${postUserId}/follow`, {
+        withCredentials: true,
+    });
+}
+
+function* unFollow(action) {
+    try {
+
+        console.log('sagas unFollow result: ', JSON.stringify(action));
+
+        const result = yield call(unFollowAPI, action.data);
+
+        yield put({
+            type: UNFOLLOW_USER_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: UNFOLLOW_USER_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchUnFollow() {
+    yield takeLatest(UNFOLLOW_USER_REQUEST, unFollow);
+}
+
+function followAPI(postUserId) {
+    return axios.post(`/user/${postUserId}/follow`, {}, {
+        withCredentials: true,
+    });
+}
+
+function* follow(action) {
+    try {
+        const result = yield call(followAPI, action.data);
+
+        // console.log('sagas follow: ', JSON.stringify(action));
+
+        yield put({
+            type: FOLLOW_USER_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: FOLLOW_USER_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchFollow() {
+    yield takeLatest(FOLLOW_USER_REQUEST, follow);
+}
 
 function userExistsAPI() {
 
@@ -188,5 +257,7 @@ export default function* userSaga() {
         fork(watchSignUp),
         fork(watchLoadUser),
         fork(watchLogout),
+        fork(watchFollow),
+        fork(watchUnFollow),
     ]);
 }

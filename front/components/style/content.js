@@ -61,6 +61,7 @@ export const SpriteMoreIcon = styled.div`
     background: url(${img}) no-repeat -301px -218px;
     width: 15px;
     height: 3px;
+    cursor: pointer;
 `;
 
 export const ToggleBox = styled.ul`
@@ -218,4 +219,12 @@ export const UploadBtn = styled.div`
     opacity: 0.6;
 `;
 
-// pointer-events: none;
+
+export const ContentMoreContainer = styled.div`
+    display: flex;
+    height: 15px;
+    width: 25px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+`;

@@ -14,6 +14,7 @@ export const FollowingContainer = styled.div`
     bottom: 0;
     left: 0;
     z-index: 999;
+    cursor: initial;
 `;
 
 export const Inner = styled.div`

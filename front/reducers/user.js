@@ -6,6 +6,7 @@ const initialState = {
     signUpError: '',
     me: false,
     userSessionData: null,
+    followSuccess: false,
 };
 
 export const USER_EXISTS_REQUEST = 'USER_EXISTS_REQUEST';
@@ -26,12 +27,14 @@ export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
 
-// const action = {
-//     type: 'LOG_IN',
-//     data: {
-//         nickname: 'user01',
-//     },
-// };
+export const FOLLOW_USER_REQUEST = 'FOLLOW_USER_REQUEST';
+export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
+export const FOLLOW_USER_FAILURE = 'FOLLOW_USER_FAILURE';
+
+export const UNFOLLOW_USER_REQUEST = 'UNFOLLOW_USER_REQUEST';
+export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
+export const UNFOLLOW_USER_FAILURE = 'UNFOLLOW_USER_REQUEST';
+
 
 export default (state = initialState, action) => {
 
@@ -140,6 +143,47 @@ export default (state = initialState, action) => {
                 ...state,
             };
         }
+
+        case FOLLOW_USER_REQUEST:
+        case UNFOLLOW_USER_REQUEST:{
+            return {
+                ...state,
+                followSuccess: false,
+            };
+        }
+
+        case FOLLOW_USER_SUCCESS: {
+            return {
+                ...state,
+                followSuccess: true,
+                userSessionData: {
+                    ...state.userSessionData,
+                    Followings: [
+                        {id: action.data},
+                        ...state.userSessionData.Followings
+                    ],
+                },
+            };
+        }
+
+        case FOLLOW_USER_FAILURE:
+        case UNFOLLOW_USER_FAILURE: {
+            return {
+                ...state,
+            }
+        }
+
+        case UNFOLLOW_USER_SUCCESS: {
+            return {
+                ...state,
+                followSuccess: true,
+                userSessionData: {
+                    ...state.userSessionData,
+                    Followings: state.userSessionData.Followings.filter(e => e.id !== action.data),
+                },
+            };
+        }
+
 
         default:
             return state;

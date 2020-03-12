@@ -3,6 +3,7 @@ import ContentLayout from "../components/ContentLayout";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
+import {ContentsBox, Inner} from "../components/style/content";
 
 const Home = () => {
 
@@ -45,7 +46,13 @@ const Home = () => {
                 <Link href="/followers"><a>팔로워</a></Link>
                 <Link href="/write"><a>글쓰기</a></Link>
             </div>
-            <ContentLayout mainPosts={mainPosts}/>
+
+            <Inner>
+                <ContentsBox>
+                    {mainPosts && mainPosts.map( v => <ContentLayout v={v}/> )}
+                </ContentsBox>
+            </Inner>
+
         </>
     );
 };
