@@ -13,28 +13,32 @@ import Link from "next/link";
 import {useSelector, useDispatch} from "react-redux";
 import {LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_USER_REQUEST} from "../reducers/user";
 
-const ProfileLayout = ( {id} ) => {
+const ProfileLayout = ({id}) => {
 
     const {userSessionData, followerList, followingList} = useSelector(state => state.user);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-            data: id,
-        });
 
-        console.log("userSessionData && userSessionData.id: ", userSessionData && userSessionData.id);
+        // dispatch({
+        //     type: LOAD_USER_REQUEST,
+        //     data: id,
+        // });
 
-        dispatch({
-            type: LOAD_FOLLOWINGS_REQUEST,
-            data: id,
-        });
+        if(id) {
+            dispatch({
+                type: LOAD_FOLLOWINGS_REQUEST,
+                data: id,
+            });
 
-        dispatch({
-            type: LOAD_FOLLOWERS_REQUEST,
-            data: id,
-        });
+            dispatch({
+                type: LOAD_FOLLOWERS_REQUEST,
+                data: id,
+            });
+        }
+
+
+
     }, [id]);
 
     return (
@@ -53,15 +57,30 @@ const ProfileLayout = ( {id} ) => {
                     <SecondRow>
                         <li>
                             <span>게시물</span>
-                            <span> {userSessionData && userSessionData.Posts.length}</span>
+                            <span>
+                                { userSessionData && userSessionData.Posts &&userSessionData.Posts.length }
+                            </span>
                         </li>
                         <li>
                             <span><Link href="/followers"><a>팔로워</a></Link></span>
-                            <span>{followerList && followerList.length}</span>
+
+                            <span>
+                                { userSessionData && userSessionData.Followers && userSessionData.Followers.length }
+                                {/*{id && followerList && followerList.length*/}
+                                {/*    ? followerList.length*/}
+                                {/*    : 0*/}
+                                {/*}*/}
+                            </span>
                         </li>
                         <li>
                             <span><Link href="/following"><a>팔로잉</a></Link></span>
-                            <span> {followingList && followingList.length}</span>
+                            <span>
+                                {userSessionData && userSessionData.Followings && userSessionData.Followings.length }
+                                {/*{id && followingList && followingList.length*/}
+                                {/*    ? followingList.length*/}
+                                {/*    : 0*/}
+                                {/*}*/}
+                            </span>
                         </li>
                     </SecondRow>
                     <ThirdRow>

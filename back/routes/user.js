@@ -49,6 +49,14 @@ router.get('/:id', isLoggedIn, async (req, res, next) => {
             include: [{
                 model: db.Post,
                 attributes: ['id'],
+            }, {
+                model: db.User,
+                as: 'Followings',
+                attributes: ['id'],
+            }, {
+                model: db.User,
+                as: 'Followers',
+                attributes: ['id'],
             }],
             attributes: ['id', 'userNickname'],
         });
