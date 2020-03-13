@@ -43,7 +43,7 @@ const CommentLayout = ({post}) => {
         });
     }, []);
 
-    console.log('post.comments: ', post.comments);
+    // console.log('post.comments: ', post.comments);
 
 
 

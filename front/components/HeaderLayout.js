@@ -6,13 +6,16 @@ import {
 }
     from './style/header'
 import {useCallback} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 
 
-const HeaderLayout = ({isLoggedIn}) => {
+const HeaderLayout = () => {
 
+    const { isLoggedIn } = useSelector(state => state.user);
     const dispatch = useDispatch();
+
+    console.log('headerlayout isLoggedIn: ', isLoggedIn);
 
     const onLogout = useCallback(() =>{
         dispatch({

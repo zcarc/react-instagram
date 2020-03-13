@@ -14,16 +14,16 @@ const withoutAppLayout = [
 
 const AppLayout = ({children}) => {
 
-    const { isLoggedIn } = useSelector(state => state.user);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (!isLoggedIn) {
-            dispatch({
-                type: USER_EXISTS_REQUEST,
-            });
-        }
-    }, []);
+    // const { isLoggedIn } = useSelector(state => state.user);
+    // const dispatch = useDispatch();
+    //
+    // useEffect(() => {
+    //     if (!isLoggedIn) {
+    //         dispatch({
+    //             type: USER_EXISTS_REQUEST,
+    //         });
+    //     }
+    // }, []);
 
     return (
         <>
@@ -32,7 +32,7 @@ const AppLayout = ({children}) => {
                 {withoutAppLayout.includes(children.props.pageName) ? <>{children}</>
                     : (
                         <>
-                            <HeaderLayout isLoggedIn={isLoggedIn}/>
+                            <HeaderLayout/>
                             <MainContainer>
                                 {children}
                             </MainContainer>

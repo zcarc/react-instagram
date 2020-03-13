@@ -1,6 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import {createStore, compose, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
@@ -13,6 +14,7 @@ import {GlobalStyle} from '../components/style/header';
 import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {USER_EXISTS_REQUEST} from "../reducers/user";
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
@@ -48,12 +50,34 @@ Main.getInitialProps = async (context) => {
 
     // const { Component, ctx } = context;
 
+    console.log('Object.keys(context): ', Object.keys(context));
+    console.log('Object.keys(context.ctx): ', Object.keys(context.ctx));
+    console.log('context.ctx.isServer: ', context.ctx.isServer);
+
+    const cookie = context.ctx.req ? context.ctx.req.headers.cookie : '';
+    console.log('cookie: ', cookie);
+
+    if(context.ctx.isServer && cookie) {
+        axios.defaults.headers.Cookie = cookie;
+    }
+
     let pageProps = null;
+    const state = context.ctx.store.getState();
+
+    if(!state.user.isLoggedIn) {
+        context.ctx.store.dispatch({
+            type: USER_EXISTS_REQUEST,
+        });
+    }
 
     if(context.Component.getInitialProps) {
         pageProps = await context.Component.getInitialProps(context.ctx);
         // console.log('_app.js pageProps: ', pageProps);
     }
+
+
+
+
     return { pageProps };
 };
 

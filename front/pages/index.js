@@ -54,7 +54,7 @@ const Home = () => {
 };
 
 Home.getInitialProps = (context) => {
-    console.log('hoem context: ', Object.keys(context));
+    console.log('home context: ', Object.keys(context));
 
     context.store.dispatch({
         type: LOAD_MAIN_POSTS_REQUEST,
