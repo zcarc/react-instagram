@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect} from "react";
 import {LOAD_USER_POSTS_REQUEST} from "../reducers/post";
 import ContentLayout from "../components/ContentLayout";
+import {ContentsBox, Inner} from "../components/style/content";
 
 const User = ( { id } ) => {
 
@@ -19,7 +20,11 @@ const User = ( { id } ) => {
 
     return (
         <>
-            <ContentLayout mainPosts={mainPosts}/>
+            <Inner>
+                <ContentsBox>
+                    {mainPosts && mainPosts.map( v => <ContentLayout v={v}/>)}
+                </ContentsBox>
+            </Inner>
         </>
     );
 
