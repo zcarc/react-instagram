@@ -32,7 +32,7 @@ import axios from 'axios';
 
 function loadFollowersAPI(userId) {
 
-    return axios.get(`/user/${userId}/followers`, {
+    return axios.get(`/user/${userId || 0}/followers`, {
         withCredentials: true,
     });
 }
@@ -42,7 +42,7 @@ function* loadFollowers(action) {
     try {
         const result = yield call(loadFollowersAPI, action.data);
 
-        console.log('sagas loadFollowers result: ', JSON.stringify(result));
+        // console.log('sagas loadFollowers result: ', JSON.stringify(result));
 
         yield put({
             type: LOAD_FOLLOWERS_SUCCESS,
@@ -64,8 +64,9 @@ function* watchLoadFollowers() {
 }
 
 function loadFollowingsAPI(userId) {
+    // console.log('loadFollowingsAPI userId: ', userId);
 
-    return axios.get(`/user/${userId}/followings`, {
+    return axios.get(`/user/${userId || 0}/followings`, {
         withCredentials: true,
     });
 }
@@ -75,7 +76,7 @@ function* loadFollowings(action) {
     try {
         const result = yield call(loadFollowingsAPI, action.data);
 
-        console.log('sagas loadFollowings result: ', JSON.stringify(result));
+        // console.log('sagas loadFollowings result: ', JSON.stringify(result));
 
         yield put({
             type: LOAD_FOLLOWINGS_SUCCESS,

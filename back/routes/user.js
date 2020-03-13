@@ -272,7 +272,7 @@ router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
 
     try {
         const user = await db.User.findOne({
-            where: { id: req.params.userId },
+            where: { id: parseInt(req.params.userId, 10) || (req.user.id || 0)  },
             attributes: ['id'],
         });
 
@@ -299,7 +299,7 @@ router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
 
     try {
         const user = await db.User.findOne({
-            where: { id: req.params.userId },
+            where: { id: parseInt(req.params.userId, 10) || (req.user.id || 0) },
             attributes: ['id'],
         });
 
