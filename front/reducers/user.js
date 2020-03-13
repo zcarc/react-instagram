@@ -51,6 +51,8 @@ export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
 export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
 export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
+export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+
 
 export default (state = initialState, action) => {
 
@@ -261,6 +263,16 @@ export default (state = initialState, action) => {
                 followerList: action.data,
             };
 
+        }
+
+        case REMOVE_POST_OF_ME: {
+            return {
+                ...state,
+                userSessionData: {
+                    ...state.userSessionData,
+                    Posts: state.userSessionData.Posts.filter(v => v.id !== action.data),
+                },
+            };
         }
 
 

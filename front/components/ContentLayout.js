@@ -7,7 +7,7 @@ import {
     ProfileImg, ProfileUser, SpriteBookmarkOutline, SpriteBubbleIcon, SpriteHeartIconOutline,
     SpriteMoreIcon, SpriteShareIcon,
     Top,
-    UserContainer, SpriteFullHeartIconOutline, ContentMoreContainer
+    UserContainer, SpriteFullHeartIconOutline, ContentMoreContainer, MoreRow
 } from "./style/content";
 import CommentLayout from "./CommentLayout";
 import PostImageLayout from "./PostImageLayout";
@@ -16,9 +16,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     BOOKMARK_REQUEST,
     LIKE_POST_REQUEST,
-    UNLIKE_POST_REQUEST
+    UNLIKE_POST_REQUEST,
+    REMOVE_POST_REQUEST
 } from "../reducers/post";
-import {FollowingContainer, Inner as FollowInner, SecondRow} from "./style/follow";
+import {FollowingContainer, Inner as FollowInner} from "./style/follow";
 import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
 
 const ContentLayout = ({v}) => {
@@ -94,9 +95,19 @@ const ContentLayout = ({v}) => {
 
     }, []);
 
+    const onClickPostRemoveButton = useCallback((v) => (e) => {
+        e.stopPropagation();
+
+        dispatch({
+            type: REMOVE_POST_REQUEST,
+            data: v.id,
+        });
+
+    }, []);
+
     useEffect(() => {
 
-        if(followSuccess) {
+        if (followSuccess) {
             moreRef.current.style.opacity = 0;
             moreRef.current.style.visibility = 'hidden';
         }
@@ -111,7 +122,7 @@ const ContentLayout = ({v}) => {
                         <ProfileImg>
                             <Link href={{pathname: '/profile', query: {id: v.UserId}}}
                                   as={`/profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg"
-                                                                     alt="프로필이미지"/></a></Link>
+                                                                      alt="프로필이미지"/></a></Link>
                         </ProfileImg>
                         <ProfileUser>
                             <div>
@@ -129,38 +140,47 @@ const ContentLayout = ({v}) => {
 
                     </UserContainer>
 
-                    <ContentMoreContainer onClick={onClickMoreButton}>
-                        <SpriteMoreIcon>
-                            <FollowingContainer ref={moreRef} style={{opacity: 0, visibility: 'hidden'}}>
-                                <FollowInner style={{minHeight: 'initial'}}>
+                    {!isLoggedIn ? ''
+                        :
+                        <ContentMoreContainer onClick={onClickMoreButton}>
+                            <SpriteMoreIcon>
+                                <FollowingContainer ref={moreRef} style={{opacity: 0, visibility: 'hidden'}}>
+                                    <FollowInner style={{minHeight: 'initial'}}>
 
 
-                                    {!isLoggedIn || v.User.id === userSessionData.id
-                                        ? null
-                                        : (
-                                            userSessionData && userSessionData.Followings && userSessionData.Followings.find(e => e.id === v.User.id)
-                                                ? (
-                                                    <SecondRow onClick={onClickUnFollowButton(v)}
-                                                               style={{cursor: 'pointer', color: 'red'}}>
-                                                        <span>언팔로우</span>
-                                                    </SecondRow>
-                                                )
-                                                : (
-                                                    <SecondRow onClick={onClickFollowButton(v)}
-                                                               style={{cursor: 'pointer'}}>
-                                                        <span>팔로우</span>
-                                                    </SecondRow>
-                                                )
-                                        )}
+                                        {!isLoggedIn || v.User.id === userSessionData.id
+                                            ? null
+                                            : (
+                                                userSessionData && userSessionData.Followings && userSessionData.Followings.find(e => e.id === v.User.id)
+                                                    ? (
+                                                        <MoreRow onClick={onClickUnFollowButton(v)} style={{color: 'red'}}>
+                                                            <span>언팔로우</span>
+                                                        </MoreRow>
+                                                    )
+                                                    : (
+                                                        <MoreRow onClick={onClickFollowButton(v)}>
+                                                            <span>팔로우</span>
+                                                        </MoreRow>
+                                                    )
+                                            )}
 
-                                    <SecondRow onClick={onClickCloseButton} style={{cursor: 'pointer'}}>
-                                        <span>취소</span>
-                                    </SecondRow>
-                                </FollowInner>
-                            </FollowingContainer>
+                                        {v.UserId !== userSessionData.id
+                                            ? ''
+                                            :
+                                            <MoreRow onClick={onClickPostRemoveButton(v)} style={{color: 'red'}}>
+                                                <span>삭제</span>
+                                            </MoreRow>
+                                        }
 
-                        </SpriteMoreIcon>
-                    </ContentMoreContainer>
+                                        <MoreRow onClick={onClickCloseButton}>
+                                            <span>취소</span>
+                                        </MoreRow>
+                                    </FollowInner>
+                                </FollowingContainer>
+
+                            </SpriteMoreIcon>
+                        </ContentMoreContainer>
+                    }
 
                 </Top>
 

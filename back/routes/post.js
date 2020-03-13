@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const router = express.Router();
 const db = require('../models/index');
-const { isLoggedIn } = require('./middleware');
+const { isLoggedIn, isPostExists } = require('./middleware');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -395,6 +395,23 @@ router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
         console.error(e);
         next(e);
     }
+});
+
+// delete post
+router.delete('/:postId', isLoggedIn, isPostExists, async(req, res, next) => {
+
+    try {
+
+        // console.log('res.locals.post: ', res.locals.post);
+        await db.Post.destroy({ where: {id: req.params.postId}});
+
+        res.send(req.params.postId);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+
 });
 
 module.exports = router;

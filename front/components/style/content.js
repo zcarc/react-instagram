@@ -228,3 +228,19 @@ export const ContentMoreContainer = styled.div`
     justify-content: center;
     cursor: pointer;
 `;
+
+
+export const MoreRow = styled.nav`
+    width: 100%;
+    cursor: pointer;
+    
+    & span {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+        padding: 12px 0;
+        user-select: none;
+    }
+`;
