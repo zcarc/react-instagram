@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {SIGN_UP_REQUEST} from "../reducers/user";
 import FadeLoader from "react-spinners/FadeLoader";
 import {override} from "../components/style/common";
+import Router from 'next/router';
 
 
 const Register = () => {
@@ -26,12 +27,18 @@ const Register = () => {
 
     const dispatch = useDispatch();
 
-    const {isSigningUp} = useSelector(state => state.user);
+    const {isSigningUp, isLoggedIn} = useSelector(state => state.user);
 
     useEffect(() => {
         // console.log('useEffect...');
         // console.log('container:', container);
         // console.log('imgs:', imgs);
+
+        if(isLoggedIn) {
+            alert('로그인 상태이므로 메인 페이지로 이동합니다.');
+            Router.push('/');
+            return;
+        }
 
         let timer;
 
@@ -73,7 +80,7 @@ const Register = () => {
             clearTimeout(timer);
         };
 
-    }, [container, imgs, curNumber]);
+    }, [container, imgs, curNumber, isLoggedIn]);
 
 
     const onChangeId = useCallback((e) => {
@@ -114,6 +121,10 @@ const Register = () => {
         });
 
     }, [id, password, passwordCheck, nickname]);
+
+    if(isLoggedIn) {
+        return null;
+    }
 
 
     return (
