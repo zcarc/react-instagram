@@ -35,7 +35,7 @@ app.prepare().then( () => {
 
     server.get('/hashtag/:tag', (req, res) => {
        // console.log('req.params.tag: ', req.params.tag);
-       return app.render(req, res, '/hashtag', { tag: req.params.tag });
+       return app.render(req, res, '/hashtag', { tag: encodeURIComponent(req.params.tag) });
     });
 
 

@@ -75,9 +75,6 @@ Main.getInitialProps = async (context) => {
         // console.log('_app.js pageProps: ', pageProps);
     }
 
-
-
-
     return { pageProps };
 };
 
@@ -87,8 +84,9 @@ const configureStore = ((initialState, options) => {
     // console.log('withRedux()...');
 
     const sagaMiddleware = createSagaMiddleware();
+
     const middleware = [sagaMiddleware, (store) => (next) => (action) => {
-        console.log('middleware action: ', action);
+        // console.log('middleware action: ', action);
         next(action);
     }];
 
