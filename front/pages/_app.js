@@ -87,7 +87,10 @@ const configureStore = ((initialState, options) => {
     // console.log('withRedux()...');
 
     const sagaMiddleware = createSagaMiddleware();
-    const middleware = [sagaMiddleware];
+    const middleware = [sagaMiddleware, (store) => (next) => (action) => {
+        console.log('middleware action: ', action);
+        next(action);
+    }];
 
     const composeEnhancers = typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
