@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {useDispatch, useSelector} from "react-redux";
 import {LOAD_HASHTAG_POSTS_REQUEST} from "../reducers/post";
 import ContentLayout from "../components/ContentLayout";
+import {ContentsBox, Inner} from "../components/style/content";
 
 const Hashtag = ( { tag } ) => {
     // console.log('Hashtag... pageProps: ', pageProps);
@@ -22,7 +23,11 @@ const Hashtag = ( { tag } ) => {
 
     return (
         <>
-            <ContentLayout mainPosts={mainPosts}/>
+            <Inner>
+                <ContentsBox>
+                    {mainPosts && mainPosts.map( v => <ContentLayout v={v}/>)}
+                </ContentsBox>
+            </Inner>
         </>
     )
 };
