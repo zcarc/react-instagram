@@ -250,6 +250,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 userSessionData: {
+                    ...state.userSessionData,
                     Followers: state.userSessionData.Followers.filter(e => e.id !== action.data),
                 },
                 followerList: state.followerList.filter(e => e.id !== action.data),

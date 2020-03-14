@@ -2,17 +2,21 @@ import {
     Cancel,
     Center,
     FirstRow,
-    FollowingContainer, FollowingName, FollowToggleButton, FollowUser,
+    FollowingContainer,
     Inner,
     ScrollContainer, ScrollWrap,
     SecondRow,
     StartEnd,
     SVG,
-    ThirdRow, UserImage, UserObject, UserObjectInner
+    ThirdRow,
 } from "./style/follow";
 import Link from "next/link";
+import FollowUsersObjectLayout from "./FollowUsersObjectLayout";
+import {useSelector} from "react-redux";
 
-const FollowLayout = ({follow}) => {
+const FollowLayout = ({pageName}) => {
+
+    const {followingList, followerList} = useSelector(state => state.user);
 
     return (
         <>
@@ -21,7 +25,7 @@ const FollowLayout = ({follow}) => {
                     <FirstRow>
                         <StartEnd/>
                         <Center>
-                            <div>{follow}</div>
+                            <div>팔로우</div>
                         </Center>
                         <StartEnd>
                             <Link href="/profile">
@@ -39,37 +43,10 @@ const FollowLayout = ({follow}) => {
                     <ThirdRow>
                         <ScrollContainer>
                             <ScrollWrap>
-
-                                <UserObject>
-                                    <UserObjectInner>
-                                        <FollowUser>
-                                            <UserImage>
-                                                <div>
-                                                    <Link href="#">
-                                                        <a>
-                                                            <img
-                                                                src="https://cdn.pixabay.com/photo/2014/05/03/00/50/flower-child-336658_960_720.jpg"
-                                                                alt="user image"/>
-                                                        </a>
-                                                    </Link>
-                                                </div>
-                                            </UserImage>
-                                            <FollowingName>
-                                                <div>
-                                                    <a>olivia</a>
-                                                </div>
-                                                <div>
-                                                    <div>ℋ a n n a h</div>
-                                                </div>
-                                            </FollowingName>
-                                        </FollowUser>
-                                        <div>
-                                            <FollowToggleButton type="button">{follow === '팔로워' ? '팔로우' : follow}</FollowToggleButton>
-                                            {/*<FollowToggleButton type="button">팔로잉</FollowToggleButton>*/}
-                                        </div>
-                                    </UserObjectInner>
-                                </UserObject>
-
+                                {pageName.toLowerCase() === 'following'
+                                    ? followingList.map(user => <FollowUsersObjectLayout key={user} user={user} pageName={pageName}/>)
+                                    : followerList.map(user => <FollowUsersObjectLayout key={user} user={user} pageName={pageName}/>)
+                                }
                             </ScrollWrap>
                         </ScrollContainer>
                     </ThirdRow>

@@ -34,23 +34,14 @@ const ProfileLayout = ( {userSessionData} ) => {
                         </li>
                         <li>
                             <span><Link href="/followers"><a>팔로워</a></Link></span>
-
                             <span>
                                 {userSessionData && userSessionData.Followers && userSessionData.Followers.length}
-                                {/*{id && followerList && followerList.length*/}
-                                {/*    ? followerList.length*/}
-                                {/*    : 0*/}
-                                {/*}*/}
                             </span>
                         </li>
                         <li>
                             <span><Link href="/following"><a>팔로잉</a></Link></span>
                             <span>
                                 {userSessionData && userSessionData.Followings && userSessionData.Followings.length}
-                                {/*{id && followingList && followingList.length*/}
-                                {/*    ? followingList.length*/}
-                                {/*    : 0*/}
-                                {/*}*/}
                             </span>
                         </li>
                     </SecondRow>
