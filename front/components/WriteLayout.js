@@ -15,11 +15,11 @@ const WriteLayout = () => {
     const dispatch = useDispatch();
     const {isAddingPost, isPostAdded, imageNames} = useSelector(state => state.post);
 
-    console.log('WriteLayout imageNames: ', imageNames);
+    // console.log('WriteLayout imageNames: ', imageNames);
 
     const onChangeDesc = useCallback((e) => {
         setDesc(e.target.value);
-        console.log(`desc: ${desc}`);
+        // console.log(`desc: ${desc}`);
     }, [desc]);
 
     const onSubmitForm = useCallback((e) => {

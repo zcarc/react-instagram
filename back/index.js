@@ -46,8 +46,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', (req, res) => {
-    console.log('back/index... req.user: ', req.user);
-    console.log('back/index... req.session: ', req.session);
+    // console.log('back/index... req.user: ', req.user);
+    // console.log('back/index... req.session: ', req.session);
     res.send('hello server');
 });
 
@@ -57,5 +57,5 @@ app.use('/api/posts', postsAPIRouter);
 app.use('/api/hashtag', hashtagAPIRouter);
 
 app.listen(8080, () => {
-    console.log('server is running on http://localhost:8080');
+    // console.log('server is running on http://localhost:8080');
 });

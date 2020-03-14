@@ -29,8 +29,8 @@ const ContentLayout = ({v}) => {
     const moreRef = useRef('');
     const onToggleLike = useCallback((v) => () => {
 
-        console.log('ContentLayout onToggleLike isLoggedIn: ', isLoggedIn);
-        console.log('ContentLayout onToggleLike v: ', v);
+        // console.log('ContentLayout onToggleLike isLoggedIn: ', isLoggedIn);
+        // console.log('ContentLayout onToggleLike v: ', v);
 
         if (!isLoggedIn) {
             return alert('로그인이 필요합니다.');
@@ -86,7 +86,7 @@ const ContentLayout = ({v}) => {
     const onClickUnFollowButton = useCallback((v) => (e) => {
         e.stopPropagation();
 
-        console.log("onClickUnFollowButton... v: ", v);
+        // console.log("onClickUnFollowButton... v: ", v);
 
         dispatch({
             type: UNFOLLOW_USER_REQUEST,

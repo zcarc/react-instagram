@@ -21,7 +21,7 @@ const Home = () => {
 
         if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
 
-            console.log('mainPosts: ', mainPosts);
+            // console.log('mainPosts: ', mainPosts);
             // console.log('mainPosts[mainPosts.length -1].id: ', mainPosts[mainPosts.length -1].id);
 
             if(hasMorePosts) {
@@ -82,7 +82,7 @@ const Home = () => {
 };
 
 Home.getInitialProps = (context) => {
-    console.log('home context: ', Object.keys(context));
+    // console.log('home context: ', Object.keys(context));
 
     context.store.dispatch({
         type: LOAD_MAIN_POSTS_REQUEST,

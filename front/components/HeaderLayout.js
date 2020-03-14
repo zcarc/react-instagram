@@ -15,7 +15,7 @@ const HeaderLayout = () => {
     const { isLoggedIn } = useSelector(state => state.user);
     const dispatch = useDispatch();
 
-    console.log('headerlayout isLoggedIn: ', isLoggedIn);
+    // console.log('headerlayout isLoggedIn: ', isLoggedIn);
 
     const onLogout = useCallback(() =>{
         dispatch({

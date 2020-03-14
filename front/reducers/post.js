@@ -59,7 +59,6 @@ export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 
-
 export default (state = initialState, action) => {
 
     // console.log('reducers/post... state:', state);
@@ -84,7 +83,7 @@ export default (state = initialState, action) => {
         }
 
         case ADD_POST_FAILURE:
-        case WRITE_REDIRECTION:{
+        case WRITE_REDIRECTION: {
             return {
                 ...state,
                 isAddingPost: false,
@@ -100,11 +99,11 @@ export default (state = initialState, action) => {
 
         case ADD_COMMENT_SUCCESS: {
 
-            console.log('reducers/post... ADD_COMMENT_SUCCESS... action.data.postId:', action.data);
+            // console.log('reducers/post... ADD_COMMENT_SUCCESS... action.data.postId:', action.data);
 
-            const index =  state.mainPosts.findIndex(e => e.id === action.data.postId);
+            const index = state.mainPosts.findIndex(e => e.id === action.data.postId);
             const post = state.mainPosts[index];
-            console.log('reducers/post... ADD_COMMENT_SUCCESS... post:', post);
+            // console.log('reducers/post... ADD_COMMENT_SUCCESS... post:', post);
             const comments = [...post.comments, action.data.comment];
             const mainPosts = [...state.mainPosts];
             mainPosts[index] = {...post, comments};
@@ -126,7 +125,7 @@ export default (state = initialState, action) => {
             const post = state.mainPosts[postIndex];
             const comments = action.data.comments;
             const mainPosts = [...state.mainPosts];
-            mainPosts[postIndex] = { ...post, comments };
+            mainPosts[postIndex] = {...post, comments};
             return {
                 ...state,
                 mainPosts,
@@ -171,7 +170,7 @@ export default (state = initialState, action) => {
 
         case UPLOAD_IMAGES_SUCCESS: {
 
-            console.log('UPLOAD_IMAGES_SUCCESS: ', action.data);
+            // console.log('UPLOAD_IMAGES_SUCCESS: ', action.data);
 
             return {
                 ...state,
@@ -190,7 +189,7 @@ export default (state = initialState, action) => {
 
             return {
                 ...state,
-                imageNames: state.imageNames.filter( (v, i) => action.imageIndex !== i ),
+                imageNames: state.imageNames.filter((v, i) => action.imageIndex !== i),
             };
         }
 
@@ -206,7 +205,7 @@ export default (state = initialState, action) => {
 
             const index = state.mainPosts.findIndex(p => p.id === action.data.postId);
             const post = state.mainPosts[index];
-            const Likers = [ { id: action.data.userId }, ...post.Likers ];
+            const Likers = [{id: action.data.userId}, ...post.Likers];
             const mainPosts = [...state.mainPosts];
             mainPosts[index] = {...post, Likers};
 

@@ -5,7 +5,7 @@ const db = {};
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
-// console.log('models/index... sequelize: ', sequelize);
+//  console.log('models/index... sequelize: ', sequelize);
 
 
 db.User = require('./user')(sequelize, Sequelize);
@@ -14,14 +14,14 @@ db.Hashtag = require('./hashtag')(sequelize, Sequelize);
 db.Comment = require('./comment')(sequelize, Sequelize);
 db.Image = require('./image')(sequelize, Sequelize);
 
-// console.log('models/index... db: ', db);
+//  console.log('models/index... db: ', db);
 
 Object.keys(db).forEach(modelName => {
-  console.log('models/index... modelName: ', modelName);
+    // nsole.log('models/index... modelName: ', modelName);
 
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
 });
 
 db.sequelize = sequelize;

@@ -6,11 +6,11 @@ const db = require('../models/index');
 router.get('/', async (req, res, next) => {
 
     const lastId = parseInt(req.query.lastId);
-    console.log('req.query: ', req.query);
+    // console.log('req.query: ', req.query);
 
     let where = {};
 
-    if(lastId) {
+    if (lastId) {
         where = {
             id: {
                 [db.Sequelize.Op.lt]: lastId
@@ -25,7 +25,7 @@ router.get('/', async (req, res, next) => {
 
             include: [{
                 model: db.User,
-                attributes: ['id','userNickname'],
+                attributes: ['id', 'userNickname'],
             }, {
                 model: db.Image,
             }, {
@@ -52,11 +52,11 @@ router.get('/', async (req, res, next) => {
             limit: parseInt(req.query.limit),
         });
         // console.log('posts: ', posts);
-        console.log('JSON.stringify(posts): ', JSON.stringify(posts));
+        // console.log('JSON.stringify(posts): ', JSON.stringify(posts));
 
         return res.json(posts);
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         next(e);
     }

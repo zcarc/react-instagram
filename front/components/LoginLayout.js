@@ -23,8 +23,8 @@ const LoginLayout = () => {
     const {userData, isLoggedIn, isLoggingIn} = useSelector(state => state.user);
 
 
-    console.log('LoginLayout... isLoggingIn: ', isLoggingIn);
-    console.log('LoginLayout... isLoggedIn: ', isLoggedIn);
+    // console.log('LoginLayout... isLoggingIn: ', isLoggingIn);
+    // console.log('LoginLayout... isLoggedIn: ', isLoggedIn);
 
     const action = {
         type: 'LOG_IN_REQUEST',

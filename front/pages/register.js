@@ -34,7 +34,7 @@ const Register = () => {
         // console.log('container:', container);
         // console.log('imgs:', imgs);
 
-        if(isLoggedIn) {
+        if (isLoggedIn) {
             alert('로그인 상태이므로 메인 페이지로 이동합니다.');
             Router.push('/');
             return;
@@ -103,7 +103,7 @@ const Register = () => {
 
     const onSubmitForm = useCallback((e) => {
 
-        console.log('onSubmitForm...');
+        // console.log('onSubmitForm...');
         e.preventDefault();
 
         // 비밀번호 체크
@@ -112,17 +112,17 @@ const Register = () => {
         }
 
         dispatch({
-           type: SIGN_UP_REQUEST,
-           data: {
-               userId: id,
-               userPassword: password,
-               userNickname: nickname,
-           },
+            type: SIGN_UP_REQUEST,
+            data: {
+                userId: id,
+                userPassword: password,
+                userNickname: nickname,
+            },
         });
 
     }, [id, password, passwordCheck, nickname]);
 
-    if(isLoggedIn) {
+    if (isLoggedIn) {
         return null;
     }
 
@@ -187,7 +187,9 @@ const Register = () => {
 
                                         <FormContainer>
                                             <FormSubmitButton type="submit">
-                                                {!isSigningUp ? <div>가입</div> : <FadeLoader css={override} color={"#05dfd7"} loading={isSigningUp}/>}
+                                                {!isSigningUp ? <div>가입</div> :
+                                                    <FadeLoader css={override} color={"#05dfd7"}
+                                                                loading={isSigningUp}/>}
                                             </FormSubmitButton>
                                         </FormContainer>
 

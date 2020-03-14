@@ -50,12 +50,12 @@ Main.getInitialProps = async (context) => {
 
     // const { Component, ctx } = context;
 
-    console.log('Object.keys(context): ', Object.keys(context));
-    console.log('Object.keys(context.ctx): ', Object.keys(context.ctx));
-    console.log('context.ctx.isServer: ', context.ctx.isServer);
+    // console.log('Object.keys(context): ', Object.keys(context));
+    // console.log('Object.keys(context.ctx): ', Object.keys(context.ctx));
+    // console.log('context.ctx.isServer: ', context.ctx.isServer);
 
     const cookie = context.ctx.req ? context.ctx.req.headers.cookie : '';
-    console.log('cookie: ', cookie);
+    // console.log('cookie: ', cookie);
 
     if(context.ctx.isServer && cookie) {
         axios.defaults.headers.Cookie = cookie;

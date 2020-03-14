@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const passport = require('passport');
-const { isLoggedIn } = require('./middleware');
+const {isLoggedIn} = require('./middleware');
 
 // load user session
 router.get('/', isLoggedIn, async (req, res) => {
@@ -61,10 +61,10 @@ router.get('/:id', isLoggedIn, async (req, res, next) => {
             attributes: ['id', 'userNickname'],
         });
 
-        console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
+        // console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
 
         const jsonAnUserInfo = anUserInfo.toJSON();
-        jsonAnUserInfo.Posts =  jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
+        jsonAnUserInfo.Posts = jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
 
         res.json(jsonAnUserInfo);
 
@@ -102,7 +102,7 @@ router.get('/:id/posts', async (req, res, next) => {
 
         return res.json(userPosts);
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         return next(e);
     }
@@ -112,7 +112,7 @@ router.get('/:id/posts', async (req, res, next) => {
 // register
 router.post('/', async (req, res, next) => {
 
-    console.log('routes/user... req.body: ', req.body);
+    // console.log('routes/user... req.body: ', req.body);
 
     try {
 
@@ -138,7 +138,7 @@ router.post('/', async (req, res, next) => {
         });
 
         // console.log('newUser: ', newUser);
-        console.log('newUser.toJSON(): ', newUser.toJSON());
+        // console.log('newUser.toJSON(): ', newUser.toJSON());
 
 
         return res.status(200).json(newUser);
@@ -152,15 +152,15 @@ router.post('/', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
 
-    console.log('routes/user... req.body: ', req.body);
+    // console.log('routes/user... req.body: ', req.body);
 
 
     passport.authenticate('local', (err, user, info) => {
 
         // if not exists,
-        console.log('routes/user... passport.authenticate err: ', err); // null
-        console.log('routes/user... passport.authenticate user: ', user); // false
-        console.log('routes/user... passport.authenticate info: ', info); // undefined
+        //  console.log('routes/user... passport.authenticate err: ', err); // null
+        //  console.log('routes/user... passport.authenticate user: ', user); // false
+        //  console.log('routes/user... passport.authenticate info: ', info); // undefined
 
         // console.log('routes/user... passport.authenticate req.user: ', req.user);
         // console.log('routes/user... passport.authenticate req.session: ', req.session);
@@ -177,9 +177,9 @@ router.post('/login', async (req, res, next) => {
 
         return req.login(user, async (loginError) => {
 
-            console.log('req.login()... user: ', user);
-            console.log('req.login()... req.user: ', req.user); // db object
-            console.log('req.login()... req.session: ', req.session); // { passport: { user: 1 } }
+            //  console.log('req.login()... user: ', user);
+            //  console.log('req.login()... req.user: ', req.user); // db object
+            //  console.log('req.login()... req.session: ', req.session); // { passport: { user: 1 } }
 
 
             if (loginError) {
@@ -205,7 +205,7 @@ router.post('/login', async (req, res, next) => {
                     }],
                     attributes: ['id', 'userId', 'userNickname'],
                 });
-                console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
+                //  console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
 
                 // const filteredUser = Object.assign({}, user.toJSON());
                 // delete filteredUser.userPassword;
@@ -226,7 +226,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/logout', isLoggedIn, (req, res, next) => {
-    console.log('/logout...');
+    //  console.log('/logout...');
 
     req.logout();
     req.session.destroy();
@@ -239,7 +239,7 @@ router.post('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
         const user = await db.User.findOne({
             where: {id: req.user.id},
         });
-        console.log('/id:/follow... user.toJSON(): ', user.toJSON());
+        //  console.log('/id:/follow... user.toJSON(): ', user.toJSON());
 
         await user.addFollowing(req.params.postUserId);
 
@@ -256,7 +256,7 @@ router.delete('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
         const user = await db.User.findOne({
             where: {id: req.user.id},
         });
-        console.log('/postUserId/follow... user.toJSON(): ', user.toJSON());
+        //  console.log('/postUserId/follow... user.toJSON(): ', user.toJSON());
 
         await user.removeFollowing(req.params.postUserId);
 
@@ -272,11 +272,11 @@ router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
 
     try {
         const user = await db.User.findOne({
-            where: { id: parseInt(req.params.userId, 10) || (req.user.id || 0)  },
+            where: {id: parseInt(req.params.userId, 10) || (req.user.id || 0)},
             attributes: ['id'],
         });
 
-        if(!user) {
+        if (!user) {
             return res.status('404').send('존재하지 않는 사용자입니다.');
         }
 
@@ -284,11 +284,11 @@ router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
             attributes: ['id', 'userNickname'],
         });
 
-        console.log('userFollowings: ', JSON.stringify(userFollowings));
+        //  console.log('userFollowings: ', JSON.stringify(userFollowings));
 
         return res.json(userFollowings);
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         return next(e);
     }
@@ -299,11 +299,11 @@ router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
 
     try {
         const user = await db.User.findOne({
-            where: { id: parseInt(req.params.userId, 10) || (req.user.id || 0) },
+            where: {id: parseInt(req.params.userId, 10) || (req.user.id || 0)},
             attributes: ['id'],
         });
 
-        if(!user) {
+        if (!user) {
             return res.status('404').send('존재하지 않는 사용자입니다.');
         }
 
@@ -311,11 +311,11 @@ router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
             attributes: ['id', 'userNickname'],
         });
 
-        console.log('userFollowers: ', JSON.stringify(userFollowers));
+        //  console.log('userFollowers: ', JSON.stringify(userFollowers));
 
         return res.json(userFollowers);
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         return next(e);
     }
@@ -326,7 +326,7 @@ router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => {
 
     try {
         const user = await db.User.findOne({
-            where: { id: req.user.id },
+            where: {id: req.user.id},
             attributes: ['id'],
         });
 
@@ -334,7 +334,7 @@ router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => {
 
         return res.send(req.params.userId);
 
-    }catch (e) {
+    } catch (e) {
         console.error(e);
         return next(e);
     }

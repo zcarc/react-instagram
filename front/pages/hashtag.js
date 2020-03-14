@@ -26,7 +26,7 @@ const Hashtag = () => {
 Hashtag.getInitialProps = (context) => {
     // console.log('Hashtag.getInitialProps... context: ', context);
     // console.log('Hashtag.getInitialProps... context.query: ', context.query);
-    console.log('Hashtag.getInitialProps... context.query.tag: ', context.query.tag);
+    // console.log('Hashtag.getInitialProps... context.query.tag: ', context.query.tag);
 
 
     context.store.dispatch({

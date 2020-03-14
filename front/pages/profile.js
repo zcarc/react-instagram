@@ -16,10 +16,10 @@ Profile.getInitialProps = (context) => {
     const {dispatch, getState} = context.store;
     const {userSessionData} = getState().user;
 
-    console.log('getState: ', getState);
-    console.log('userSessionData: ', userSessionData && userSessionData.id);
+    // console.log('getState: ', getState);
+    // console.log('userSessionData: ', userSessionData && userSessionData.id);
 
-    console.log('context.store.getState().user: ', context.store.getState().user);
+    // console.log('context.store.getState().user: ', context.store.getState().user);
 
 
     dispatch({

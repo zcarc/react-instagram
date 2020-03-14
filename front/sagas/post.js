@@ -177,7 +177,7 @@ function* uploadImages(action) {
 
     try {
         const result = yield call(uploadImagesAPI, action.data);
-        console.log('uploadImages result.data: ', result.data);
+        // console.log('uploadImages result.data: ', result.data);
         yield put({
             type: UPLOAD_IMAGES_SUCCESS,
             data: result.data,
@@ -287,7 +287,7 @@ function loadMainPostsAPI(lastId, limit = 10) {
 
 function* loadMainPosts(action) {
 
-    console.log('loadMainPosts action: ', action);
+    // console.log('loadMainPosts action: ', action);
 
     try {
         const loadedPosts = yield call(loadMainPostsAPI, action.lastId);
@@ -319,11 +319,11 @@ function addCommentAPI(data) {
 
 function* addComment(action) {
 
-    console.log('sagas/post... addComment... action: ', action);
+    // console.log('sagas/post... addComment... action: ', action);
 
     try {
         const result = yield call(addCommentAPI, action.data);
-        console.log('addComment result: ', result);
+        // console.log('addComment result: ', result);
         yield put({
             type: ADD_COMMENT_SUCCESS,
             data: {

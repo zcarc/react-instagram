@@ -2,7 +2,7 @@ const db = require('../models/index');
 
 exports.isLoggedIn = (req, res, next) => {
     if(req.isAuthenticated()) {
-        console.log('req.isAuthenticated(): ', req.isAuthenticated());
+        // console.log('req.isAuthenticated(): ', req.isAuthenticated());
         next();
 
     } else {

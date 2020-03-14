@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const router = express.Router();
 const db = require('../models/index');
-const { isLoggedIn, isPostExists } = require('./middleware');
+const {isLoggedIn, isPostExists} = require('./middleware');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -30,9 +30,9 @@ const upload = multer({
 // add post
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 
-    console.log('routes/post... /post... req.body: ', req.body);
-    console.log('routes/post... /post... req.body.image: ', req.body.image);
-    console.log('routes/post... /post... req.user.toJSON(): ', req.user && req.user.toJSON());
+    // console.log('routes/post... /post... req.body: ', req.body);
+    // console.log('routes/post... /post... req.body.image: ', req.body.image);
+    // console.log('routes/post... /post... req.user.toJSON(): ', req.user && req.user.toJSON());
 
     try {
 
@@ -43,30 +43,30 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
             UserId: req.user.id,
         });
 
-        console.log('newPost: ', newPost);
+        // console.log('newPost: ', newPost);
 
 
         const hashTags = content.match(/#[^\s#]+/g);
 
-        console.log('hashTags: ', hashTags);
+        // console.log('hashTags: ', hashTags);
 
-        if(hashTags) {
+        if (hashTags) {
             const result = await Promise.all(hashTags.map(tag => db.Hashtag.findOrCreate({
-                where: { name: tag.slice(1).toLowerCase() },
+                where: {name: tag.slice(1).toLowerCase()},
             })));
 
             // console.log('result: ', result);
-            console.log('JSON.stringify(result): ', JSON.stringify(result));
+            // console.log('JSON.stringify(result): ', JSON.stringify(result));
 
             // const resultMap = result.map(hashTagRow => hashTagRow[0]);
             // console.log('resultMap: ', resultMap);
 
             // returns an array that has objects.
-            const resultNM = await newPost.addHashtag( result.map(hashTagRow => hashTagRow[0]) );
+            const resultNM = await newPost.addHashtag(result.map(hashTagRow => hashTagRow[0]));
             // console.log('resultNM: ', resultNM);
 
             // hashTags.map((tag) => {
-            //     console.log('tag: ', tag);
+            // console.log('tag: ', tag);
             //     return db.Hashtag.findOne({
             //         where: { name: tag },
             //     });
@@ -79,28 +79,28 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
             // console.log('create: ', create);
 
             // result.map( (e) => {
-            //     console.log('e: ', e);
-            //     console.log('e[0]: ', e[0]);
-            //     console.log('JSON.stringify(e[0]) : ', JSON.stringify(e[0]));
+            // console.log('e: ', e);
+            // console.log('e[0]: ', e[0]);
+            // console.log('JSON.stringify(e[0]) : ', JSON.stringify(e[0]));
             // } );
 
         }
 
-        if(req.body.image) {
+        if (req.body.image) {
 
-            if(Array.isArray(req.body.image)) {
+            if (Array.isArray(req.body.image)) {
 
                 const images = await Promise.all(req.body.image.map((image) => {
-                    return db.Image.create({ src: image });
+                    return db.Image.create({src: image});
                 }));
-                console.log('#JSON.stringify(images): ', JSON.stringify(images));
+                // console.log('#JSON.stringify(images): ', JSON.stringify(images));
 
                 await newPost.addImage(images);
 
             } else {
 
-                const image = await db.Image.create({ src: req.body.image });
-                console.log('#JSON.stringify(image): ', JSON.stringify(image));
+                const image = await db.Image.create({src: req.body.image});
+                // console.log('#JSON.stringify(image): ', JSON.stringify(image));
 
                 await newPost.addImage(image);
 
@@ -112,7 +112,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
             where: {id: newPost.id},
             include: [{
                 model: db.User,
-                attributes: ['id','userNickname'],
+                attributes: ['id', 'userNickname'],
             }, {
                 model: db.Image,
             }, {
@@ -171,7 +171,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
 // add comment
 router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
 
-    console.log('comment req.body: ', req.body);
+    // console.log('comment req.body: ', req.body);
 
     try {
 
@@ -181,7 +181,7 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
             }
         });
 
-        if(!post) {
+        if (!post) {
             return res.status(401).send('해당 게시글은 존재하지 않습니다.');
         }
 
@@ -191,7 +191,7 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
             content: req.body.content,
         });
 
-        console.log('newComment.toJSON(): ', newComment.toJSON());
+        // console.log('newComment.toJSON(): ', newComment.toJSON());
 
         // await post.addComment(newComment.id);
 
@@ -205,10 +205,9 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
             }],
         });
 
-        console.log('commentIncludingUser.toJSON(): ', commentIncludingUser.toJSON());
+        // console.log('commentIncludingUser.toJSON(): ', commentIncludingUser.toJSON());
 
         return res.json(commentIncludingUser);
-
 
 
     } catch (e) {
@@ -222,9 +221,9 @@ router.post('/:id/comment', isLoggedIn, async (req, res, next) => {
 router.get('/:id/comments', async (req, res, next) => {
     try {
 
-        console.log('comments req.params.id: ', req.params.id);
+        // console.log('comments req.params.id: ', req.params.id);
 
-        const post = await db.Post.findOne({ where: { id: req.params.id } });
+        const post = await db.Post.findOne({where: {id: req.params.id}});
 
         if (!post) {
             return res.status(401).send('해당 게시글은 존재하지 않습니다.');
@@ -245,7 +244,7 @@ router.get('/:id/comments', async (req, res, next) => {
             order: [['createdAt', 'ASC']],
         });
 
-        console.log('comments: ', comments);
+        // console.log('comments: ', comments);
 
         return res.json(comments);
 
@@ -257,14 +256,14 @@ router.get('/:id/comments', async (req, res, next) => {
 
 // add images using multer
 router.post('/images', isLoggedIn, upload.array('image'), (req, res) => {
-    console.log('images req.body: ', req.body);
-    console.log('images req.files: ', req.files);
+    // console.log('images req.body: ', req.body);
+    // console.log('images req.files: ', req.files);
 
     return res.json(req.files.map((f) => f.filename));
 });
 
 // add like
-router.post('/:postId/like', isLoggedIn, async(req, res, next) => {
+router.post('/:postId/like', isLoggedIn, async (req, res, next) => {
 
     try {
         const post = await db.Post.findOne({
@@ -273,7 +272,7 @@ router.post('/:postId/like', isLoggedIn, async(req, res, next) => {
             },
         });
 
-        if(!post) {
+        if (!post) {
             return res.status(404).send('게시글이 존재하지 않습니다.');
         }
 
@@ -281,7 +280,7 @@ router.post('/:postId/like', isLoggedIn, async(req, res, next) => {
         const addLikers = await post.addLikers(req.user.id);
         // console.log('JSON.stringify(addLikers): ', JSON.stringify(addLikers));
 
-        return res.json({ userId: req.user.id })
+        return res.json({userId: req.user.id})
 
     } catch (e) {
         console.error(e);
@@ -291,7 +290,7 @@ router.post('/:postId/like', isLoggedIn, async(req, res, next) => {
 });
 
 // delete like
-router.delete('/:postId/like', isLoggedIn, async(req, res, next) => {
+router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
 
     try {
         const post = await db.Post.findOne({
@@ -300,14 +299,14 @@ router.delete('/:postId/like', isLoggedIn, async(req, res, next) => {
             },
         });
 
-        if(!post) {
+        if (!post) {
             return res.status(404).send('게시글이 존재하지 않습니다.');
         }
 
         const removeLikers = await post.removeLikers(req.user.id);
-        console.log('JSON.stringify(removeLikers): ', JSON.stringify(removeLikers));
+        // console.log('JSON.stringify(removeLikers): ', JSON.stringify(removeLikers));
 
-        res.json({ userId: req.user.id })
+        res.json({userId: req.user.id})
 
     } catch (e) {
         console.error(e);
@@ -330,18 +329,18 @@ router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
                 as: 'Bookmark',
             }],
         });
-        console.log('JSON.stringify(post): ', JSON.stringify(post));
-        console.log('JSON.stringify(post.Bookmark && post.Bookmark.UserId): ', JSON.stringify(post.Bookmark && post.Bookmark.UserId));
-        console.log('JSON.stringify(req.user.id): ', JSON.stringify(req.user.id));
+        // console.log('JSON.stringify(post): ', JSON.stringify(post));
+        // console.log('JSON.stringify(post.Bookmark && post.Bookmark.UserId): ', JSON.stringify(post.Bookmark && post.Bookmark.UserId));
+        // console.log('JSON.stringify(req.user.id): ', JSON.stringify(req.user.id));
 
-        if(!post) {
+        if (!post) {
             return res.status(404).send('게시글이 존재하지 않습니다.');
         }
 
-        if(req.user.id === post.UserId) {
+        if (req.user.id === post.UserId) {
             return res.status(403).send('자신의 글은 저장할 수 없습니다.');
 
-        } else if(post.Bookmark && post.Bookmark.UserId === req.user.id) {
+        } else if (post.Bookmark && post.Bookmark.UserId === req.user.id) {
             return res.status(403).send('원본 게시글의 작성자이므로 저장할 수 없습니다.');
         }
 
@@ -353,9 +352,9 @@ router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
                 BookmarkId: bookmarkTargetId,
             },
         });
-        console.log('JSON.stringify(isAlreadyBookmarked): ', JSON.stringify(isAlreadyBookmarked));
+        // console.log('JSON.stringify(isAlreadyBookmarked): ', JSON.stringify(isAlreadyBookmarked));
 
-        if(isAlreadyBookmarked) {
+        if (isAlreadyBookmarked) {
             return res.status(403).send('이미 등록된 글입니다.');
         }
 
@@ -364,7 +363,7 @@ router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
             BookmarkId: post.id,
             content: ' ',
         });
-        console.log('JSON.stringify(newBookmark): ', JSON.stringify(newBookmark));
+        // console.log('JSON.stringify(newBookmark): ', JSON.stringify(newBookmark));
 
         const bookmarkWithPrevPost = await db.Post.findOne({
             where: {id: newBookmark.id},
@@ -387,7 +386,7 @@ router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
                 }],
             }]
         });
-        console.log('JSON.stringify(bookmarkWithPrevPost): ', JSON.stringify(bookmarkWithPrevPost));
+        // console.log('JSON.stringify(bookmarkWithPrevPost): ', JSON.stringify(bookmarkWithPrevPost));
 
         return res.json(bookmarkWithPrevPost);
 
@@ -398,12 +397,12 @@ router.post('/:postId/bookmark', isLoggedIn, async (req, res, next) => {
 });
 
 // delete post
-router.delete('/:postId', isLoggedIn, isPostExists, async(req, res, next) => {
+router.delete('/:postId', isLoggedIn, isPostExists, async (req, res, next) => {
 
     try {
 
         // console.log('res.locals.post: ', res.locals.post);
-        await db.Post.destroy({ where: {id: req.params.postId}});
+        await db.Post.destroy({where: {id: req.params.postId}});
 
         res.send(req.params.postId);
 

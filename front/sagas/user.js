@@ -138,7 +138,7 @@ function unFollowAPI(postUserId) {
 function* unFollow(action) {
     try {
 
-        console.log('sagas unFollow result: ', JSON.stringify(action));
+        // console.log('sagas unFollow result: ', JSON.stringify(action));
 
         const result = yield call(unFollowAPI, action.data);
 
@@ -250,7 +250,7 @@ function* watchLogout() {
 
 function loadUserAPI(data) {
 
-    console.log('loadUserAPI data: ', data);
+    // console.log('loadUserAPI data: ', data);
 
     return axios.get(`/user/${data || 0}/`, {
         withCredentials: true,
@@ -261,7 +261,7 @@ function* loadUser(action) {
 
     try {
         const result = yield call(loadUserAPI, action.data);
-        console.log('loadUser... result: ', result);
+        // console.log('loadUser... result: ', result);
         // yield delay(800);
         yield put({
             type: LOAD_USER_SUCCESS,
@@ -302,7 +302,7 @@ function* signUp(action) {
 
     try {
         const result = yield call(signUpAPI, action.data);
-        console.log('result: ', result);
+        // console.log('result: ', result);
         yield delay(1000);
         yield put({
             type: SIGN_UP_SUCCESS,
@@ -323,7 +323,7 @@ function* watchSignUp() {
 }
 
 function loginAPI(data) {
-    return axios.post('/user/login', data,{
+    return axios.post('/user/login', data, {
         withCredentials: true,
     });
 
