@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import ContentLayout from "../components/ContentLayout";
-import React, {useEffect} from "react";
+import React, {useEffect, useCallback} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
 import {ContentsBox, Inner} from "../components/style/content";
@@ -12,9 +12,28 @@ const Home = () => {
     const isPostAdded = store.getState().post.isPostAdded;
     // const isLoggedIn = store.getState().user.isLoggedIn;
 
-    const {mainPosts} = useSelector(state => state.post);
+    const {mainPosts, hasMorePosts} = useSelector(state => state.post);
     // const mainPosts = useStore().getState().post.mainPosts;
     // console.log('ContentLayout... mainPosts ', mainPosts);
+
+    const onScroll = useCallback(() => {
+        // console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
+
+        if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+
+            console.log('mainPosts: ', mainPosts);
+            // console.log('mainPosts[mainPosts.length -1].id: ', mainPosts[mainPosts.length -1].id);
+
+            if(hasMorePosts) {
+                dispatch({
+                    type: LOAD_MAIN_POSTS_REQUEST,
+                    lastId: mainPosts[mainPosts.length - 1].id,
+                });
+            }
+
+        }
+
+    }, [mainPosts, hasMorePosts]);
 
 
     useEffect(() => {
@@ -29,7 +48,16 @@ const Home = () => {
         //     Router.push('/register');
         // }
 
-    }, [isPostAdded]);
+
+
+        window.addEventListener('scroll', onScroll);
+
+        return () => {
+            // console.log('index useEffect return');
+            window.removeEventListener('scroll', onScroll);
+        }
+
+    }, [isPostAdded, mainPosts.length]);
 
     return (
         <>

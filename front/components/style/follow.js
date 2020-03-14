@@ -168,6 +168,7 @@ export const FollowToggleButton = styled.button`
     padding: 5px 9px;
     background: 0;
     font-weight: 600;
+    cursor: pointer;
 `;
 
 

@@ -1,4 +1,4 @@
-import {useCallback, useRef, useEffect} from 'react';
+import {useCallback, useRef} from 'react';
 import {
     BottomIcons, Comment, CommentContainer, CommentDetail,
     Contents,
@@ -24,7 +24,7 @@ import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
 
 const ContentLayout = ({v}) => {
 
-    const {isLoggedIn, userSessionData, followSuccess} = useSelector(state => state.user);
+    const {isLoggedIn, userSessionData} = useSelector(state => state.user);
     const dispatch = useDispatch();
     const moreRef = useRef('');
     const onToggleLike = useCallback((v) => () => {
@@ -105,14 +105,14 @@ const ContentLayout = ({v}) => {
 
     }, []);
 
-    useEffect(() => {
-
-        if (followSuccess) {
-            moreRef.current.style.opacity = 0;
-            moreRef.current.style.visibility = 'hidden';
-        }
-
-    }, [followSuccess]);
+    // useEffect(() => {
+    //
+    //     if (followSuccess) {
+    //         moreRef.current.style.opacity = 0;
+    //         moreRef.current.style.visibility = 'hidden';
+    //     }
+    //
+    // }, [followSuccess]);
 
     return (
         <>
@@ -153,7 +153,8 @@ const ContentLayout = ({v}) => {
                                             : (
                                                 userSessionData && userSessionData.Followings && userSessionData.Followings.find(e => e.id === v.User.id)
                                                     ? (
-                                                        <MoreRow onClick={onClickUnFollowButton(v)} style={{color: 'red'}}>
+                                                        <MoreRow onClick={onClickUnFollowButton(v)}
+                                                                 style={{color: 'red'}}>
                                                             <span>언팔로우</span>
                                                         </MoreRow>
                                                     )

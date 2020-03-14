@@ -280,15 +280,17 @@ function* watchLoadHashtagPosts() {
     yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
 
-function loadMainPostsAPI() {
+function loadMainPostsAPI(lastId, limit = 10) {
 
-    return axios.get('/posts');
+    return axios.get(`/posts?lastId=${lastId}&limit=${limit}`);
 }
 
-function* loadMainPosts() {
+function* loadMainPosts(action) {
+
+    console.log('loadMainPosts action: ', action);
 
     try {
-        const loadedPosts = yield call(loadMainPostsAPI);
+        const loadedPosts = yield call(loadMainPostsAPI, action.lastId);
         // console.log('loadedPosts: ', loadedPosts);
         yield put({
             type: LOAD_MAIN_POSTS_SUCCESS,

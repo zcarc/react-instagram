@@ -6,6 +6,7 @@ const initialState = {
     isCommentAdded: false,
     mainPosts: '',
     imageNames: '',
+    // hasMorePosts: false,
 };
 
 
@@ -137,6 +138,8 @@ export default (state = initialState, action) => {
         case LOAD_USER_POSTS_REQUEST: {
             return {
                 ...state,
+                mainPosts: action.lastId ? state.mainPosts : [],
+                hasMorePosts: action.lastId ? state.hasMorePosts : true,
             }
         }
 
@@ -146,7 +149,8 @@ export default (state = initialState, action) => {
 
             return {
                 ...state,
-                mainPosts: action.data,
+                mainPosts: state.mainPosts.concat(action.data),
+                hasMorePosts: action.data.length === 10,
             }
         }
 

@@ -5,14 +5,24 @@ const db = require('../models/index');
 // get all posts
 router.get('/', async (req, res, next) => {
 
-    // db.Post.findAll({
-    //     include: [{
-    //         model: db.User,
-    //     }],
-    // })
+    const lastId = parseInt(req.query.lastId);
+    console.log('req.query: ', req.query);
+
+    let where = {};
+
+    if(lastId) {
+        where = {
+            id: {
+                [db.Sequelize.Op.lt]: lastId
+            }
+        };
+    }
 
     try {
         const posts = await db.Post.findAll({
+
+            where,
+
             include: [{
                 model: db.User,
                 attributes: ['id','userNickname'],
@@ -39,6 +49,7 @@ router.get('/', async (req, res, next) => {
                 }],
             }],
             order: [['createdAt', 'DESC']],
+            limit: parseInt(req.query.limit),
         });
         // console.log('posts: ', posts);
         console.log('JSON.stringify(posts): ', JSON.stringify(posts));

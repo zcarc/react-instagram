@@ -7,12 +7,12 @@ import {useSelector} from "react-redux";
 
 const Following = ({pageName}) => {
 
-    const {userSessionData} = useSelector(state => state.user);
+    const {userSessionData, followingList} = useSelector(state => state.user);
 
     return (
         <>
             <ProfileLayout userSessionData={userSessionData}/>
-            <FollowLayout pageName={pageName}/>
+            {Object.keys(followingList).length !== 0 ? <FollowLayout pageName={pageName}/> : null}
         </>
     );
 };
@@ -22,7 +22,7 @@ Following.getInitialProps = (context) => {
     const {dispatch, getState} = context.store;
     const {userSessionData, followingList} = getState().user;
 
-    if(!followingList) {
+    if (!followingList) {
         dispatch({
             type: LOAD_FOLLOWINGS_REQUEST,
             data: userSessionData && userSessionData.id,

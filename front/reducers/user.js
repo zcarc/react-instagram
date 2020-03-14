@@ -3,10 +3,11 @@ const initialState = {
     isLoggingIn: false,
     isSignedUp: false,
     isSigningUp: false,
+    isFollowing: false,
+    isUnFollowing: false,
     signUpError: '',
     me: false,
     userSessionData: null,
-    followSuccess: false,
     followingList: [],
     followerList: [],
 };
@@ -162,18 +163,24 @@ export default (state = initialState, action) => {
             };
         }
 
-        case FOLLOW_USER_REQUEST:
+        case FOLLOW_USER_REQUEST: {
+            return {
+                ...state,
+                isFollowing: true,
+            };
+        }
+
         case UNFOLLOW_USER_REQUEST:{
             return {
                 ...state,
-                followSuccess: false,
+                isUnFollowing: true,
             };
         }
 
         case FOLLOW_USER_SUCCESS: {
             return {
                 ...state,
-                followSuccess: true,
+                isFollowing: false,
                 userSessionData: {
                     ...state.userSessionData,
                     Followings: [
@@ -194,11 +201,12 @@ export default (state = initialState, action) => {
         case UNFOLLOW_USER_SUCCESS: {
             return {
                 ...state,
-                followSuccess: true,
+                isUnFollowing: true,
                 userSessionData: {
                     ...state.userSessionData,
                     Followings: state.userSessionData.Followings.filter(e => e.id !== action.data),
                 },
+                followingList: state.followingList.filter(e => e.id !== action.data),
             };
         }
 

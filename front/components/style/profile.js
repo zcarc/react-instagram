@@ -130,3 +130,11 @@ export const Pic  = styled.div`
 
 `;
 
+
+export const RowSpan  = styled.span`
+    margin-right: 3px;
+    
+    & a {
+        color: black;
+    }
+`;

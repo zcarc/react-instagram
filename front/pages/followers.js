@@ -7,12 +7,12 @@ import {useSelector} from "react-redux";
 
 const Followers = ({pageName}) => {
 
-    const {userSessionData} = useSelector(state => state.user);
+    const {userSessionData, followerList} = useSelector(state => state.user);
 
     return (
         <>
             <ProfileLayout userSessionData={userSessionData} />
-            <FollowLayout pageName={pageName}/>
+            {Object.keys(followerList).length !== 0 ? <FollowLayout pageName={pageName}/> : null}
         </>
     );
 };
