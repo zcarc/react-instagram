@@ -114,7 +114,7 @@ const Register = () => {
         console.log('whiteSpace: ', whiteSpace);
 
         if(whiteSpace > -1) {
-            return alert('각 항목은 필수입력 사항입니다.');
+            return alert('각 항목은 필수사항입니다.');
         }
 
         if (password !== passwordCheck) {
