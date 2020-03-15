@@ -301,9 +301,10 @@ function* signUp(action) {
     // console.log('sagas/user... action: ', action);
 
     try {
+        yield delay(1000);
         const result = yield call(signUpAPI, action.data);
         // console.log('result: ', result);
-        yield delay(1000);
+
         yield put({
             type: SIGN_UP_SUCCESS,
         });
@@ -314,7 +315,9 @@ function* signUp(action) {
         yield put({
             type: SIGN_UP_FAILURE,
             error: e,
-        })
+        });
+        // console.dir(e);
+        alert(e.response.data);
     }
 }
 
@@ -333,10 +336,12 @@ function loginAPI(data) {
 function* login(action) {
 
     try {
+
+        yield delay(1000);
         const result = yield call(loginAPI, action.data);
         // console.log('sagas/user... login axios result: ', result); // user data: result.data
         // console.log('sagas/user... login axios result.data: ', result.data);
-        yield delay(800);
+
         yield put({
             type: LOG_IN_SUCCESS,
             data: result.data,

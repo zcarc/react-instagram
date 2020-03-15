@@ -25,3 +25,75 @@ export const override = css`
     left: 0;
     transform: scale(0.3) translateY(-83%) translateX(33%);
 `;
+
+export const Spinner = styled.div`
+    position: relative;
+    width: 100px;
+    height: 100px;
+    
+    & :before, :after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+    }
+    
+    & :before {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        background: linear-gradient(-45deg, #b80d57, #f8615a, #ffd868);
+        animation: spinner .5s infinite linear;
+        
+    }
+    
+    & :after {
+        width: 90%;
+        height: 90%;
+        background: #fafafa;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    @keyframes spinner {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+`;
+
+export const SpinnerSmall = styled.div`
+    position: relative;
+    width: 18px;
+    height: 18px;
+    
+    & :before, :after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+    }
+    
+    & :before {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        background: linear-gradient(-45deg, #b80d57, #f8615a, #ffd868);
+        animation: spinner .5s infinite linear;
+        
+    }
+    
+    & :after {
+        width: 65%;
+        height: 65%;
+        background: #3897f0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    @keyframes spinner {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+`;

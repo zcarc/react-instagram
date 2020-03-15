@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 
-import {override} from "./style/common";
+import {override, SpinnerSmall} from "./style/common";
 import FadeLoader from "react-spinners/FadeLoader";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 
@@ -25,15 +25,6 @@ const LoginLayout = () => {
 
     // console.log('LoginLayout... isLoggingIn: ', isLoggingIn);
     // console.log('LoginLayout... isLoggedIn: ', isLoggedIn);
-
-    const action = {
-        type: 'LOG_IN_REQUEST',
-        data: {
-            userId: id,
-            userPassword: password,
-        },
-    };
-
 
     const onChangeId = useCallback((e) => {
         // console.log('onChangeId e.target.value: ', e.target.value);
@@ -51,9 +42,19 @@ const LoginLayout = () => {
 
         e.preventDefault();
 
-        dispatch(action);
+        if (isLoggingIn) {
+            return;
+        }
 
-    }, [id, password]);
+        dispatch({
+            type: 'LOG_IN_REQUEST',
+            data: {
+                userId: id,
+                userPassword: password,
+            },
+        });
+
+    }, [id, password, isLoggingIn]);
 
     const onLogoutForm = useCallback(() => {
         dispatch({
@@ -94,8 +95,10 @@ const LoginLayout = () => {
 
                                 <FormContainer>
                                     <FormSubmitButton type="submit">
-                                        {!isLoggingIn ? <div>로그인</div> :
-                                            <FadeLoader css={override} color={"#05dfd7"} loading={isLoggingIn}/>}
+                                        {!isLoggingIn
+                                            ? <div>로그인</div>
+                                            : <SpinnerSmall/>
+                                        }
                                     </FormSubmitButton>
                                 </FormContainer>
                             </FormReg>

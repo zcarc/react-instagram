@@ -9,8 +9,7 @@ import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 
 import {SIGN_UP_REQUEST} from "../reducers/user";
-import FadeLoader from "react-spinners/FadeLoader";
-import {override} from "../components/style/common";
+import {SpinnerSmall} from "../components/style/common";
 import Router from 'next/router';
 
 
@@ -106,9 +105,25 @@ const Register = () => {
         // console.log('onSubmitForm...');
         e.preventDefault();
 
-        // 비밀번호 체크
+        if(isSigningUp) {
+            return;
+        }
+
+        const userInfo = [id, nickname, password, passwordCheck];
+        const whiteSpace = userInfo.findIndex(e => e === '');
+        console.log('whiteSpace: ', whiteSpace);
+
+        if(whiteSpace > -1) {
+            return alert('각 항목에 대해서 최소 한자리가 필요합니다.');
+        }
+
         if (password !== passwordCheck) {
             return alert('비밀번호가 일치하지 않습니다.');
+        }
+
+        const test = userInfo.reduce((accumulator, current) => accumulator || (/\s/).exec(current), false);
+        if(test){
+            return alert('공백은 입력할 수 없습니다.');
         }
 
         dispatch({
@@ -120,7 +135,7 @@ const Register = () => {
             },
         });
 
-    }, [id, password, passwordCheck, nickname]);
+    }, [id, password, passwordCheck, nickname, isSigningUp]);
 
     if (isLoggedIn) {
         return null;
@@ -187,9 +202,12 @@ const Register = () => {
 
                                         <FormContainer>
                                             <FormSubmitButton type="submit">
-                                                {!isSigningUp ? <div>가입</div> :
-                                                    <FadeLoader css={override} color={"#05dfd7"}
-                                                                loading={isSigningUp}/>}
+                                                {/*<SpinnerSmall/>*/}
+
+                                                {!isSigningUp
+                                                    ? <div>가입</div>
+                                                    : <SpinnerSmall/>
+                                                }
                                             </FormSubmitButton>
                                         </FormContainer>
 

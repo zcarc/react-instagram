@@ -107,7 +107,7 @@ export default (state = initialState, action) => {
             }
 
             case SIGN_UP_REQUEST: {
-                draft.isSignedUp = true;
+                draft.isSigningUp = true;
                 break;
             }
 

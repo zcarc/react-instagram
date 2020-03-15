@@ -1,4 +1,4 @@
-import {all, fork, takeLatest, put, delay, call, takeEvery} from 'redux-saga/effects'
+import {all, fork, takeLatest, put, delay, call, takeEvery, throttle} from 'redux-saga/effects'
 import {
     ADD_COMMENT_FAILURE,
     ADD_COMMENT_REQUEST,
@@ -307,7 +307,7 @@ function* loadMainPosts(action) {
 }
 
 function* watchLoadMainPosts() {
-    yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
+    yield throttle(2000, LOAD_MAIN_POSTS_REQUEST, loadMainPosts);
 }
 
 function addCommentAPI(data) {

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import ContentLayout from "../components/ContentLayout";
-import React, {useEffect, useCallback} from "react";
+import React, {useEffect, useCallback, useRef} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
 import {ContentsBox, Inner} from "../components/style/content";
+import {Spinner, Spinner2} from "../components/style/common";
 
 const Home = () => {
 
@@ -16,6 +17,8 @@ const Home = () => {
     // const mainPosts = useStore().getState().post.mainPosts;
     // console.log('ContentLayout... mainPosts ', mainPosts);
 
+    const countIdRef = useRef([]);
+
     const onScroll = useCallback(() => {
         // console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
 
@@ -24,11 +27,16 @@ const Home = () => {
             // console.log('mainPosts: ', mainPosts);
             // console.log('mainPosts[mainPosts.length -1].id: ', mainPosts[mainPosts.length -1].id);
 
-            if(hasMorePosts) {
-                dispatch({
-                    type: LOAD_MAIN_POSTS_REQUEST,
-                    lastId: mainPosts[mainPosts.length - 1].id,
-                });
+            if(hasMorePosts ) {
+                const lastId = mainPosts[mainPosts.length - 1].id;
+                if(!countIdRef.current.includes(lastId)) {
+                    dispatch({
+                        type: LOAD_MAIN_POSTS_REQUEST,
+                        lastId,
+                    });
+                    countIdRef.current.push(lastId);
+                    console.log('countIdRef.current: ', countIdRef.current);
+                }
             }
 
         }
@@ -61,7 +69,12 @@ const Home = () => {
 
     return (
         <>
-            {/*<h1>메인페이지</h1>*/}
+
+            {/*<div>*/}
+            {/*    <Spinner/>*/}
+            {/*</div>*/}
+
+
             <div>
                 <Link href="/login"><a>로그인</a></Link>
                 <Link href="/register"><a>회원가입</a></Link>
