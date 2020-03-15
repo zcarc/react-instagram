@@ -86,7 +86,7 @@ const configureStore = ((initialState, options) => {
     const sagaMiddleware = createSagaMiddleware();
 
     const middleware = [sagaMiddleware, (store) => (next) => (action) => {
-        // console.log('middleware action: ', action);
+        // console.log('middleware action: ', JSON.stringify(action));
         next(action);
     }];
 

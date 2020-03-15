@@ -1,3 +1,5 @@
+import produce from "immer";
+
 const initialState = {
     isLoggedIn: false,
     isLoggingIn: false,
@@ -57,236 +59,168 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 export default (state = initialState, action) => {
 
-    switch (action.type) {
+    return produce(state, (draft) => {
 
-        case USER_EXISTS_REQUEST: {
-            return {
-                ...state,
-                isLoggedIn: false,
+        switch (action.type) {
+
+            case USER_EXISTS_REQUEST: {
+                draft.isLoggedIn = false;
+                break;
             }
-        }
 
-        case USER_EXISTS_SUCCESS: {
-            return {
-                ...state,
-                isLoggedIn: !!action.data,
-                userSessionData: action.data,
+            case USER_EXISTS_SUCCESS: {
+                draft.isLoggedIn = !!action.data;
+                draft.userSessionData = action.data;
+                break;
             }
-        }
 
-        case USER_EXISTS_FAILURE: {
-            return {
-                ...state,
-                isLoggingIn: false,
+            case USER_EXISTS_FAILURE: {
+                draft.isLoggedIn = false;
+                break;
             }
-        }
 
-        case LOG_IN_REQUEST: {
-            return {
-                ...state,
-                isLoggingIn: true,
+            case LOG_IN_REQUEST: {
+                draft.isLoggingIn = true;
+                break;
             }
-        }
 
-        case LOG_IN_SUCCESS: {
-            return {
-                ...state,
-                isLoggedIn: true,
-                isLoggingIn: false,
-                userSessionData: action.data,
+            case LOG_IN_SUCCESS: {
+                draft.isLoggedIn = true;
+                draft.isLoggingIn = false;
+                draft.userSessionData = action.data;
+                break;
             }
-        }
 
-        case LOG_IN_FAILURE: {
-            return {
-                ...state,
-                isLoggingIn: false,
+            case LOG_IN_FAILURE: {
+                draft.isLoggingIn = false;
+                break;
             }
-        }
 
-        case LOG_OUT_REQUEST: {
-            return {
-                ...state,
+            case LOG_OUT_REQUEST: {
+                break;
             }
-        }
 
-        case LOG_OUT_SUCCESS: {
-            return {
-                ...state,
-                isLoggedIn: false,
-                userSessionData: '',
+            case LOG_OUT_SUCCESS: {
+                draft.isLoggedIn = false;
+                draft.userSessionData = '';
+                break;
             }
-        }
 
-        case SIGN_UP_REQUEST: {
-            return {
-                ...state,
-                isSigningUp: true,
+            case SIGN_UP_REQUEST: {
+                draft.isSignedUp = true;
+                break;
             }
-        }
 
-        case SIGN_UP_SUCCESS: {
-            return {
-                ...state,
-                isSigningUp: false,
-                isSignedUp: true,
+            case SIGN_UP_SUCCESS: {
+                draft.isSigningUp = false;
+                draft.isSignedUp = true;
+                break;
             }
-        }
 
-        case SIGN_UP_FAILURE: {
-            return {
-                ...state,
-                isSigningUp: false,
-                signUpError: action.error,
+            case SIGN_UP_FAILURE: {
+                draft.isSigningUp = false;
+                draft.signUpError = action.error;
+                break;
             }
-        }
 
-        case LOAD_USER_REQUEST: {
-            return {
-                ...state,
-            };
-        }
-
-        case LOAD_USER_SUCCESS: {
-
-            return {
-                ...state,
-                userSessionData: action.data,
-                me: action.me,
-            };
-
-        }
-
-        case LOAD_USER_FAILURE: {
-            return {
-                ...state,
-            };
-        }
-
-        case FOLLOW_USER_REQUEST: {
-            return {
-                ...state,
-                isFollowing: true,
-            };
-        }
-
-        case UNFOLLOW_USER_REQUEST:{
-            return {
-                ...state,
-                isUnFollowing: true,
-            };
-        }
-
-        case FOLLOW_USER_SUCCESS: {
-            return {
-                ...state,
-                isFollowing: false,
-                userSessionData: {
-                    ...state.userSessionData,
-                    Followings: [
-                        {id: action.data},
-                        ...state.userSessionData.Followings
-                    ],
-                },
-            };
-        }
-
-        case FOLLOW_USER_FAILURE:
-        case UNFOLLOW_USER_FAILURE: {
-            return {
-                ...state,
+            case LOAD_USER_REQUEST: {
+                break;
             }
-        }
 
-        case UNFOLLOW_USER_SUCCESS: {
-            return {
-                ...state,
-                isUnFollowing: true,
-                userSessionData: {
-                    ...state.userSessionData,
-                    Followings: state.userSessionData.Followings.filter(e => e.id !== action.data),
-                },
-                followingList: state.followingList.filter(e => e.id !== action.data),
-            };
-        }
+            case LOAD_USER_SUCCESS: {
+                draft.userSessionData = action.data;
+                draft.userSessionData = action.me;
+                break;
 
-        case ADD_POST_TO_ME: {
-            return {
-                ...state,
-                userSessionData: {
-                    ...state.userSessionData,
-                    Posts: [{ id: action.data.id }, ...state.userSessionData.Posts],
-                },
             }
+
+            case LOAD_USER_FAILURE: {
+                break;
+            }
+
+            case FOLLOW_USER_REQUEST: {
+                draft.isFollowing = true;
+                break;
+            }
+
+            case UNFOLLOW_USER_REQUEST:{
+                draft.isUnFollowing = true;
+                break;
+            }
+
+            case FOLLOW_USER_SUCCESS: {
+                draft.isFollowing = true;
+                draft.userSessionData.Followings.unshift({id: action.data});
+                break;
+            }
+
+            case FOLLOW_USER_FAILURE:
+            case UNFOLLOW_USER_FAILURE: {
+                break;
+            }
+
+            case UNFOLLOW_USER_SUCCESS: {
+                draft.isUnFollowing = false;
+                const indexUserData = draft.userSessionData.Followings.findIndex(e => e.id === action.data);
+                draft.userSessionData.Followings.splice(indexUserData, 1);
+
+                const index = draft.followerList.findIndex(e => e.id === action.data);
+                draft.followerList.splice(index, 1);
+                break;
+            }
+
+            case ADD_POST_TO_ME: {
+                draft.userSessionData.Posts.unshift({id: action.data.id});
+                break;
+            }
+
+            case LOAD_FOLLOWINGS_REQUEST:
+            case LOAD_FOLLOWERS_REQUEST: {
+                break;
+            }
+            case LOAD_FOLLOWINGS_SUCCESS: {
+                draft.followingList = action.data;
+                break;
+            }
+
+            case LOAD_FOLLOWERS_SUCCESS: {
+                draft.followerList = action.data;
+                break;
+            }
+
+            case LOAD_FOLLOWINGS_FAILURE:
+            case LOAD_FOLLOWERS_FAILURE: {
+                break;
+            }
+
+            case REMOVE_FOLLOWER_REQUEST: {
+                break;
+            }
+            case REMOVE_FOLLOWER_SUCCESS: {
+                const userDataIndex = draft.userSessionData.Followers.findIndex(e => e.id === action.data);
+                draft.userSessionData.Followers.splice(userDataIndex, 1);
+
+                const index = draft.followerList.findIndex(e => e.id === action.data);
+                draft.followerList.splice(index, 1);
+                break;
+            }
+
+            case REMOVE_FOLLOWER_FAILURE: {
+                draft.followerList = action.data;
+                break;
+            }
+
+            case REMOVE_POST_OF_ME: {
+                const index = draft.userSessionData.Posts.findIndex(v => v.id === action.data);
+                draft.userSessionData.Posts.splice(index, 1);
+                break;
+            }
+
+            default:
+                break;
         }
 
-        case LOAD_FOLLOWINGS_REQUEST:
-        case LOAD_FOLLOWERS_REQUEST: {
-            return {
-                ...state,
-            };
-        }
-        case LOAD_FOLLOWINGS_SUCCESS: {
-            return {
-                ...state,
-                followingList: action.data,
-            };
-        }
-
-        case LOAD_FOLLOWERS_SUCCESS: {
-
-            return {
-                ...state,
-                followerList: action.data,
-            };
-
-        }
-
-        case LOAD_FOLLOWINGS_FAILURE:
-        case LOAD_FOLLOWERS_FAILURE: {
-            return {
-                ...state,
-            };
-        }
-
-        case REMOVE_FOLLOWER_REQUEST: {
-            return {
-                ...state,
-            };
-        }
-        case REMOVE_FOLLOWER_SUCCESS: {
-            return {
-                ...state,
-                userSessionData: {
-                    ...state.userSessionData,
-                    Followers: state.userSessionData.Followers.filter(e => e.id !== action.data),
-                },
-                followerList: state.followerList.filter(e => e.id !== action.data),
-            };
-        }
-
-        case REMOVE_FOLLOWER_FAILURE: {
-
-            return {
-                ...state,
-                followerList: action.data,
-            };
-
-        }
-
-        case REMOVE_POST_OF_ME: {
-            return {
-                ...state,
-                userSessionData: {
-                    ...state.userSessionData,
-                    Posts: state.userSessionData.Posts.filter(v => v.id !== action.data),
-                },
-            };
-        }
+    });
 
 
-        default:
-            return state;
-
-    }
 };
