@@ -11,8 +11,7 @@ import {
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 
-import {override, SpinnerSmall} from "./style/common";
-import FadeLoader from "react-spinners/FadeLoader";
+import { SpinnerSmall} from "./style/common";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 
 const LoginLayout = () => {
