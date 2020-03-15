@@ -21,7 +21,6 @@ import {
 } from "../reducers/post";
 import {FollowingContainer, Inner as FollowInner} from "./style/follow";
 import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
-import Helmet from "react-helmet";
 
 const SinglePostLayout = ({v}) => {
 
@@ -104,22 +103,6 @@ const SinglePostLayout = ({v}) => {
 
     return (
         <>
-
-            <Helmet
-                title={`${v.User && v.User.userNickname}님의 글`}
-                desciprtion={v.content && v.content}
-                meta={[{
-                    name: 'description', content: v.content && v.content,
-                }, {
-                    property: 'og:title', content: `${v.User && v.User.userNickname}님의 게시글`,
-                }, {
-                    property: 'og:description', content: v.content && v.content,
-                }, {
-                    property: 'og:image', content: v.Images && `http://localhost:8080/${v.Images[0].src}`,
-                }, {
-                    property: 'og:url', content: `http://localhost:8070/post/${v && v.id}`,
-                }]}
-            />
 
             <Contents>
                 <Top>

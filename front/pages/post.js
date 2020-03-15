@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {ContentsBox, Inner} from "../components/style/content";
 import SinglePostLayout from "../components/SinglePostLayout";
 import {LOAD_POST_REQUEST} from "../reducers/post";
+import Helmet from "react-helmet";
 
 const Post = () => {
 
@@ -10,6 +11,23 @@ const Post = () => {
 
     return (
         <>
+
+            <Helmet
+                title={`${singlePost.User && singlePost.User.userNickname}님의 글`}
+                desciprtion={singlePost.content && singlePost.content}
+                meta={[{
+                    name: 'description', content: singlePost.content && singlePost.content,
+                }, {
+                    property: 'og:title', content: `${singlePost.User && singlePost.User.userNickname}님의 게시글`,
+                }, {
+                    property: 'og:description', content: singlePost.content && singlePost.content,
+                }, {
+                    property: 'og:image', content: singlePost.Images && `http://localhost:8080/${singlePost.Images[0].src}`,
+                }, {
+                    property: 'og:url', content: `http://localhost:8070/post/${singlePost && singlePost.id}`,
+                }]}
+            />
+
             <Inner>
                 <ContentsBox>
                     <SinglePostLayout v={singlePost} />

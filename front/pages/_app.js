@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from 'next/head';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -15,6 +14,9 @@ import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {USER_EXISTS_REQUEST} from "../reducers/user";
+import {Container} from 'next/app';
+import Helmet from "react-helmet";
+
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
@@ -23,15 +25,41 @@ const Main = ({Component, store, pageProps}) => {
 
     return (
         <>
-            <Provider store={store}>
-                <Head>
-                    <link rel="stylesheet" href="/style/reset.css"/>
-                </Head>
-                <GlobalStyle/>
-                <AppLayout>
-                    <Component {...pageProps} pageName={Component.name} />
-                </AppLayout>
-            </Provider>
+            <Container>
+
+                <Provider store={store}>
+
+                    <Helmet
+                        title="Main"
+                        htmlAttributes={{lang: 'ko'}}
+                        meta={[{
+                            charset: 'UTF-8',
+                        }, {
+                            name: 'viewport',
+                            content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+                        }, {
+                            'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
+                        }, {
+                            name: 'description', content: 'Main desc',
+                        }, {
+                            name: 'og:title', content: 'Main',
+                        }, {
+                            name: 'og:description', content: 'Main desc',
+                        }, {
+                            property: 'og:type', content: 'website',
+                        }]}
+                        link={[{
+                            rel: 'stylesheet', href: '/style/reset.css',
+                        }]}
+                    />
+
+                    <GlobalStyle/>
+                    <AppLayout>
+                        <Component {...pageProps} pageName={Component.name}/>
+                    </AppLayout>
+                </Provider>
+
+            </Container>
         </>
     );
 };
@@ -57,25 +85,25 @@ Main.getInitialProps = async (context) => {
     const cookie = context.ctx.req ? context.ctx.req.headers.cookie : '';
     // console.log('cookie: ', cookie);
 
-    if(context.ctx.isServer && cookie) {
+    if (context.ctx.isServer && cookie) {
         axios.defaults.headers.Cookie = cookie;
     }
 
     let pageProps = null;
     const state = context.ctx.store.getState();
 
-    if(!state.user.isLoggedIn) {
+    if (!state.user.isLoggedIn) {
         context.ctx.store.dispatch({
             type: USER_EXISTS_REQUEST,
         });
     }
 
-    if(context.Component.getInitialProps) {
+    if (context.Component.getInitialProps) {
         pageProps = await context.Component.getInitialProps(context.ctx);
         // console.log('_app.js pageProps: ', pageProps);
     }
 
-    return { pageProps };
+    return {pageProps};
 };
 
 // eslint-disable-next-line no-unused-vars
