@@ -164,8 +164,8 @@ export default (state = initialState, action) => {
                 const indexUserData = draft.userSessionData.Followings.findIndex(e => e.id === action.data);
                 draft.userSessionData.Followings.splice(indexUserData, 1);
 
-                const index = draft.followerList.findIndex(e => e.id === action.data);
-                draft.followerList.splice(index, 1);
+                const index = draft.followingList.findIndex(e => e.id === action.data);
+                draft.followingList.splice(index, 1);
                 break;
             }
 

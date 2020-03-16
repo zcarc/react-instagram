@@ -1,4 +1,5 @@
 import produce from "immer";
+import user from "./user";
 
 const initialState = {
     isAddingPost: false,
@@ -189,9 +190,9 @@ export default (state = initialState, action) => {
             }
 
             case UNLIKE_POST_SUCCESS: {
-
-                const index = draft.mainPosts.findIndex(p => p.id === action.data.postId);
-                draft.mainPosts[index].Likers.splice(index, 1);
+                const postIndex = draft.mainPosts.findIndex(p => p.id === action.data.postId);
+                const userIndex = draft.mainPosts[postIndex].Likers.findIndex(u => u.id === action.data.userId);
+                draft.mainPosts[postIndex].Likers.splice(userIndex, 1);
                 break;
             }
 

@@ -4,11 +4,11 @@ import {
     Nickname,
     SpriteSmallHeartIconOutline, Timer, UploadBtn,
 } from "./style/content";
-import {useState, useCallback} from 'react'
+import {useState, useCallback, memo} from 'react'
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST} from "../reducers/post";
 
-const CommentLayout = ({post}) => {
+const CommentLayout = memo(({post}) => {
     // console.log('CommentLayout post: ', post);
 
     const [content, setContent] = useState('');
@@ -77,6 +77,6 @@ const CommentLayout = ({post}) => {
         </>
 
     );
-};
+});
 
 export default CommentLayout;
