@@ -47,9 +47,6 @@ const Main = ({Component, store, pageProps}) => {
                     link={[{
                         rel: 'stylesheet', href: '/style/reset.css',
                     }]}
-                    //{
-                    //     rel: 'stylesheet', href: '/style/carousel.min.css',
-                    // }]}
                 />
 
 
