@@ -10,6 +10,7 @@ const initialState = {
     imageNames: '',
     // hasMorePosts: false,
     singlePost: {},
+    isSearched: false,
 };
 
 
@@ -113,7 +114,6 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_MAIN_POSTS_REQUEST:
-            case LOAD_HASHTAG_POSTS_REQUEST:
             case LOAD_USER_POSTS_REQUEST: {
                 draft.mainPosts = action.lastId ? draft.mainPosts : [];
                 draft.hasMorePosts = action.lastId ? draft.hasMorePosts : true;
@@ -122,12 +122,28 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_MAIN_POSTS_SUCCESS:
-            case LOAD_HASHTAG_POSTS_SUCCESS:
             case LOAD_USER_POSTS_SUCCESS: {
                 action.data.forEach(v => draft.mainPosts.push(v));
                 draft.hasMorePosts = action.data.length === 10;
                 // console.log('action.data: ', action.data);
                 // console.log('LOAD_MAIN_POSTS_SUCCESS: ', draft.mainPosts, draft.hasMorePosts);
+                break;
+            }
+
+            case LOAD_HASHTAG_POSTS_REQUEST: {
+                draft.mainPosts = action.lastId ? draft.mainPosts : [];
+                draft.hasMorePosts = action.lastId ? draft.hasMorePosts : true;
+                // console.log('LOAD_MAIN_POSTS_REQUEST: ', draft.mainPosts, draft.hasMorePosts);
+                draft.isSearching = true;
+                draft.isSearched = false;
+                break;
+            }
+
+            case LOAD_HASHTAG_POSTS_SUCCESS: {
+                action.data.forEach(v => draft.mainPosts.push(v));
+                draft.hasMorePosts = action.data.length === 10;
+                draft.isSearched = !!draft.isSearching;
+                draft.isSearching = false;
                 break;
             }
 

@@ -273,9 +273,9 @@ const ContentLayout = ({v}) => {
                                 {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
                                     if (s.match(/#[^s#]+/)) {
                                         return <Link href={{pathname: '/hashtag', query: {tag: s.slice(1)}}}
-                                                     as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
+                                                     as={`/hashtag/${s.slice(1)}`} key={s+new Date().valueOf()}><a>{s}</a></Link>;
                                     }
-                                    return <span>{s}</span>;
+                                    return <span key={s+new Date().valueOf()}>{s}</span>;
                                 })}
 
                             </div>

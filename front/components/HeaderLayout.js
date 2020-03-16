@@ -5,14 +5,17 @@ import {
     RightIcons, Sprite_camera_icon, Sprite_compass_icon, Sprite_heart_icon_outline, Sprite_user_icon_outline
 }
     from './style/header'
-import {useCallback} from 'react';
+import {useCallback, useState, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {LOG_OUT_REQUEST} from "../reducers/user";
+import Router from "next/router";
 
 
 const HeaderLayout = () => {
 
+    const [searchName, setSearchName] = useState('');
     const { isLoggedIn } = useSelector(state => state.user);
+    const { isSearched } = useSelector(state => state.post);
     const dispatch = useDispatch();
 
     // console.log('headerlayout isLoggedIn: ', isLoggedIn);
@@ -22,6 +25,26 @@ const HeaderLayout = () => {
             type: LOG_OUT_REQUEST,
         });
     }, []);
+
+    const onChangeInput = useCallback((e) =>{
+        console.log('e.target.value: ', e.target.value);
+        setSearchName(e.target.value);
+    }, []);
+
+    const onKeyPressed = useCallback((e) => {
+
+        if(e.key === 'Enter') {
+            console.log('searchName: ', searchName);
+            Router.push({pathname: '/hashtag', query: { tag: searchName} }, `/hashtag/${searchName}`);
+        }
+    }, [searchName]);
+
+    useEffect(() => {
+
+        if(isSearched) {
+            setSearchName('');
+        }
+    }, [isSearched]);
 
     return (
         <>
@@ -37,7 +60,7 @@ const HeaderLayout = () => {
                     </h1>
 
                     <div className="search_field">
-                        <SearchFieldInput/>
+                        <SearchFieldInput value={searchName} onChange={onChangeInput} onKeyPress={onKeyPressed}/>
                         <FakeField>
                             <SearchIcon/>
                             <span>검색</span>

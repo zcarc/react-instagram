@@ -86,7 +86,7 @@ const Home = () => {
 
             <Inner>
                 <ContentsBox>
-                    {mainPosts && mainPosts.map( v => <ContentLayout v={v}/> )}
+                    {mainPosts && mainPosts.map( v => <ContentLayout key={v.id} v={v}/> )}
                 </ContentsBox>
             </Inner>
 

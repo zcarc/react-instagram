@@ -13,8 +13,8 @@ import {GlobalStyle} from '../components/style/header';
 import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
 import {USER_EXISTS_REQUEST} from "../reducers/user";
-import {Container} from 'next/app';
-import Helmet from "react-helmet";
+import {Helmet} from "react-helmet";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
@@ -23,44 +23,41 @@ const Main = ({Component, store, pageProps}) => {
 
     return (
         <>
-            <Container>
+            <Provider store={store}>
 
-                <Provider store={store}>
+                <Helmet
+                    title="Main"
+                    htmlAttributes={{lang: 'ko'}}
+                    meta={[{
+                        charset: 'UTF-8',
+                    }, {
+                        name: 'viewport',
+                        content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
+                    }, {
+                        'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
+                    }, {
+                        name: 'description', content: 'Main desc',
+                    }, {
+                        name: 'og:title', content: 'Main',
+                    }, {
+                        name: 'og:description', content: 'Main desc',
+                    }, {
+                        property: 'og:type', content: 'website',
+                    }]}
+                    link={[{
+                        rel: 'stylesheet', href: '/style/reset.css',
+                    }]}
+                    //{
+                    //     rel: 'stylesheet', href: '/style/carousel.min.css',
+                    // }]}
+                />
 
-                    <Helmet
-                        title="Main"
-                        htmlAttributes={{lang: 'ko'}}
-                        meta={[{
-                            charset: 'UTF-8',
-                        }, {
-                            name: 'viewport',
-                            content: 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover',
-                        }, {
-                            'http-equiv': 'X-UA-Compatible', content: 'IE=edge',
-                        }, {
-                            name: 'description', content: 'Main desc',
-                        }, {
-                            name: 'og:title', content: 'Main',
-                        }, {
-                            name: 'og:description', content: 'Main desc',
-                        }, {
-                            property: 'og:type', content: 'website',
-                        }]}
-                        link={[{
-                            rel: 'stylesheet', href: '/style/reset.css',
-                        }, {
-                            rel: 'stylesheet', href: '/style/carousel.min.css',
-                        }]}
 
-                    />
-
-                    <GlobalStyle/>
-                    <AppLayout>
-                        <Component {...pageProps} pageName={Component.name}/>
-                    </AppLayout>
-                </Provider>
-
-            </Container>
+                <GlobalStyle/>
+                <AppLayout>
+                    <Component {...pageProps} pageName={Component.name}/>
+                </AppLayout>
+            </Provider>
         </>
     );
 };
