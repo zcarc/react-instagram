@@ -76,12 +76,12 @@ const Home = () => {
 
 
             <div>
-                <Link href="/login"><a>로그인</a></Link>
-                <Link href="/register"><a>회원가입</a></Link>
-                <Link href="/profile"><a>프로필</a></Link>
+                <Link href="/login" prefetch><a>로그인</a></Link>
+                <Link href="/register" prefetch><a>회원가입</a></Link>
+                <Link href="/profile" prefetch><a>프로필</a></Link>
                 <Link href="/following"><a>팔로잉</a></Link>
                 <Link href="/followers"><a>팔로워</a></Link>
-                <Link href="/write"><a>글쓰기</a></Link>
+                <Link href="/write" prefetch><a>글쓰기</a></Link>
             </div>
 
             <Inner>
