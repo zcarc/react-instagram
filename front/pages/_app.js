@@ -12,11 +12,9 @@ import reducer from '../reducers/index';
 import {GlobalStyle} from '../components/style/header';
 import AppLayout from '../components/AppLayout';
 import rootSaga from '../sagas/index';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {USER_EXISTS_REQUEST} from "../reducers/user";
 import {Container} from 'next/app';
 import Helmet from "react-helmet";
-
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
@@ -50,7 +48,10 @@ const Main = ({Component, store, pageProps}) => {
                         }]}
                         link={[{
                             rel: 'stylesheet', href: '/style/reset.css',
+                        }, {
+                            rel: 'stylesheet', href: '/style/carousel.min.css',
                         }]}
+
                     />
 
                     <GlobalStyle/>
