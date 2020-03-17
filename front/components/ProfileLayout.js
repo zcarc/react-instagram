@@ -3,27 +3,38 @@ import {
     FirstRow, Inner,
     InnerTop,
     InnerTopLeft,
-    InnerTopLeftImgWrap, Pic, RowSpan, RowSpanNoneEvents,
+    InnerTopLeftImgWrap, Pic, PictureWrap, RowSpan,
     SecondRow,
     ThirdRow,
     UserName
 } from "./style/profile";
 import Link from "next/link";
+import {useCallback} from "react";
+import {useDispatch} from "react-redux";
+import {LOG_OUT_REQUEST} from "../reducers/user";
 
-const ProfileLayout = ({userSessionData}) => {
+const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts}) => {
+
+    const dispatch = useDispatch();
+
+    const onLogout = useCallback(() => {
+        dispatch({
+            type: LOG_OUT_REQUEST,
+        });
+    }, []);
 
     return (
         <Inner>
             <InnerTop>
                 <InnerTopLeft>
                     <InnerTopLeftImgWrap>
-                        <img src="#" alt=""/>
+                        <img src="/img/profile_image_default.jpg" alt="post_img"/>
                     </InnerTopLeftImgWrap>
                 </InnerTopLeft>
                 <div>
                     <FirstRow>
                         <UserName>{userSessionData && userSessionData.userNickname}</UserName>
-                        <a href="#">로그아웃</a>
+                        {isLoggedIn && <div onClick={onLogout}>로그아웃</div>}
                     </FirstRow>
                     <SecondRow>
                         <li>
@@ -58,10 +69,41 @@ const ProfileLayout = ({userSessionData}) => {
                     </ThirdRow>
                 </div>
             </InnerTop>
+
+            <PictureWrap>
+
+                <div className="segment"/>
+
+
+                        <div className="row">
+                            <div className="outside">
+                                <div className="inside">
+                                    <img src="https://images.unsplash.com/photo-1584398909393-b005542baf72?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
+                                </div>
+                            </div>
+                            <div className="outside">
+                                <div className="inside">
+                                    <img src="https://images.unsplash.com/photo-1584398909393-b005542baf72?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
+                                </div>
+                            </div>
+                            <div className="outside">
+                                <div className="inside">
+                                    <img src="https://images.unsplash.com/photo-1584398909393-b005542baf72?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+            </PictureWrap>
+
             <ContentsContainer className="active">
-                <Pic>
-                    <a href="#"><img src="#" alt=""/></a>
-                </Pic>
+
+
+                {/*<Pic>*/}
+                {/*    <a href="#"><img src="/img/profile_image_default.jpg" alt="post_img"/></a>*/}
+                {/*</Pic>*/}
+
             </ContentsContainer>
             <ContentsContainer>
                 <Pic>

@@ -216,7 +216,7 @@ export const UploadBtn = styled.div`
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 1;
 `;
 
 

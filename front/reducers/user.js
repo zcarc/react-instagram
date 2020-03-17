@@ -56,6 +56,9 @@ export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
+export const SIGN_UP_REDIRECTION = 'SIGN_UP_REDIRECTION';
+
+
 
 export default (state = initialState, action) => {
 
@@ -108,6 +111,7 @@ export default (state = initialState, action) => {
 
             case SIGN_UP_REQUEST: {
                 draft.isSigningUp = true;
+                draft.isSignedUp = false;
                 break;
             }
 
@@ -119,6 +123,7 @@ export default (state = initialState, action) => {
 
             case SIGN_UP_FAILURE: {
                 draft.isSigningUp = false;
+                draft.isSignedUp = false;
                 draft.signUpError = action.error;
                 break;
             }
@@ -213,6 +218,13 @@ export default (state = initialState, action) => {
             case REMOVE_POST_OF_ME: {
                 const index = draft.userSessionData.Posts.findIndex(v => v.id === action.data);
                 draft.userSessionData.Posts.splice(index, 1);
+                break;
+            }
+
+            case SIGN_UP_REDIRECTION: {
+                if(draft.isSignedUp){
+                    draft.isSignedUp = false;
+                }
                 break;
             }
 

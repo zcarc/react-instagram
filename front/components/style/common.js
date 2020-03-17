@@ -97,3 +97,17 @@ export const SpinnerSmall = styled.div`
         }
     }
 `;
+
+
+export const SpinnerSmallComment = styled(SpinnerSmall)`
+    position: relative;
+    width: 20px;
+    height: 20px;
+    
+    & :after {
+        width: 50%;
+        height: 50%;
+        background: #fff;
+        transform: translate(-50%, -50%);
+    }
+`;

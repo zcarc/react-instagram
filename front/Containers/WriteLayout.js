@@ -1,11 +1,10 @@
-import {PlusIcon, PostForm, PostFormContainer, Preview, Title, Upload} from "../components/style/write";
+import {ImageClose, PlusIcon, PostForm, PostFormContainer, Preview, Title, Upload} from "../components/style/write";
 import {useState, useCallback, useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import FadeLoader from "react-spinners/FadeLoader";
-import {override} from "../components/style/common";
 import {FormSubmitButton} from "../components/style/register";
 import {ADD_POST_REQUEST, CLOSE_IMAGE, UPLOAD_IMAGES_REQUEST} from "../reducers/post";
 import Router from 'next/router';
+import {SpinnerSmall} from "../components/style/common";
 
 const WriteLayout = () => {
 
@@ -41,7 +40,7 @@ const WriteLayout = () => {
 
     useEffect(() => {
 
-        if(isPostAdded){
+        if (isPostAdded) {
             Router.push('/');
         }
 
@@ -90,51 +89,58 @@ const WriteLayout = () => {
 
                 <Preview>
                     {/*<label htmlFor="id_photo">*/}
-                        <Upload onClick={onClickImageUpload}>
-                            <div>
-                                <PlusIcon>
-                                    <span/>
-                                    <span/>
-                                </PlusIcon>
-                                <p>포스트 이미지 추가</p>
-                            </div>
-                        </Upload>
+                    <Upload onClick={onClickImageUpload}>
+                        <div>
+                            <PlusIcon>
+                                <span/>
+                                <span/>
+                            </PlusIcon>
+                            <p>포스트 이미지 추가</p>
+                        </div>
+                    </Upload>
                     {/*</label>*/}
                 </Preview>
 
                 {imageNames && imageNames.map((imageName, index) => {
-                    return  (
-                        <>
-                            <div key={imageName} style={{display: 'flex'}}>
-                                <div style={{display: 'flex', position: 'relative', flexGrow: 1}}>
+                    return (
+                        <div key={index} style={{display: 'flex'}}>
+                            <div style={{display: 'flex', position: 'relative', flexGrow: 1}}>
 
-                                    <img src={`http://localhost:8080/fileslist/${imageName}`} style={{flexGrow: 1, width: '400px', margin: '3px', border: '1px solid #dbdbdb'}}/>
+                                <img src={`http://localhost:8080/fileslist/${imageName}`}
+                                     style={{flexGrow: 1, width: '400px', margin: '3px', border: '1px solid #dbdbdb'}}/>
 
-                                    <div className="image_close" onClick={onCloseImage(index)} style={{display: 'flex', position: 'absolute', top: '6px', right: '6px', justifyContent: 'center', alignItems: 'center', width: '17px', height: '17px', cursor: 'pointer' }}>
-                                        <span style={{display: 'block', height: '12px', transform: 'rotate(45deg)', position: 'absolute', border: '1px solid red', borderRadius: '15px'}} />
-                                        <span style={{display: 'block', height: '12px', transform: 'rotate(-45deg)', position: 'absolute', border: '1px solid red', borderRadius: '15px'}} />
-                                    </div>
-                                </div>
-                                {/*<button type="button"*/}
-                                {/*        style={{flex: '1 1 auto', margin: '3px', border: '1px solid #dbdbdb', background: '#fff', borderRadius: '4px', cursor: 'pointer'}}>삭제</button>*/}
+                                <ImageClose onClick={onCloseImage(index)}>
+                                    <span/>
+                                    <span/>
+                                </ImageClose>
+
+                                {/*<div className="image_close" onClick={onCloseImage(index)} style={{display: 'flex', position: 'absolute', top: '6px', right: '6px', justifyContent: 'center', alignItems: 'center', width: '17px', height: '17px', cursor: 'pointer' }}>*/}
+                                {/*    <span style={{display: 'block', height: '12px', transform: 'rotate(45deg)', position: 'absolute', border: '1px solid red', borderRadius: '15px'}} />*/}
+                                {/*    <span style={{display: 'block', height: '12px', transform: 'rotate(-45deg)', position: 'absolute', border: '1px solid red', borderRadius: '15px'}} />*/}
+                                {/*</div>*/}
                             </div>
-                        </>
+                            {/*<button type="button"*/}
+                            {/*        style={{flex: '1 1 auto', margin: '3px', border: '1px solid #dbdbdb', background: '#fff', borderRadius: '4px', cursor: 'pointer'}}>삭제</button>*/}
+                        </div>
                     );
                 })}
 
                 <p>
                     {/*<input type="file" accept="image/*" id="id_photo"/>*/}
-                    <input type="file" ref={imageInput} onChange={onChangeInput} multiple hidden />
+                    <input type="file" ref={imageInput} onChange={onChangeInput} multiple hidden/>
                 </p>
 
                 <p>
-                    <textarea cols="50" rows="5" onChange={onChangeDesc} placeholder="내용을 입력하세요." style={{resize: 'none'}}/>
+                    <textarea cols="50" rows="5" onChange={onChangeDesc} placeholder="내용을 입력하세요."
+                              style={{resize: 'none'}}/>
                 </p>
 
 
                 <FormSubmitButton type="submit" onClick={onSubmitForm}>
-                    {!isAddingPost ? <div>저장</div> :
-                        <FadeLoader css={override} color={"#05dfd7"} loading={isAddingPost}/>}
+
+                    {!isAddingPost
+                        ? <div>저장</div>
+                        : <SpinnerSmall style={{transform: 'translate(-45%, -50%)'}}/>}
                 </FormSubmitButton>
 
             </PostForm>

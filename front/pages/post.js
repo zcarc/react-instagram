@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import {ContentsBox, Inner} from "../components/style/content";
-import SinglePostLayout from "../components/SinglePostLayout";
+import SinglePostLayout from "../Containers/SinglePostLayout";
 import {LOAD_POST_REQUEST} from "../reducers/post";
 import Helmet from "react-helmet";
 
@@ -11,18 +11,17 @@ const Post = () => {
 
     return (
         <>
-
             <Helmet
-                title={`${singlePost.User && singlePost.User.userNickname}님의 글`}
-                desciprtion={singlePost.content && singlePost.content}
+                title={`${singlePost && singlePost.User && singlePost.User.userNickname}님의 글`}
+                desciprtion={singlePost && singlePost.content}
                 meta={[{
-                    name: 'description', content: singlePost.content && singlePost.content,
+                    name: 'description', content: singlePost && singlePost.content,
                 }, {
-                    property: 'og:title', content: `${singlePost.User && singlePost.User.userNickname}님의 게시글`,
+                    property: 'og:title', content: `${singlePost && singlePost.User && singlePost.User.userNickname}님의 게시글`,
                 }, {
-                    property: 'og:description', content: singlePost.content && singlePost.content,
+                    property: 'og:description', content: singlePost && singlePost.content,
                 }, {
-                    property: 'og:image', content: singlePost.Images && `http://localhost:8080/${singlePost.Images[0].src}`,
+                    property: 'og:image', content: singlePost && singlePost.Images && `http://localhost:8080/${singlePost.Images[0] && singlePost.Images[0].src} || post_photo_01.jpg`,
                 }, {
                     property: 'og:url', content: `http://localhost:8070/post/${singlePost && singlePost.id}`,
                 }]}
@@ -30,7 +29,7 @@ const Post = () => {
 
             <Inner>
                 <ContentsBox>
-                    <SinglePostLayout v={singlePost} />
+                    {singlePost && singlePost.map( v => <SinglePostLayout key={v.id} v={v}/> )}
                 </ContentsBox>
             </Inner>
         </>

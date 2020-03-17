@@ -1,13 +1,29 @@
-import React from "react";
+import {useEffect} from 'react';
 import FollowLayout from "../components/FollowLayout";
 import ProfileLayout from "../components/ProfileLayout";
 import {LOAD_FOLLOWERS_REQUEST} from "../reducers/user";
 import {useSelector} from "react-redux";
+import Router from "next/router";
 
 
 const Followers = ({pageName}) => {
 
-    const {userSessionData, followerList} = useSelector(state => state.user);
+    const {userSessionData, followerList, isLoggedIn} = useSelector(state => state.user);
+
+    useEffect(() => {
+        // console.log('useEffect...');
+        // console.log('container:', container);
+        // console.log('imgs:', imgs);
+
+        if (!isLoggedIn) {
+            alert('로그인이 필요합니다.');
+            Router.push('/');
+        }
+    }, [isLoggedIn]);
+
+    if(!isLoggedIn){
+        return null;
+    }
 
     return (
         <>

@@ -1,4 +1,4 @@
-import {FollowingName, FollowToggleButton, FollowUser, UserImage, UserObject, UserObjectInner} from "./style/follow";
+import {FollowingName, FollowToggleButton, FollowUser, UserImage, UserObject, UserObjectInner} from "../components/style/follow";
 import Link from "next/link";
 import {useDispatch} from "react-redux";
 import {useCallback} from "react";

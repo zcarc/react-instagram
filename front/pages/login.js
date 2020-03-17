@@ -5,21 +5,20 @@ import Router from "next/router";
 
 const Login = () => {
 
-    // const {isLoggedIn} = useSelector(state => state.user);
-    //
-    // useEffect(() => {
-    //
-    //     if(isLoggedIn) {
-    //         Router.push('/');
-    //     }
-    //
-    //
-    // }, [isLoggedIn]);
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            Router.push('/');
+        }
+    }, [isLoggedIn]);
+
+    if (isLoggedIn) {
+        return null;
+    }
 
     return (
-        <>
-            <LoginLayout/>
-        </>
+        <LoginLayout/>
     );
 };
 

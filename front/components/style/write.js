@@ -85,4 +85,30 @@ export const PlusIcon = styled.div`
     }
 `;
 
-
+export const ImageClose = styled.div`
+    display: flex;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    justify-content: center;
+    align-items: center;
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+    
+    & span {
+        display: block;
+        height: 12px;
+        position: absolute;
+        border: 1px solid red;
+        border-radius: 15px
+    }
+    
+    & span:first-child {
+        transform: rotate(45deg);
+    }
+    
+    & span:last-child {
+        transform: rotate(-45deg);
+    }
+`;

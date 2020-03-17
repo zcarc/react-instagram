@@ -1,4 +1,4 @@
-import {useCallback, useRef} from 'react';
+import {useCallback, useRef, useEffect} from 'react';
 import {
     BottomIcons, Comment, CommentContainer, CommentDetail,
     Contents,
@@ -8,9 +8,9 @@ import {
     SpriteMoreIcon, SpriteShareIcon,
     Top,
     UserContainer, SpriteFullHeartIconOutline, ContentMoreContainer, MoreRow
-} from "./style/content";
+} from "../components/style/content";
 import CommentLayout from "./CommentLayout";
-import PostImageLayout from "./PostImageLayout";
+import PostImageLayout from "../components/PostImageLayout";
 import Link from "next/link";
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -19,22 +19,27 @@ import {
     UNLIKE_POST_REQUEST,
     REMOVE_POST_REQUEST
 } from "../reducers/post";
-import {FollowingContainer, Inner as FollowInner} from "./style/follow";
+import {FollowingContainer, Inner as FollowInner} from "../components/style/follow";
 import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
 
-const SinglePostLayout = ({v}) => {
+const ContentLayout = ({v}) => {
 
     const {isLoggedIn, userSessionData} = useSelector(state => state.user);
+    const isPostRemoved = useSelector(state => state.post.isPostRemoved);
     const dispatch = useDispatch();
     const moreRef = useRef('');
     const onToggleLike = useCallback((v) => () => {
 
+        // console.log('ContentLayout onToggleLike isLoggedIn: ', isLoggedIn);
+        // console.log('ContentLayout onToggleLike v: ', v);
 
         if (!isLoggedIn) {
             return alert('로그인이 필요합니다.');
         }
 
-        if (v.Likers.find(v => v.id === userSessionData.id)) {
+        const userId = v.Likers && v.Likers.find(v => v.id === (userSessionData && userSessionData.id && userSessionData.id));
+
+        if (userId) {
             dispatch({
                 type: UNLIKE_POST_REQUEST,
                 data: v.id,
@@ -47,7 +52,7 @@ const SinglePostLayout = ({v}) => {
             });
         }
 
-    }, [isLoggedIn, userSessionData && userSessionData.id]);
+    }, [isLoggedIn, userSessionData && userSessionData.id && userSessionData.id]);
     const onBookmark = useCallback((v) => () => {
 
         if (!isLoggedIn) {
@@ -84,6 +89,8 @@ const SinglePostLayout = ({v}) => {
     const onClickUnFollowButton = useCallback((v) => (e) => {
         e.stopPropagation();
 
+        // console.log("onClickUnFollowButton... v: ", v);
+
         dispatch({
             type: UNFOLLOW_USER_REQUEST,
             data: v.User.id,
@@ -101,9 +108,16 @@ const SinglePostLayout = ({v}) => {
 
     }, []);
 
+    useEffect(() => {
+        if(isPostRemoved) {
+            moreRef.current.style.opacity = 0;
+            moreRef.current.style.visibility = 'hidden';
+        }
+    }, [isPostRemoved]);
+
+
     return (
         <>
-
             <Contents>
                 <Top>
                     <UserContainer>
@@ -116,15 +130,9 @@ const SinglePostLayout = ({v}) => {
                             <div>
                                 <Link href={{pathname: '/user', query: {id: v.UserId}}}
                                       as={`/user/${v.UserId}`}><a
-                                    style={{color: 'black'}}>{v.User && v.User.userNickname}</a></Link>
+                                    style={{color: 'black'}}>{v.User.userNickname}</a></Link>
                             </div>
                         </ProfileUser>
-
-                        <div>
-                            <form action="#" method="post">
-                                <input type="submit" value="삭제"/>
-                            </form>
-                        </div>
 
                     </UserContainer>
 
@@ -136,10 +144,10 @@ const SinglePostLayout = ({v}) => {
                                     <FollowInner style={{minHeight: 'initial'}}>
 
 
-                                        {!isLoggedIn || v.User.id === userSessionData.id
+                                        {(isLoggedIn && v.UserId) === (userSessionData && userSessionData.id)
                                             ? null
                                             : (
-                                                userSessionData && userSessionData.Followings && userSessionData.Followings.find(e => e.id === v.User.id)
+                                                userSessionData && userSessionData.Followings.find(e => e.id === v.UserId)
                                                     ? (
                                                         <MoreRow onClick={onClickUnFollowButton(v)}
                                                                  style={{color: 'red'}}>
@@ -153,7 +161,7 @@ const SinglePostLayout = ({v}) => {
                                                     )
                                             )}
 
-                                        {v.UserId !== userSessionData.id
+                                        {v.UserId !== (userSessionData && userSessionData.id)
                                             ? ''
                                             :
                                             <MoreRow onClick={onClickPostRemoveButton(v)} style={{color: 'red'}}>
@@ -190,8 +198,6 @@ const SinglePostLayout = ({v}) => {
                                 v.Bookmark.Images && v.Bookmark.Images[0]
                                     ? <PostImageLayout images={v.Bookmark.Images}/>
                                     : <img src="/img/post_photo_01.jpg" alt="post_img"/>
-
-
                             )
                             : (
                                 v.Images && v.Images[0]
@@ -205,25 +211,16 @@ const SinglePostLayout = ({v}) => {
                 <BottomIcons>
                     <LeftIcons>
                         <div>
-                            {v.BookmarkId && v.BookmarkId
-                                ? (
-                                    v.Bookmark && v.Bookmark.Likers.find(v => v.id === userSessionData.id)
-                                        ? <SpriteFullHeartIconOutline onClick={onToggleLike(v.Bookmark)}/>
-                                        : <SpriteHeartIconOutline onClick={onToggleLike(v.Bookmark && v.Bookmark)}/>
-                                )
-                                : (
-                                    v.Likers && v.Likers.find(v => v.id === userSessionData.id)
-                                        ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>
-                                        : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>
-                                )
-                            }
+                            {v.Likers && v.Likers.find(v => v.id === (userSessionData && userSessionData.id))
+                                ? <SpriteFullHeartIconOutline onClick={onToggleLike(v)}/>
+                                : <SpriteHeartIconOutline onClick={onToggleLike(v)}/>}
                         </div>
 
 
                         <div>
-                            <a href="#">
-                                <SpriteBubbleIcon/>
-                            </a>
+                            <Link href={{pathname: 'post', query: {id: v.id}}} as={`/post/${v.id}`}>
+                                <a><SpriteBubbleIcon/></a>
+                            </Link>
                         </div>
 
                         <SpriteShareIcon/>
@@ -242,15 +239,28 @@ const SinglePostLayout = ({v}) => {
                 <CommentContainer>
                     <Comment>
                         <CommentDetail>
-                            <Nickname>{v.User && v.User.userNickname}</Nickname>
+                            <Nickname>{v.User.userNickname}</Nickname>
 
+                            {/* desc */}
                             <div>
-                                {v.content && v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
+                                {/*{v.content.split(/#[^\s#]+/g).map((w) => {*/}
+                                {/*    console.log('v.content: ', v.content);*/}
+                                {/*    console.log('w: ', w);*/}
+                                {/*    if(w.match(/#[^\s#]+/)) {*/}
+                                {/*        return (*/}
+                                {/*          <Link href="#" key={w}><a>{w}</a></Link>*/}
+                                {/*        );*/}
+                                {/*    }*/}
+                                {/*    return w;*/}
+                                {/*})}*/}
+
+                                {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s, i) => {
                                     if (s.match(/#[^s#]+/)) {
                                         return <Link href={{pathname: '/hashtag', query: {tag: s.slice(1)}}}
-                                                     as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
+                                                     as={`/hashtag/${s.slice(1)}`}
+                                                     key={i}><a>{s}</a></Link>;
                                     }
-                                    return <span>{s}</span>;
+                                    return <span key={i}>{s}</span>;
                                 })}
 
                             </div>
@@ -267,4 +277,4 @@ const SinglePostLayout = ({v}) => {
     );
 };
 
-export default SinglePostLayout;
+export default ContentLayout;

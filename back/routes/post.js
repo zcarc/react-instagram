@@ -448,12 +448,12 @@ router.get('/:id', async (req, res, next) => {
             }],
         });
 
-        console.log('load a post... post: ', JSON.stringify(post));
+        // console.log('load a post... post: ', JSON.stringify(post));
 
         res.json(post);
 
     } catch (e) {
-        console.log(e);
+        console.error(e);
         next(e);
     }
 });

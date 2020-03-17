@@ -1,16 +1,17 @@
 import Link from 'next/link';
-import ContentLayout from "../components/ContentLayout";
+import ContentLayout from "../Containers/ContentLayout";
 import React, {useEffect, useCallback, useRef} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
 import {ContentsBox, Inner} from "../components/style/content";
-import {Spinner, Spinner2} from "../components/style/common";
+import {SIGN_UP_REDIRECTION} from "../reducers/user";
 
 const Home = () => {
 
     const dispatch = useDispatch();
     const store = useStore();
     const isPostAdded = store.getState().post.isPostAdded;
+    const isSignedUp = store.getState().user.isSignedUp;
     // const isLoggedIn = store.getState().user.isLoggedIn;
 
     const {mainPosts, hasMorePosts} = useSelector(state => state.post);
@@ -27,7 +28,7 @@ const Home = () => {
             // console.log('mainPosts: ', mainPosts);
             // console.log('mainPosts[mainPosts.length -1].id: ', mainPosts[mainPosts.length -1].id);
 
-            if(hasMorePosts ) {
+            if(hasMorePosts) {
                 const lastId = mainPosts[mainPosts.length - 1].id;
                 if(!countIdRef.current.includes(lastId)) {
                     dispatch({
@@ -43,7 +44,6 @@ const Home = () => {
 
     }, [mainPosts, hasMorePosts]);
 
-
     useEffect(() => {
 
         if(isPostAdded){
@@ -52,11 +52,11 @@ const Home = () => {
             });
         }
 
-        // if(!isLoggedIn) {
-        //     Router.push('/register');
-        // }
-
-
+        if(isSignedUp) {
+            dispatch({
+                type: SIGN_UP_REDIRECTION,
+            });
+        }
 
         window.addEventListener('scroll', onScroll);
 
@@ -69,27 +69,11 @@ const Home = () => {
 
     return (
         <>
-
-            {/*<div>*/}
-            {/*    <Spinner/>*/}
-            {/*</div>*/}
-
-
-            <div>
-                <Link href="/login" prefetch><a>로그인</a></Link>
-                <Link href="/register" prefetch><a>회원가입</a></Link>
-                <Link href="/profile" prefetch><a>프로필</a></Link>
-                <Link href="/following"><a>팔로잉</a></Link>
-                <Link href="/followers"><a>팔로워</a></Link>
-                <Link href="/write" prefetch><a>글쓰기</a></Link>
-            </div>
-
-            <Inner>
+             <Inner>
                 <ContentsBox>
-                    {mainPosts && mainPosts.map( v => <ContentLayout key={v.id} v={v}/> )}
+                    {mainPosts && mainPosts.map( (v, i) => <ContentLayout key={i} v={v}/> )}
                 </ContentsBox>
             </Inner>
-
         </>
     );
 };

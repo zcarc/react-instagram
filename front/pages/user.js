@@ -2,21 +2,19 @@ import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import React from "react";
 import {LOAD_USER_POSTS_REQUEST} from "../reducers/post";
-import ContentLayout from "../components/ContentLayout";
+import ContentLayout from "../Containers/ContentLayout";
 import {ContentsBox, Inner} from "../components/style/content";
 
 const User = () => {
 
-    const { mainPosts } = useSelector(state => state.post);
+    const {mainPosts} = useSelector(state => state.post);
 
     return (
-        <>
-            <Inner>
-                <ContentsBox>
-                    {mainPosts && mainPosts.map( v => <ContentLayout v={v}/>)}
-                </ContentsBox>
-            </Inner>
-        </>
+        <Inner>
+            <ContentsBox>
+                {mainPosts && mainPosts.map((v, i) => <ContentLayout key={i} v={v}/>)}
+            </ContentsBox>
+        </Inner>
     );
 
 };

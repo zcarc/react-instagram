@@ -4,13 +4,15 @@ import user from "./user";
 const initialState = {
     isAddingPost: false,
     isPostAdded: false,
+    isPostRemoved: false,
     addPostError: '',
     isAddingComment: false,
+    isAddedComment: false,
     isCommentAdded: false,
     mainPosts: '',
-    imageNames: '',
+    imageNames: [],
     // hasMorePosts: false,
-    singlePost: {},
+    singlePost: [],
     isSearched: false,
 };
 
@@ -82,8 +84,10 @@ export default (state = initialState, action) => {
             case ADD_POST_SUCCESS: {
                 draft.isAddingPost = false;
                 draft.isPostAdded = true;
-                draft.mainPosts.unshift(action.data);
-                draft.imageNames = '';
+                if(draft.mainPosts) {
+                    draft.mainPosts.unshift(action.data);
+                }
+                draft.imageNames = [];
                 break;
             }
 
@@ -95,16 +99,29 @@ export default (state = initialState, action) => {
             }
 
             case ADD_COMMENT_REQUEST: {
+                draft.isAddingComment = true;
+                draft.isAddedComment = false;
                 break;
             }
 
             case ADD_COMMENT_SUCCESS: {
                 const index = draft.mainPosts.findIndex(e => e.id === action.data.postId);
-                draft.mainPosts[index].comments.push(action.data.comment);
+                if(draft.mainPosts[index].comments) {
+                    draft.mainPosts[index].comments.push(action.data.comment);
+                }
+
+                if(draft.mainPosts[index].Comments) {
+                    draft.mainPosts[index].Comments.push(action.data.id);
+                }
+
+                draft.isAddingComment = false;
+                draft.isAddedComment = true;
                 break;
             }
 
             case ADD_COMMENT_FAILURE: {
+                draft.isAddingComment = false;
+                draft.isAddedComment = false;
                 break;
             }
 
@@ -180,7 +197,13 @@ export default (state = initialState, action) => {
 
             case LIKE_POST_SUCCESS: {
                 const index = draft.mainPosts.findIndex(p => p.id === action.data.postId);
-                draft.mainPosts[index].Likers.unshift({id: action.data.userId});
+                draft.mainPosts[index] && draft.mainPosts[index].Likers.unshift({id: action.data.userId});
+
+                if(draft.singlePost.length > 0) {
+                    const singleIndex = draft.singlePost.findIndex(p => p.id === action.data.postId);
+                    draft.singlePost[singleIndex].Likers.unshift({id: action.data.userId});
+                }
+
                 break;
             }
 
@@ -191,8 +214,15 @@ export default (state = initialState, action) => {
 
             case UNLIKE_POST_SUCCESS: {
                 const postIndex = draft.mainPosts.findIndex(p => p.id === action.data.postId);
-                const userIndex = draft.mainPosts[postIndex].Likers.findIndex(u => u.id === action.data.userId);
-                draft.mainPosts[postIndex].Likers.splice(userIndex, 1);
+                const userIndex = draft.mainPosts[postIndex] && draft.mainPosts[postIndex].Likers.findIndex(u => u.id === action.data.userId);
+                draft.mainPosts[postIndex] && draft.mainPosts[postIndex].Likers.splice(userIndex, 1);
+
+                if(draft.singlePost.length > 0) {
+                    const singleIndex = draft.singlePost.findIndex(p => p.id === action.data.postId);
+                    const userSingleIndex = draft.singlePost[singleIndex].Likers.findIndex(u => u.id === action.data.userId);
+                    draft.singlePost[singleIndex].Likers.splice(userSingleIndex, 1);
+                }
+
                 break;
             }
 
@@ -210,16 +240,19 @@ export default (state = initialState, action) => {
             }
 
             case REMOVE_POST_REQUEST: {
+                draft.isPostAdded = false;
                 break;
             }
 
             case REMOVE_POST_SUCCESS: {
                 const index = draft.mainPosts.findIndex(v => v.id === action.data);
                 draft.mainPosts.splice(index, 1);
+                draft.isPostAdded = true;
                 break;
             }
 
             case REMOVE_POST_FAILURE: {
+                draft.isPostAdded = false;
                 break;
             }
 
@@ -228,7 +261,8 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_POST_SUCCESS: {
-                draft.singlePost = action.data;
+                draft.singlePost = [action.data];
+                draft.mainPosts = draft.mainPosts.length === 0 ? [] : draft.mainPosts;
                 break;
             }
 

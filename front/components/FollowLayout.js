@@ -11,7 +11,7 @@ import {
     ThirdRow,
 } from "./style/follow";
 import Link from "next/link";
-import FollowUsersObjectLayout from "./FollowUsersObjectLayout";
+import FollowUsersObjectLayout from "../Containers/FollowUsersObjectLayout";
 import {useSelector} from "react-redux";
 
 const FollowLayout = ({pageName}) => {

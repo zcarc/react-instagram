@@ -29,6 +29,9 @@ router.get('/', async (req, res, next) => {
             }, {
                 model: db.Image,
             }, {
+                model: db.Comment,
+                attributes: ['id'],
+            }, {
                 model: db.User,
                 as: 'Likers',
                 attributes: ['id'],

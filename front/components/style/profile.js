@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 
 export const Inner = styled.section`
-    width:935px;
+    width:835px;
     position: relative;
 `;
 
@@ -21,7 +21,7 @@ export const InnerTopLeftImgWrap  = styled.div`
     height: 152px;
     overflow:hidden;
     border-radius: 50%;
-    margin: 0 auto;
+    margin: 0 25% 0 auto;
 
     & img {
         width: 100%;
@@ -33,7 +33,7 @@ export const FirstRow  = styled.div`
     display: flex;
     align-items: center;
 
-    & a {
+    & div:last-child {
         height: 25px;
         display: flex;
         justify-content: center;
@@ -47,6 +47,7 @@ export const FirstRow  = styled.div`
         vertical-align: text-bottom;
         text-decoration: none;
         box-sizing: border-box;
+        cursor: pointer;
     }
 `;
 
@@ -102,7 +103,7 @@ export const ContentsContainer  = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
 
-    & .active {
+    &.active {
         display: flex;
     }
 
@@ -111,6 +112,41 @@ export const ContentsContainer  = styled.div`
     }
 `;
 
+export const PictureWrap  = styled.div`
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   
+   & .segment {
+        border-top: 1px solid #dbdbdb;
+        margin: 0 auto 50px auto;
+        width: 100%;
+   }
+   
+   & .row {
+        display: flex;
+        margin-bottom: 28px;
+   }
+   
+   & .outside {
+        margin-right: 28px;
+        flex: 1;
+   }
+   
+   & .outside:last-child {
+        margin-right: 0px;
+   }
+   
+   & .inside {
+        height: 270px;
+        overflow: hidden;
+   }
+   
+   & img {
+        height: 100%;
+        width: 100%
+   }
+`;
 
 export const Pic  = styled.div`
     max-width:300px;
@@ -126,10 +162,7 @@ export const Pic  = styled.div`
     @media screen and (max-width:1000px) {
         margin:10px;
     }
-
-
 `;
-
 
 export const RowSpan  = styled.span`
     margin-right: 3px;

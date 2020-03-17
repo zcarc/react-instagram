@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from "react-redux";
+import React from 'react';
+import {useSelector} from "react-redux";
 import {LOAD_HASHTAG_POSTS_REQUEST} from "../reducers/post";
-import ContentLayout from "../components/ContentLayout";
+import ContentLayout from "../Containers/ContentLayout";
 import {ContentsBox, Inner} from "../components/style/content";
 
 const Hashtag = () => {
@@ -27,7 +26,6 @@ Hashtag.getInitialProps = (context) => {
     // console.log('Hashtag.getInitialProps... context: ', context);
     // console.log('Hashtag.getInitialProps... context.query: ', context.query);
     // console.log('Hashtag.getInitialProps... context.query.tag: ', context.query.tag);
-
 
     context.store.dispatch({
         type: LOAD_HASHTAG_POSTS_REQUEST,

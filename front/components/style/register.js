@@ -134,7 +134,7 @@ export const FormSubmitButton = styled.button`
     max-height: 30px;
 `;
 
-export const FormTermsText = styled.p`
+export const FormTermsText = styled.div`
     color: #999;
     font-size: 13px;
     margin: 10px 63px;

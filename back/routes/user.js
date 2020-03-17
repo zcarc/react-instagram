@@ -26,7 +26,7 @@ router.get('/', isLoggedIn, async (req, res) => {
             as: 'Followers',
             attributes: ['id'],
         }],
-        attributes: ['id', 'userId', 'userNickname'],
+        attributes: ['id', 'userId', 'userNickname', 'userProfileImage'],
     });
 
     return res.json(fullUser);
@@ -135,6 +135,7 @@ router.post('/', async (req, res, next) => {
             userId: req.body.userId,
             userPassword: hashedPassword,
             userNickname: req.body.userNickname,
+            userProfileImage: 'default',
         });
 
         // console.log('newUser: ', newUser);

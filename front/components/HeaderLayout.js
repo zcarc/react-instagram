@@ -5,7 +5,7 @@ import {
     RightIcons, Sprite_camera_icon, Sprite_compass_icon, Sprite_heart_icon_outline, Sprite_user_icon_outline
 }
     from './style/header'
-import {useCallback, useState, useEffect} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 import Router from "next/router";
@@ -14,34 +14,28 @@ import Router from "next/router";
 const HeaderLayout = () => {
 
     const [searchName, setSearchName] = useState('');
-    const { isLoggedIn } = useSelector(state => state.user);
-    const { isSearched } = useSelector(state => state.post);
+    const {isLoggedIn} = useSelector(state => state.user);
+    const {isSearched} = useSelector(state => state.post);
     const dispatch = useDispatch();
 
     // console.log('headerlayout isLoggedIn: ', isLoggedIn);
 
-    const onLogout = useCallback(() =>{
-        dispatch({
-            type: LOG_OUT_REQUEST,
-        });
-    }, []);
-
-    const onChangeInput = useCallback((e) =>{
+    const onChangeInput = useCallback((e) => {
         console.log('e.target.value: ', e.target.value);
         setSearchName(e.target.value);
     }, []);
 
     const onKeyPressed = useCallback((e) => {
 
-        if(e.key === 'Enter') {
+        if (e.key === 'Enter') {
             console.log('searchName: ', searchName);
-            Router.push({pathname: '/hashtag', query: { tag: searchName} }, `/hashtag/${searchName}`);
+            Router.push({pathname: '/hashtag', query: {tag: searchName}}, `/hashtag/${searchName}`);
         }
     }, [searchName]);
 
     useEffect(() => {
 
-        if(isSearched) {
+        if (isSearched) {
             setSearchName('');
         }
     }, [isSearched]);
@@ -68,14 +62,10 @@ const HeaderLayout = () => {
                     </div>
 
                     <RightIcons>
-                        <Sprite_camera_icon/>
-                        <Sprite_compass_icon/>
-                        <Sprite_heart_icon_outline/>
-                        {!isLoggedIn
-                            ? <Link href="/login"><a><Sprite_user_icon_outline/></a></Link>
-                            : <Link href="/profile"><a><Sprite_user_icon_outline/></a></Link>
-                        }
-                        {isLoggedIn && <button onClick={onLogout}>로그아웃</button>}
+                        <Link href="/write" prefetch><a><Sprite_camera_icon/></a></Link>
+                        <Link href="/register" prefetch><a><Sprite_compass_icon/></a></Link>
+                        <Link href="/login" prefetch><a><Sprite_heart_icon_outline/></a></Link>
+                        <Link href="/profile" prefetch><a><Sprite_user_icon_outline/></a></Link>
 
                     </RightIcons>
 
