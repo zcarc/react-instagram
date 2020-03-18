@@ -68,6 +68,8 @@ export const LOAD_OTHER_FOLLOWERS_REQUEST = 'LOAD_OTHER_FOLLOWERS_REQUEST';
 export const LOAD_OTHER_FOLLOWERS_SUCCESS = 'LOAD_OTHER_FOLLOWERS_SUCCESS';
 export const LOAD_OTHER_FOLLOWERS_FAILURE = 'LOAD_OTHER_FOLLOWERS_FAILURE';
 
+export const REMOVE_PROFILE_INFO = 'REMOVE_PROFILE_INFO';
+
 
 
 export default (state = initialState, action) => {
@@ -139,7 +141,8 @@ export default (state = initialState, action) => {
                 break;
             }
 
-            case LOAD_USER_REQUEST: {
+            case LOAD_USER_REQUEST:
+            case REMOVE_PROFILE_INFO: {
                 draft.profileUserInfo = [];
                 break;
             }

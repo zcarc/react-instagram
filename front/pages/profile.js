@@ -4,7 +4,7 @@ import {
     LOAD_FOLLOWERS_REQUEST,
     LOAD_FOLLOWINGS_REQUEST,
     LOAD_OTHER_FOLLOWERS_REQUEST,
-    LOAD_OTHER_FOLLOWINGS_REQUEST, LOAD_USER_REQUEST
+    LOAD_OTHER_FOLLOWINGS_REQUEST, LOAD_USER_REQUEST, REMOVE_PROFILE_INFO
 } from "../reducers/user";
 import {useSelector} from "react-redux";
 import Router from "next/router";
@@ -57,7 +57,7 @@ Profile.getInitialProps = (context) => {
     console.log('Profile.getInitialProps');
 
     const {dispatch, getState} = context.store;
-    const {userSessionData} = getState().user;
+    const {userSessionData, profileUserInfo} = getState().user;
 
     // console.log('getState: ', getState);
     // console.log('userSessionData: ', userSessionData);
@@ -66,6 +66,12 @@ Profile.getInitialProps = (context) => {
     console.log('Object.keys(context.query).length: ', Object.keys(context.query).length);
 
     if (Object.keys(context.query).length === 0) {
+
+        if(profileUserInfo.length) {
+            dispatch({
+                type: REMOVE_PROFILE_INFO,
+            });
+        }
 
         dispatch({
             type: LOAD_USER_POSTS_REQUEST,
