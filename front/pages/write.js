@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import WriteLayout from "../Containers/WriteLayout";
+import WriteLayout from "../containers/WriteLayout";
 import {useSelector} from "react-redux";
 import Router from "next/router";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import {ContentsBox, Inner} from "../components/style/content";
-import SinglePostLayout from "../Containers/SinglePostLayout";
+import SinglePostLayout from "../containers/SinglePostLayout";
 import {LOAD_POST_REQUEST} from "../reducers/post";
 import Helmet from "react-helmet";
 

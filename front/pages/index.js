@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ContentLayout from "../Containers/ContentLayout";
+import ContentLayout from "../containers/ContentLayout";
 import React, {useEffect, useCallback, useRef} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";

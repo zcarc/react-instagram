@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import {useSelector} from "react-redux";
 import React from "react";
 import {LOAD_USER_POSTS_REQUEST} from "../reducers/post";
-import ContentLayout from "../Containers/ContentLayout";
+import ContentLayout from "../containers/ContentLayout";
 import {ContentsBox, Inner} from "../components/style/content";
 
 const User = () => {

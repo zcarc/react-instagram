@@ -11,7 +11,7 @@ import {
     ThirdRow,
 } from "./style/follow";
 import Link from "next/link";
-import FollowUsersObjectLayout from "../Containers/FollowUsersObjectLayout";
+import FollowUsersObjectLayout from "../containers/FollowUsersObjectLayout";
 
 const FollowLayout = ({pageName, followingList, followerList}) => {
 

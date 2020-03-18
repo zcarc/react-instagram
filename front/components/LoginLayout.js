@@ -6,7 +6,7 @@ import {
     RightFormContainerTitleImg, RightLoginContainer
 } from "./style/register";
 import Link from "next/link";
-import LoginFormLayout from "../Containers/LoginFormLayout";
+import LoginFormLayout from "../containers/LoginFormLayout";
 
 const LoginLayout = () => {
 

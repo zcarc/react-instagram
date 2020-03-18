@@ -1,7 +1,7 @@
 import React from 'react';
 import {useSelector} from "react-redux";
 import {LOAD_HASHTAG_POSTS_REQUEST} from "../reducers/post";
-import ContentLayout from "../Containers/ContentLayout";
+import ContentLayout from "../containers/ContentLayout";
 import {ContentsBox, Inner} from "../components/style/content";
 
 const Hashtag = () => {

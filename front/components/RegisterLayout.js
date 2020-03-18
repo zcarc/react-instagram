@@ -11,7 +11,7 @@ import {
 } from "./style/register";
 import Link from "next/link";
 import RegisterLeftLayout from "./RegisterLeftLayout";
-import RegisterRightFormLayout from "../Containers/RegisterRightFormLayout";
+import RegisterRightFormLayout from "../containers/RegisterRightFormLayout";
 import {SIGN_UP_REDIRECTION} from "../reducers/user";
 
 const RegisterLayout = () => {
