@@ -12,11 +12,10 @@ import {
 } from "./style/follow";
 import Link from "next/link";
 import FollowUsersObjectLayout from "../Containers/FollowUsersObjectLayout";
-import {useSelector} from "react-redux";
 
-const FollowLayout = ({pageName}) => {
+const FollowLayout = ({pageName, followingList, followerList}) => {
 
-    const {followingList, followerList} = useSelector(state => state.user);
+
 
     return (
         <>

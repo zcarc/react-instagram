@@ -8,7 +8,8 @@ import Router from "next/router";
 
 const Followers = ({pageName}) => {
 
-    const {userSessionData, followerList, isLoggedIn} = useSelector(state => state.user);
+    const {userSessionData, isLoggedIn, followerList, followingList, profileUserInfo} = useSelector(state => state.user);
+    const mainPosts = useSelector(state => state.post.mainPosts);
 
     useEffect(() => {
         // console.log('useEffect...');
@@ -21,14 +22,25 @@ const Followers = ({pageName}) => {
         }
     }, [isLoggedIn]);
 
-    if(!isLoggedIn){
+    if (!isLoggedIn) {
         return null;
     }
 
     return (
         <>
-            <ProfileLayout userSessionData={userSessionData} />
-            {Object.keys(followerList).length !== 0 ? <FollowLayout pageName={pageName}/> : null}
+            <ProfileLayout
+                userSessionData={userSessionData}
+                isLoggedIn={isLoggedIn}
+                mainPosts={mainPosts}
+                followerList={followerList}
+                followingList={followingList}
+                profileUserInfo={profileUserInfo}
+            />
+            {Object.keys(followerList).length !== 0
+                ? <FollowLayout pageName={pageName}
+                                followerList={followerList}
+                                followingList={followingList}/>
+                : null}
         </>
     );
 };
@@ -38,7 +50,7 @@ Followers.getInitialProps = (context) => {
     const {dispatch, getState} = context.store;
     const {userSessionData, followerList} = getState().user;
 
-    if(!followerList) {
+    if (!followerList) {
         dispatch({
             type: LOAD_FOLLOWERS_REQUEST,
             data: userSessionData && userSessionData.id,

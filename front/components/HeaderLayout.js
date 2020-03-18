@@ -28,7 +28,6 @@ const HeaderLayout = () => {
     const onKeyPressed = useCallback((e) => {
 
         if (e.key === 'Enter') {
-            console.log('searchName: ', searchName);
             Router.push({pathname: '/hashtag', query: {tag: searchName}}, `/hashtag/${searchName}`);
         }
     }, [searchName]);
@@ -62,10 +61,14 @@ const HeaderLayout = () => {
                     </div>
 
                     <RightIcons>
-                        <Link href="/write" prefetch><a><Sprite_camera_icon/></a></Link>
-                        <Link href="/register" prefetch><a><Sprite_compass_icon/></a></Link>
-                        <Link href="/login" prefetch><a><Sprite_heart_icon_outline/></a></Link>
-                        <Link href="/profile" prefetch><a><Sprite_user_icon_outline/></a></Link>
+                        <Link href="/write"><a><Sprite_camera_icon/></a></Link>
+                        <Link href="/register"><a><Sprite_compass_icon/></a></Link>
+                        <Link href="/login"><a><Sprite_heart_icon_outline/></a></Link>
+                        {isLoggedIn
+                            ? <Link href="/profile"><a><Sprite_user_icon_outline/></a></Link>
+                            : <Link href="/login"><a><Sprite_user_icon_outline/></a></Link>
+                        }
+
 
                     </RightIcons>
 

@@ -10,10 +10,13 @@ import {
 } from "./style/profile";
 import Link from "next/link";
 import {useCallback} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 
-const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts}) => {
+const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, followingList, profileUserInfo}) => {
+
+    console.log('profileUserInfo ', profileUserInfo.id);
+
 
     const dispatch = useDispatch();
 
@@ -33,34 +36,99 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts}) => {
                 </InnerTopLeft>
                 <div>
                     <FirstRow>
-                        <UserName>{userSessionData && userSessionData.userNickname}</UserName>
+                        <UserName>
+
+                            {profileUserInfo && profileUserInfo[0]
+                                ? userSessionData && userSessionData.id === profileUserInfo[0].id
+                                    ? userSessionData.userNickname
+                                    : profileUserInfo[0].userNickname
+
+                                : userSessionData && userSessionData.userNickname}
+
+                            {/*{userSessionData && userSessionData.userNickname*/}
+                            {/*    ? userSessionData && userSessionData.userNickname*/}
+                            {/*    : Object.keys(profileUserInfo).length !== 0 && profileUserInfo[0]*/}
+                            {/*    && profileUserInfo[0].userNickname*/}
+
+                            {/*}*/}
+
+
+                            {/*{Object.keys(profileUserInfo).length !== 0 && profileUserInfo[0]*/}
+                            {/*    ? profileUserInfo[0].userNickname*/}
+                            {/*    : userSessionData && userSessionData.userNickname}*/}
+
+
+                            {/*{userSessionData && userSessionData && userSessionData.userNickname}*/}
+                        </UserName>
                         {isLoggedIn && <div onClick={onLogout}>로그아웃</div>}
                     </FirstRow>
                     <SecondRow>
                         <li>
                             <RowSpan>게시글</RowSpan>
                             <span>
-                                {userSessionData && userSessionData.Posts && userSessionData.Posts.length}
+                                {Object.keys(profileUserInfo).length !== 0 && profileUserInfo[0]
+                                    ? profileUserInfo[0].Posts
+                                    : userSessionData && userSessionData.Posts && userSessionData.Posts.length}
+                                {/*{userSessionData && userSessionData.Posts && userSessionData.Posts.length}*/}
+
                             </span>
                         </li>
                         <li>
-                            {Object.keys(userSessionData.Followers).length !== 0
-                                ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
-                                : <RowSpan>팔로워</RowSpan>
+
+                            {profileUserInfo && profileUserInfo[0]
+                                ? userSessionData && userSessionData.id === profileUserInfo[0].id
+                                    ? followerList && Object.keys(followerList).length !== 0
+                                        ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
+                                        :<RowSpan>팔로워</RowSpan>
+
+                                    : <RowSpan>팔로워</RowSpan>
+
+                                : userSessionData && userSessionData.id
+                                    ? followerList && Object.keys(followerList).length !== 0
+                                        ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
+                                        :<RowSpan>팔로워</RowSpan>
+
+                                    : <RowSpan>팔로워</RowSpan>
                             }
 
+                            {/*{userSessionData && userSessionData.Followers && Object.keys(userSessionData.Followers).length !== 0*/}
+                            {/*    ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>*/}
+                            {/*    : <RowSpan>팔로워</RowSpan>*/}
+                            {/*}*/}
+
                             <span>
-                                {userSessionData && userSessionData.Followers && userSessionData.Followers.length}
+                                {followerList && followerList.length}
+                                {/*{userSessionData && userSessionData.Followers && userSessionData.Followers.length}*/}
                             </span>
                         </li>
                         <li>
-                            {Object.keys(userSessionData.Followings).length !== 0
-                                ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
-                                : <RowSpan>팔로잉</RowSpan>
+
+                            {profileUserInfo && profileUserInfo[0]
+                                ? userSessionData && userSessionData.id === profileUserInfo[0].id
+                                    ? followingList && Object.keys(followingList).length !== 0
+                                        ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
+                                        :<RowSpan>팔로잉</RowSpan>
+
+                                    : <RowSpan>팔로워</RowSpan>
+
+                                : userSessionData && userSessionData.id
+                                    ? followingList && Object.keys(followingList).length !== 0
+                                        ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
+                                        :<RowSpan>팔로잉</RowSpan>
+
+                                    : <RowSpan>팔로워</RowSpan>
                             }
+
+                            {/*{userSessionData && userSessionData.Followings && Object.keys(userSessionData.Followings).length !== 0*/}
+                            {/*    ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>*/}
+                            {/*    : <RowSpan>팔로잉</RowSpan>*/}
+                            {/*}*/}
                             <span>
-                                {userSessionData && userSessionData.Followings && userSessionData.Followings.length}
+                                {followingList && followingList.length}
                             </span>
+                            {/*<span>*/}
+                            {/*    {userSessionData && userSessionData.Followings && userSessionData.Followings.length}*/}
+                            {/*</span>*/}
                         </li>
                     </SecondRow>
                     <ThirdRow>
@@ -74,25 +142,33 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts}) => {
 
                 <div className="segment"/>
 
+                {mainPosts && mainPosts.reduce((acc, value, index) => {
+                    if (index % 3 === 0) {
+                        acc[index] = [];
+                        acc[index].push(value);
 
-                        <div className="row">
-                            <div className="outside">
-                                <div className="inside">
-                                    <img src="https://images.unsplash.com/photo-1584398909393-b005542baf72?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
-                                </div>
-                            </div>
-                            <div className="outside">
-                                <div className="inside">
-                                    <img src="https://images.unsplash.com/photo-1584398909393-b005542baf72?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
-                                </div>
-                            </div>
-                            <div className="outside">
-                                <div className="inside">
-                                    <img src="https://images.unsplash.com/photo-1584398909393-b005542baf72?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""/>
-                                </div>
-                            </div>
+                    } else {
+                        acc[acc.length - 1].push(value);
+                    }
+                    return acc;
+                }, []).map((v, i) => {
+                    return (
+                        <div className="row" key={i}>
+                            {v.map((s, i) => {
+                                // console.log('s.Images: ', s.Images);
+                                return (
+                                    <div className="outside" key={i}>
+                                        <div className="inside">
+                                            <img
+                                                src={`http://localhost:8080/fileslist/${s.Images && s.Images[0].src}`}
+                                                alt=""/>
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
-
+                    )
+                })}
 
 
             </PictureWrap>

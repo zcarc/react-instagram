@@ -87,6 +87,8 @@ Main.getInitialProps = async (context) => {
     let pageProps = null;
     const state = context.ctx.store.getState();
 
+    console.log('state.user: ', state.user);
+
     if (!state.user.isLoggedIn) {
         context.ctx.store.dispatch({
             type: USER_EXISTS_REQUEST,

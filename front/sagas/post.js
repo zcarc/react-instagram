@@ -20,10 +20,19 @@ import {
     LOAD_HASHTAG_POSTS_SUCCESS,
     LOAD_MAIN_POSTS_FAILURE,
     LOAD_MAIN_POSTS_REQUEST,
-    LOAD_MAIN_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS,
+    LOAD_MAIN_POSTS_SUCCESS,
+    LOAD_OTHER_USER_POSTS_FAILURE,
+    LOAD_OTHER_USER_POSTS_REQUEST,
+    LOAD_OTHER_USER_POSTS_SUCCESS,
+    LOAD_POST_FAILURE,
+    LOAD_POST_REQUEST,
+    LOAD_POST_SUCCESS,
     LOAD_USER_POSTS_FAILURE,
     LOAD_USER_POSTS_REQUEST,
-    LOAD_USER_POSTS_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS,
+    LOAD_USER_POSTS_SUCCESS,
+    REMOVE_POST_FAILURE,
+    REMOVE_POST_REQUEST,
+    REMOVE_POST_SUCCESS,
     UNLIKE_POST_FAILURE,
     UNLIKE_POST_REQUEST,
     UNLIKE_POST_SUCCESS,
@@ -33,6 +42,36 @@ import {
 } from "../reducers/post";
 import axios from 'axios';
 import {ADD_POST_TO_ME, REMOVE_POST_OF_ME} from "../reducers/user";
+
+function loadOtherUserPostsAPI(data) {
+
+    return axios.get(`/user/${data || 0}/posts/other`);
+}
+
+function* loadOtherUserPosts(action) {
+
+    console.log('loadOtherUserPosts action: ', action);
+
+    try {
+        const userPosts = yield call(loadOtherUserPostsAPI, action.data);
+        console.log('userPosts: ', userPosts);
+        yield put({
+            type: LOAD_OTHER_USER_POSTS_SUCCESS,
+            data: userPosts.data,
+        });
+
+    }catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_OTHER_USER_POSTS_FAILURE,
+            error: e,
+        });
+    }
+}
+
+function* watchLoadOtherUserPosts() {
+    yield takeLatest(LOAD_OTHER_USER_POSTS_REQUEST, loadOtherUserPosts);
+}
 
 function loadPostAPI(postId) {
     return axios.get(`/post/${postId}`);
@@ -251,14 +290,16 @@ function* watchLoadComments() {
 
 function loadUserPostsAPI(data) {
 
-    return axios.get(`/user/${data}/posts`);
+    return axios.get(`/user/${data || 0}/posts`);
 }
 
 function* loadUserPosts(action) {
 
+    console.log('loadUserPosts action: ', action);
+
     try {
         const loadedUserPosts = yield call(loadUserPostsAPI, action.data);
-        // console.log('loadedPosts: ', loadedPosts);
+        console.log('loadedUserPosts: ', loadedUserPosts);
         yield put({
             type: LOAD_USER_POSTS_SUCCESS,
             data: loadedUserPosts.data,
@@ -422,6 +463,7 @@ export default function* postSaga () {
         fork(watchBookmark),
         fork(watchRemovePost),
         fork(watchLoadPost),
+        fork(watchLoadOtherUserPosts),
     ]);
 
 }

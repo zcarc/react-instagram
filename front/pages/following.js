@@ -8,7 +8,8 @@ import Router from "next/router";
 
 const Following = ({pageName}) => {
 
-    const {userSessionData, followingList, isLoggedIn} = useSelector(state => state.user);
+    const {userSessionData, isLoggedIn, followerList, followingList, profileUserInfo} = useSelector(state => state.user);
+    const mainPosts = useSelector(state => state.post.mainPosts);
 
 
     useEffect(() => {
@@ -28,8 +29,19 @@ const Following = ({pageName}) => {
 
     return (
         <>
-            <ProfileLayout userSessionData={userSessionData}/>
-            {Object.keys(followingList).length !== 0 ? <FollowLayout pageName={pageName}/> : null}
+            <ProfileLayout
+                userSessionData={userSessionData}
+                isLoggedIn={isLoggedIn}
+                mainPosts={mainPosts}
+                followerList={followerList}
+                followingList={followingList}
+                profileUserInfo={profileUserInfo}
+            />
+            {Object.keys(followingList).length !== 0
+                ? <FollowLayout pageName={pageName}
+                                followerList={followerList}
+                                followingList={followingList}/>
+                : null}
         </>
     );
 };

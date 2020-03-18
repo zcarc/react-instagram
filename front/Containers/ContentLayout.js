@@ -232,7 +232,7 @@ const ContentLayout = ({v}) => {
                 </BottomIcons>
 
                 <Reactions>
-                    <span>좋아요 1개</span>
+                    <span>좋아요 {v.Likers && v.Likers.length}개</span>
                     <span>북마크 0개</span>
                 </Reactions>
 

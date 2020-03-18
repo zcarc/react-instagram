@@ -25,9 +25,85 @@ import {
     LOAD_FOLLOWINGS_REQUEST,
     LOAD_FOLLOWERS_FAILURE,
     LOAD_FOLLOWERS_SUCCESS,
-    LOAD_FOLLOWERS_REQUEST, REMOVE_FOLLOWER_SUCCESS, REMOVE_FOLLOWER_FAILURE, REMOVE_FOLLOWER_REQUEST
+    LOAD_FOLLOWERS_REQUEST,
+    REMOVE_FOLLOWER_SUCCESS,
+    REMOVE_FOLLOWER_FAILURE,
+    REMOVE_FOLLOWER_REQUEST,
+    LOAD_OTHER_FOLLOWINGS_REQUEST,
+    LOAD_OTHER_FOLLOWINGS_FAILURE,
+    LOAD_OTHER_FOLLOWINGS_SUCCESS,
+    LOAD_OTHER_FOLLOWERS_SUCCESS, LOAD_OTHER_FOLLOWERS_FAILURE, LOAD_OTHER_FOLLOWERS_REQUEST
 } from "../reducers/user";
 import axios from 'axios';
+
+function loadOtherFollowersAPI(userId) {
+
+    console.log('loadOtherFollowersAPI userId: ', userId);
+
+    return axios.get(`/user/${userId || 0}/followers/other`, {
+        withCredentials: true,
+    });
+}
+
+function* loadOtherFollowers(action) {
+
+    try {
+        const result = yield call(loadOtherFollowersAPI, action.data);
+
+        // console.log('sagas loadOtherFollowers result: ', JSON.stringify(result));
+
+        yield put({
+            type: LOAD_OTHER_FOLLOWERS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_OTHER_FOLLOWERS_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchLoadOtherFollowers() {
+    yield takeLatest(LOAD_OTHER_FOLLOWERS_REQUEST, loadOtherFollowers);
+}
+
+function loadOtherFollowingsAPI(userId) {
+    // console.log('loadOtherFollowingsAPI userId: ', userId);
+
+    return axios.get(`/user/${userId || 0}/followings/other`, {
+        withCredentials: true,
+    });
+}
+
+function* loadOtherFollowings(action) {
+
+    try {
+        const result = yield call(loadOtherFollowingsAPI, action.data);
+
+        // console.log('sagas loadOtherFollowings result: ', JSON.stringify(result));
+
+        yield put({
+            type: LOAD_OTHER_FOLLOWINGS_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: LOAD_OTHER_FOLLOWINGS_FAILURE,
+            error: e
+        });
+    }
+
+}
+
+function* watchLoadOtherFollowings() {
+    yield takeLatest(LOAD_OTHER_FOLLOWINGS_REQUEST, loadOtherFollowings);
+}
 
 function removeFollowerAPI(userId) {
 
@@ -250,9 +326,9 @@ function* watchLogout() {
 
 function loadUserAPI(data) {
 
-    // console.log('loadUserAPI data: ', data);
+    console.log('loadUserAPI data: ', data);
 
-    return axios.get(`/user/${data || 0}/`, {
+    return axios.get(`/user/${data || 0}/other`, {
         withCredentials: true,
     });
 }
@@ -261,12 +337,11 @@ function* loadUser(action) {
 
     try {
         const result = yield call(loadUserAPI, action.data);
-        // console.log('loadUser... result: ', result);
+        console.log('loadUser... result: ', result && result.data);
         // yield delay(800);
         yield put({
             type: LOAD_USER_SUCCESS,
             data: result.data,
-            me: !action.data,
         });
 
     } catch (e) {
@@ -372,5 +447,7 @@ export default function* userSaga() {
         fork(watchLoadFollowings),
         fork(watchLoadFollowers),
         fork(watchRemoveFollower),
+        fork(watchLoadOtherFollowings),
+        fork(watchLoadOtherFollowers),
     ]);
 }

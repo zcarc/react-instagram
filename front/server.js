@@ -24,7 +24,7 @@ app.prepare().then( () => {
     server.use('/', express.static(path.join(__dirname, 'public')));
     server.use(express.json());
     server.use(express.urlencoded({ extended: true }));
-    // server.use(cookieParser(process.env.COOKIE_SECRET));
+    server.use(cookieParser(process.env.COOKIE_SECRET));
     server.use(expressSession({
         resave: false,
         saveUninitialized: false,
@@ -47,6 +47,10 @@ app.prepare().then( () => {
 
     server.get('/post/:id', (req, res) => {
         return app.render(req, res, '/post', { id: req.params.id });
+    });
+
+    server.get('/profile/:id', (req, res) => {
+        return app.render(req, res, '/profile', { id: req.params.id });
     });
 
 

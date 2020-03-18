@@ -3,6 +3,8 @@ const {Strategy: LocalStrategy} = require('passport-local');
 const db = require('../models/index');
 const bcrypt = require('bcrypt');
 
+const userSession = {};
+
 module.exports = () => {
 
     passport.serializeUser((user, done) => {
@@ -17,12 +19,24 @@ module.exports = () => {
             // console.log('deserializeUser...');
             // console.log('deserializeUser id: ', id);
 
-            const user = await db.User.findOne({
-                where: {id},
-            });
+            if(userSession[id]) {
+                // console.log('user[id]: ' ,userSession[id]);
+                return done(null ,userSession[id]);
+
+            } else {
+                db.User.findOne({
+                    where: {id}
+                })
+                .then(user => {
+                    // console.log('deserializeUser user: ', user);
+                    userSession[id] = user;
+                    return done(null, user)
+
+                }).catch(err => done(err));
+            }
+
 
             // console.log('deserializeUser user.toJSON(): ', user && user.toJSON());
-            done(null, user);
 
         } catch (e) {
             console.error(e);

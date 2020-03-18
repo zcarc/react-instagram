@@ -12,6 +12,7 @@ const initialState = {
     userSessionData: null,
     followingList: [],
     followerList: [],
+    profileUserInfo: [],
 };
 
 export const USER_EXISTS_REQUEST = 'USER_EXISTS_REQUEST';
@@ -59,6 +60,15 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 export const SIGN_UP_REDIRECTION = 'SIGN_UP_REDIRECTION';
 
 
+export const LOAD_OTHER_FOLLOWINGS_REQUEST = 'LOAD_OTHER_FOLLOWINGS_REQUEST';
+export const LOAD_OTHER_FOLLOWINGS_SUCCESS = 'LOAD_OTHER_FOLLOWINGS_SUCCESS';
+export const LOAD_OTHER_FOLLOWINGS_FAILURE = 'LOAD_OTHER_FOLLOWINGS_FAILURE';
+
+export const LOAD_OTHER_FOLLOWERS_REQUEST = 'LOAD_OTHER_FOLLOWERS_REQUEST';
+export const LOAD_OTHER_FOLLOWERS_SUCCESS = 'LOAD_OTHER_FOLLOWERS_SUCCESS';
+export const LOAD_OTHER_FOLLOWERS_FAILURE = 'LOAD_OTHER_FOLLOWERS_FAILURE';
+
+
 
 export default (state = initialState, action) => {
 
@@ -72,7 +82,8 @@ export default (state = initialState, action) => {
             }
 
             case USER_EXISTS_SUCCESS: {
-                draft.isLoggedIn = !!action.data;
+                console.log('USER_EXISTS_SUCCESS action.data: ', action.data);
+                draft.isLoggedIn = true;
                 draft.userSessionData = action.data;
                 break;
             }
@@ -129,17 +140,18 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_USER_REQUEST: {
+                draft.profileUserInfo = [];
                 break;
             }
 
             case LOAD_USER_SUCCESS: {
-                draft.userSessionData = action.data;
-                draft.userSessionData = action.me;
+                draft.profileUserInfo.push(action.data);
                 break;
 
             }
 
             case LOAD_USER_FAILURE: {
+                draft.profileUserInfo = [];
                 break;
             }
 
@@ -180,21 +192,28 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_FOLLOWINGS_REQUEST:
-            case LOAD_FOLLOWERS_REQUEST: {
+            case LOAD_FOLLOWERS_REQUEST:
+            case LOAD_OTHER_FOLLOWINGS_REQUEST:
+            case LOAD_OTHER_FOLLOWERS_REQUEST:{
                 break;
             }
-            case LOAD_FOLLOWINGS_SUCCESS: {
+            case LOAD_FOLLOWINGS_SUCCESS:
+            case LOAD_OTHER_FOLLOWINGS_SUCCESS :{
+                console.log('LOAD_OTHER_FOLLOWINGS_SUCCESS: action.data', action.data);
                 draft.followingList = action.data;
                 break;
             }
 
-            case LOAD_FOLLOWERS_SUCCESS: {
+            case LOAD_FOLLOWERS_SUCCESS:
+            case LOAD_OTHER_FOLLOWERS_SUCCESS: {
                 draft.followerList = action.data;
                 break;
             }
 
             case LOAD_FOLLOWINGS_FAILURE:
-            case LOAD_FOLLOWERS_FAILURE: {
+            case LOAD_FOLLOWERS_FAILURE:
+            case LOAD_OTHER_FOLLOWERS_FAILURE:
+            case LOAD_OTHER_FOLLOWINGS_FAILURE :{
                 break;
             }
 

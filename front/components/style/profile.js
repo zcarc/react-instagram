@@ -130,7 +130,6 @@ export const PictureWrap  = styled.div`
    
    & .outside {
         margin-right: 28px;
-        flex: 1;
    }
    
    & .outside:last-child {
@@ -139,6 +138,7 @@ export const PictureWrap  = styled.div`
    
    & .inside {
         height: 270px;
+        width: 259.67px;
         overflow: hidden;
    }
    

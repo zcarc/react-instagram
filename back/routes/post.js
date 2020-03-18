@@ -458,4 +458,46 @@ router.get('/:id', async (req, res, next) => {
     }
 });
 
+// load other post
+router.get('/:id/other', async (req, res, next) => {
+
+    try {
+
+        const post = await db.Post.findOne({
+            where: { id: req.params.id },
+            include: [{
+                model: db.User,
+                attributes: ['id', 'userNickname'],
+            }, {
+                model: db.Image,
+            }, {
+                model: db.User,
+                as: 'Likers',
+                attributes: ['id'],
+                through: 'Like',
+            }, {
+                model: db.Post,
+                as: 'Bookmark',
+                include: [{
+                    model: db.User,
+                    attributes: ['id', 'userNickname'],
+                }, {
+                    model: db.Image,
+                }, {
+                    model: db.User,
+                    as: 'Likers',
+                    attributes: ['id'],
+                    through: 'Like',
+                }],
+            }],
+        });
+
+        res.json(post);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+});
+
 module.exports = router;

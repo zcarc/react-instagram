@@ -33,55 +33,62 @@ router.get('/', isLoggedIn, async (req, res) => {
 });
 
 // load user info
-router.get('/:id', isLoggedIn, async (req, res, next) => {
+// router.get('/:id', isLoggedIn, async (req, res, next) => {
+//
+//     // const test = req.params.id || req.user.id;
+//     // console.log('routes/user... load user info... req.user: ', req.user);
+//     // console.log('routes/user... load user info... req.params: ', req.params);
+//     // console.log('routes/user... load user info... test: ', test);
+//
+//     try {
+//
+//         const anUserInfo = await db.User.findOne({
+//             where: {
+//                 id: parseInt(req.params.id) || parseInt(req.user.id),
+//             },
+//             include: [{
+//                 model: db.Post,
+//                 attributes: ['id'],
+//             }, {
+//                 model: db.User,
+//                 as: 'Followings',
+//                 attributes: ['id'],
+//             }, {
+//                 model: db.User,
+//                 as: 'Followers',
+//                 attributes: ['id'],
+//             }],
+//             attributes: ['id', 'userNickname'],
+//         });
+//
+//         // console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
+//
+//         const jsonAnUserInfo = anUserInfo.toJSON();
+//         jsonAnUserInfo.Posts = jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
+//
+//         res.json(jsonAnUserInfo);
+//
+//     } catch (e) {
+//         console.error(e);
+//         next(e);
+//     }
+//
+// });
 
-    // const test = req.params.id || req.user.id;
-    // console.log('routes/user... load user info... req.user: ', req.user);
-    // console.log('routes/user... load user info... req.params: ', req.params);
-    // console.log('routes/user... load user info... test: ', test);
-
-    try {
-
-        const anUserInfo = await db.User.findOne({
-            where: {
-                id: parseInt(req.params.id) || parseInt(req.user.id),
-            },
-            include: [{
-                model: db.Post,
-                attributes: ['id'],
-            }, {
-                model: db.User,
-                as: 'Followings',
-                attributes: ['id'],
-            }, {
-                model: db.User,
-                as: 'Followers',
-                attributes: ['id'],
-            }],
-            attributes: ['id', 'userNickname'],
-        });
-
-        // console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
-
-        const jsonAnUserInfo = anUserInfo.toJSON();
-        jsonAnUserInfo.Posts = jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
-
-        res.json(jsonAnUserInfo);
-
-    } catch (e) {
-        console.error(e);
-        next(e);
-    }
-
-});
-
-// load specific user posts
+// load session user profile posts
 router.get('/:id/posts', async (req, res, next) => {
+
+    console.log('/:id/posts req.params: ', req.params);
+    console.log('/:id/posts req.user: ', req.user);
+
+    // if(!parseInt(req.params.id) && req.user) {
+    //     req.params.id = req.user.id;
+    // }
 
     try {
         const userPosts = await db.Post.findAll({
             where: {
-                UserId: req.params.id,
+                UserId: parseInt(req.params.id, 10) || req.user.id,
                 BookmarkId: null,
             },
             include: [{
@@ -341,5 +348,139 @@ router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => {
     }
 
 });
+
+// load other user posts
+router.get('/:id/posts/other', async (req, res, next) => {
+
+    console.log('/:id/posts/other req.params: ', req.params);
+    // console.log('/:id/posts/other req.user: ', req.user);
+
+    // if(!parseInt(req.params.id) && req.user) {
+    //     req.params.id = req.user.id;
+    // }
+
+    try {
+        const userPosts = await db.Post.findAll({
+            where: {
+                UserId: parseInt(req.params.id, 10),
+                BookmarkId: null,
+            },
+            include: [{
+                model: db.User,
+                attributes: ['id', 'userNickname'],
+            }, {
+                model: db.Image,
+            }, {
+                model: db.User,
+                as: 'Likers',
+                attributes: ['id'],
+                through: 'Like',
+            }],
+            order: [['createdAt', 'DESC']],
+        });
+
+        console.log('/:id/posts/other JSON.stringify(userPosts): ', JSON.stringify(userPosts));
+
+        return res.json(userPosts);
+
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
+});
+
+
+router.get('/:userId/followings/other', async (req, res, next) => {
+
+    try {
+        const user = await db.User.findOne({
+            where: {id: parseInt(req.params.userId, 10) || (req.user.id || 0)},
+            attributes: ['id'],
+        });
+
+        if (!user) {
+            return res.status('404').send('존재하지 않는 사용자입니다.');
+        }
+
+        const userFollowings = await user.getFollowings({
+            attributes: ['id', 'userNickname'],
+        });
+
+        //  console.log('userFollowings: ', JSON.stringify(userFollowings));
+
+        return res.json(userFollowings);
+
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
+});
+
+router.get('/:userId/followers/other', async (req, res, next) => {
+
+    try {
+        const user = await db.User.findOne({
+            where: {id: parseInt(req.params.userId, 10) || (req.user.id || 0)},
+            attributes: ['id'],
+        });
+
+        if (!user) {
+            return res.status('404').send('존재하지 않는 사용자입니다.');
+        }
+
+        const userFollowers = await user.getFollowers({
+            attributes: ['id', 'userNickname'],
+        });
+
+         console.log('/:userId/followers/other: ', JSON.stringify(userFollowers));
+
+        return res.json(userFollowers);
+
+    } catch (e) {
+        console.error(e);
+        return next(e);
+    }
+
+});
+
+
+// load other profile user info
+router.get('/:id/other', async (req, res, next) => {
+
+    // const test = req.params.id || req.user.id;
+    // console.log('routes/user... load user info... req.user: ', req.user);
+    // console.log('routes/user... load user info... req.params: ', req.params);
+    // console.log('routes/user... load user info... test: ', test);
+
+    try {
+
+        const anUserInfo = await db.User.findOne({
+            where: {
+                id: parseInt(req.params.id),
+            },
+            include: [{
+                model: db.Post,
+                attributes: ['id'],
+            }],
+            attributes: ['id', 'userNickname'],
+        });
+
+        console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
+
+        const jsonAnUserInfo = anUserInfo.toJSON();
+        jsonAnUserInfo.Posts = jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
+
+        res.json(jsonAnUserInfo);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
+
+});
+
+
 
 module.exports = router;
