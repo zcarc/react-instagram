@@ -243,17 +243,6 @@ const ContentLayout = ({v}) => {
 
                             {/* desc */}
                             <div>
-                                {/*{v.content.split(/#[^\s#]+/g).map((w) => {*/}
-                                {/*    console.log('v.content: ', v.content);*/}
-                                {/*    console.log('w: ', w);*/}
-                                {/*    if(w.match(/#[^\s#]+/)) {*/}
-                                {/*        return (*/}
-                                {/*          <Link href="#" key={w}><a>{w}</a></Link>*/}
-                                {/*        );*/}
-                                {/*    }*/}
-                                {/*    return w;*/}
-                                {/*})}*/}
-
                                 {v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s, i) => {
                                     if (s.match(/#[^s#]+/)) {
                                         return <Link href={{pathname: '/hashtag', query: {tag: s.slice(1)}}}

@@ -59,6 +59,7 @@ export const UserName  = styled.div`
 
 export const SecondRow  = styled.ul`
     display: flex;
+    align-items: center;
     height: 50px;
     padding: 18px 0;
     font-size: 15px;
@@ -80,22 +81,8 @@ export const ThirdRow  = styled.p`
             margin-right: 50px;
         }
 
-        :after {
-            content:'';
-            width:0;
-            height:1px;
-            position:absolute;
-            left:0;
-            bottom:-5px;
-            transition:all 0.5s;
-            background:#dd2d76;
-        }
+    }
 
-    }
-    
-    & span.on:after {
-        width:100%;
-    }
 `;
 
 export const ContentsContainer  = styled.div`

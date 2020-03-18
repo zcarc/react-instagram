@@ -48,18 +48,7 @@ const SinglePostLayout = ({v}) => {
         }
 
     }, [isLoggedIn, userSessionData && userSessionData.id]);
-    const onBookmark = useCallback((v) => () => {
 
-        if (!isLoggedIn) {
-            return alert('로그인이 필요합니다.');
-        }
-
-        dispatch({
-            type: BOOKMARK_REQUEST,
-            data: v.id,
-        });
-
-    }, [isLoggedIn]);
     const onClickMoreButton = useCallback(() => {
         moreRef.current.style.opacity = 1;
         moreRef.current.style.visibility = 'visible';
@@ -221,9 +210,7 @@ const SinglePostLayout = ({v}) => {
                         <SpriteShareIcon style={{pointerEvents: 'none'}}/>
                     </LeftIcons>
 
-                    <div>
-                        <SpriteBookmarkOutline onClick={onBookmark(v)}/>
-                    </div>
+
                 </BottomIcons>
 
                 <Reactions>

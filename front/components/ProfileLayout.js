@@ -10,7 +10,7 @@ import {
 } from "./style/profile";
 import Link from "next/link";
 import {useCallback} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {LOG_OUT_REQUEST} from "../reducers/user";
 
 const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, followingList, profileUserInfo}) => {
@@ -34,7 +34,7 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                         <img src="/img/profile_image_default.jpg" alt="post_img"/>
                     </InnerTopLeftImgWrap>
                 </InnerTopLeft>
-                <div>
+                <div style={{display: 'flex', flexDirection: 'column',alignItems: 'center', justifyContent: 'center'}}>
                     <FirstRow>
                         <UserName>
 
@@ -80,14 +80,11 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                     ? followerList && Object.keys(followerList).length !== 0
                                         ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
                                         :<RowSpan>팔로워</RowSpan>
-
                                     : <RowSpan>팔로워</RowSpan>
-
                                 : userSessionData && userSessionData.id
                                     ? followerList && Object.keys(followerList).length !== 0
                                         ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
                                         :<RowSpan>팔로워</RowSpan>
-
                                     : <RowSpan>팔로워</RowSpan>
                             }
 
@@ -108,14 +105,11 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                     ? followingList && Object.keys(followingList).length !== 0
                                         ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
                                         :<RowSpan>팔로잉</RowSpan>
-
                                     : <RowSpan>팔로워</RowSpan>
-
                                 : userSessionData && userSessionData.id
                                     ? followingList && Object.keys(followingList).length !== 0
                                         ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
                                         :<RowSpan>팔로잉</RowSpan>
-
                                     : <RowSpan>팔로워</RowSpan>
                             }
 
@@ -131,10 +125,9 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                             {/*</span>*/}
                         </li>
                     </SecondRow>
-                    <ThirdRow>
-                        <span className="on">게시글</span>
-                        <span className="">북마크</span>
-                    </ThirdRow>
+                    {/*<ThirdRow>*/}
+                    {/*    <span>게시글</span>*/}
+                    {/*</ThirdRow>*/}
                 </div>
             </InnerTop>
 
@@ -155,13 +148,14 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                     return (
                         <div className="row" key={i}>
                             {v.map((s, i) => {
-                                // console.log('s.Images: ', s.Images);
                                 return (
                                     <div className="outside" key={i}>
                                         <div className="inside">
-                                            <img
-                                                src={`http://localhost:8080/fileslist/${s.Images && s.Images[0].src}`}
-                                                alt=""/>
+                                            <Link href={{pathname: 'post', query: {id: s.id}}} as={`/post/${s.id}`}>
+                                                <a>
+                                                    <img src={`http://localhost:8080/fileslist/${s.Images && s.Images[0].src}`}/>
+                                                </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 );

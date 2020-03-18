@@ -5,6 +5,7 @@ import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
 import {ContentsBox, Inner} from "../components/style/content";
 import {SIGN_UP_REDIRECTION} from "../reducers/user";
+import Router from "next/router";
 
 const Home = () => {
 
@@ -12,6 +13,7 @@ const Home = () => {
     const store = useStore();
     const isPostAdded = store.getState().post.isPostAdded;
     const isSignedUp = store.getState().user.isSignedUp;
+    const isLoggedIn = store.getState().user.isLoggedIn;
     // const isLoggedIn = store.getState().user.isLoggedIn;
 
     const {mainPosts, hasMorePosts} = useSelector(state => state.post);

@@ -388,7 +388,7 @@ function* addComment(action) {
     // console.log('sagas/post... addComment... action: ', action);
 
     try {
-        yield delay(800);
+        yield delay(300);
         const result = yield call(addCommentAPI, action.data);
         // console.log('addComment result: ', result);
         yield put({

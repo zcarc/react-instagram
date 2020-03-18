@@ -109,12 +109,18 @@ export default (state = initialState, action) => {
 
             case ADD_COMMENT_SUCCESS: {
                 const index = draft.mainPosts.findIndex(e => e.id === action.data.postId);
-                if (draft.mainPosts[index].comments) {
+                if (draft.mainPosts[index] && draft.mainPosts[index].comments) {
                     draft.mainPosts[index].comments.push(action.data.comment);
                 }
 
-                if (draft.mainPosts[index].Comments) {
+                if (draft.mainPosts[index] && draft.mainPosts[index].Comments) {
                     draft.mainPosts[index].Comments.push(action.data.id);
+                }
+
+                if (draft.singlePost.length) {
+                    const postIndex = draft.singlePost.findIndex(v => v.id === action.data.postId);
+                    draft.singlePost[postIndex].comments.push(action.data.comment);
+
                 }
 
                 draft.isAddingComment = false;
@@ -129,8 +135,20 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_COMMENTS_SUCCESS: {
+
+                console.log('LOAD_COMMENTS_SUCCESS action.data.comments: ', action.data.comments);
+
+                if (draft.singlePost.length) {
+                    const postIndex = draft.singlePost.findIndex(v => v.id === action.data.postId);
+                    draft.singlePost[postIndex].comments = action.data.comments;
+
+                }
+
                 const postIndex = draft.mainPosts.findIndex(v => v.id === action.data.postId);
-                draft.mainPosts[postIndex].comments = action.data.comments;
+                if(draft.mainPosts[postIndex]) {
+                    draft.mainPosts[postIndex].comments = action.data.comments;
+                }
+
                 break;
             }
 
@@ -139,6 +157,10 @@ export default (state = initialState, action) => {
             case LOAD_OTHER_USER_POSTS_REQUEST: {
                 draft.mainPosts = action.lastId ? draft.mainPosts : [];
                 draft.hasMorePosts = action.lastId ? draft.hasMorePosts : true;
+                if(draft.singlePost.length) {
+                    draft.singlePost = [];
+                }
+
                 // console.log('LOAD_MAIN_POSTS_REQUEST: ', draft.mainPosts, draft.hasMorePosts);
                 break;
             }
@@ -197,7 +219,7 @@ export default (state = initialState, action) => {
             }
 
             case LIKE_POST_REQUEST:
-            case UNLIKE_POST_REQUEST:{
+            case UNLIKE_POST_REQUEST: {
                 break;
             }
 
@@ -214,7 +236,7 @@ export default (state = initialState, action) => {
             }
 
             case LIKE_POST_FAILURE:
-            case UNLIKE_POST_FAILURE:{
+            case UNLIKE_POST_FAILURE: {
                 break;
             }
 
@@ -263,6 +285,9 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_POST_REQUEST: {
+                if (draft.singlePost.length) {
+                    draft.mainPosts = [];
+                }
                 break;
             }
 
@@ -273,6 +298,9 @@ export default (state = initialState, action) => {
             }
 
             case LOAD_POST_FAILURE: {
+                if (draft.singlePost.length) {
+                    draft.mainPosts = [];
+                }
                 break;
             }
 
