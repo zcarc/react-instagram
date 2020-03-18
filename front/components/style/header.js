@@ -68,7 +68,6 @@ export const Sprite_write_logo = styled.div`
     height: 29px;
     vertical-align: middle;
     transform: translateY(3px);
-    transition: all 0.4s 0.2s ease;
     position: relative;
 `;
 

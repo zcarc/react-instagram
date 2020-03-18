@@ -228,7 +228,7 @@ const ContentLayout = ({v}) => {
                             </Link>
                         </div>
 
-                        <SpriteShareIcon/>
+                        <SpriteShareIcon style={{cursor: 'text'}}/>
                     </LeftIcons>
 
                     <div>
