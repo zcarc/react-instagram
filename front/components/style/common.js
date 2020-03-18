@@ -111,3 +111,10 @@ export const SpinnerSmallComment = styled(SpinnerSmall)`
         transform: translate(-50%, -50%);
     }
 `;
+
+export const SpinnerSmallWrite = styled(SpinnerSmall)`
+    & :after {
+        top: 53%;
+        left: 51.1%;
+    }
+`;

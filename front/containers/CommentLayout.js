@@ -3,7 +3,7 @@ import {
     Comment, CommentContainer,
     CommentDetail, CommentField, CommentFieldInput,
     Nickname,
-    SpriteSmallHeartIconOutline, Timer, UploadBtn,
+    Timer, UploadBtn,
 } from "../components/style/content";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_COMMENT_REQUEST, LOAD_COMMENTS_REQUEST} from "../reducers/post";
@@ -70,8 +70,6 @@ const CommentLayout = memo(({post}) => {
         }
 
     }, [isAddedComment]);
-
-
 
 
     return (

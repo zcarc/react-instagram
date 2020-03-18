@@ -33,9 +33,10 @@ const FollowUsersObjectLayout = ({user, pageName}) => {
                         <div>
                             <Link href="#">
                                 <a>
-                                    <img
-                                        src="https://cdn.pixabay.com/photo/2014/05/03/00/50/flower-child-336658_960_720.jpg"
-                                        alt="user image"/>
+                                    {user.userProfileImage
+                                        ? <img src={`http://localhost:8080/fileslist/${user.userProfileImage}`} alt="user image"/>
+                                        : <img src={'/img/profile_image_default.jpg'} alt="user image"/>
+                                    }
                                 </a>
                             </Link>
                         </div>
@@ -43,7 +44,7 @@ const FollowUsersObjectLayout = ({user, pageName}) => {
 
                     <FollowingName>
                         <div>
-                            <a>{user.id}</a>
+                            <a>{user.userId}</a>
                         </div>
                         <div>
                             <div>{user.userNickname}</div>

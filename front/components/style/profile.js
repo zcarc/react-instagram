@@ -22,10 +22,15 @@ export const InnerTopLeftImgWrap  = styled.div`
     overflow:hidden;
     border-radius: 50%;
     margin: 0 25% 0 auto;
+    
 
     & img {
         width: 100%;
         height: 100%;
+    }
+    
+    & .user {
+        cursor: pointer;
     }
 `;
 
@@ -33,7 +38,7 @@ export const FirstRow  = styled.div`
     display: flex;
     align-items: center;
 
-    & div:last-child {
+    & .logout {
         height: 25px;
         display: flex;
         justify-content: center;

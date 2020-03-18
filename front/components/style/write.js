@@ -60,6 +60,7 @@ export const Upload = styled.div`
     justify-content: center;
     align-items: center;
     position: relative;
+    cursor: pointer;
 `;
 
 export const PlusIcon = styled.div`

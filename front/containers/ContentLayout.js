@@ -26,8 +26,10 @@ const ContentLayout = ({v}) => {
 
     const {isLoggedIn, userSessionData} = useSelector(state => state.user);
     const isPostRemoved = useSelector(state => state.post.isPostRemoved);
-    const dispatch = useDispatch();
     const moreRef = useRef('');
+    const dispatch = useDispatch();
+
+
     const onToggleLike = useCallback((v) => () => {
 
         // console.log('ContentLayout onToggleLike isLoggedIn: ', isLoggedIn);
@@ -52,7 +54,8 @@ const ContentLayout = ({v}) => {
             });
         }
 
-    }, [isLoggedIn, userSessionData && userSessionData.id && userSessionData.id]);
+    }, [isLoggedIn, userSessionData && userSessionData.id && userSessionData.id])
+
     const onBookmark = useCallback((v) => () => {
 
         if (!isLoggedIn) {
@@ -65,10 +68,12 @@ const ContentLayout = ({v}) => {
         });
 
     }, [isLoggedIn]);
+
     const onClickMoreButton = useCallback(() => {
         moreRef.current.style.opacity = 1;
         moreRef.current.style.visibility = 'visible';
     }, []);
+
     const onClickCloseButton = useCallback((e) => {
         e.stopPropagation();
 

@@ -32,9 +32,43 @@ import {
     LOAD_OTHER_FOLLOWINGS_REQUEST,
     LOAD_OTHER_FOLLOWINGS_FAILURE,
     LOAD_OTHER_FOLLOWINGS_SUCCESS,
-    LOAD_OTHER_FOLLOWERS_SUCCESS, LOAD_OTHER_FOLLOWERS_FAILURE, LOAD_OTHER_FOLLOWERS_REQUEST
+    LOAD_OTHER_FOLLOWERS_SUCCESS,
+    LOAD_OTHER_FOLLOWERS_FAILURE,
+    LOAD_OTHER_FOLLOWERS_REQUEST,
+    UPDATE_USER_PROFILE_IMAGE_SUCCESS, UPDATE_USER_PROFILE_IMAGE_FAILURE, UPDATE_USER_PROFILE_IMAGE_REQUEST
 } from "../reducers/user";
 import axios from 'axios';
+import {UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS} from "../reducers/post";
+
+function updateUserProfileImageAPI(formData) {
+    return axios.post('user/profile/image', formData, {
+        withCredentials: true,
+    });
+}
+
+function* updateUserProfileImage(action) {
+    // console.log('updateUserProfileImage action: ', action);
+
+    try {
+        const result = yield call(updateUserProfileImageAPI, action.data);
+        // console.log('updateUserProfileImage result.data: ', result.data);
+        yield put({
+            type: UPDATE_USER_PROFILE_IMAGE_SUCCESS,
+            data: result.data,
+        });
+
+    } catch (e) {
+        console.error(e);
+        yield put({
+            type: UPDATE_USER_PROFILE_IMAGE_FAILURE,
+            error: e,
+        });
+    }
+}
+
+function* watchUpdateUserProfileImage() {
+    yield takeLatest(UPDATE_USER_PROFILE_IMAGE_REQUEST, updateUserProfileImage);
+}
 
 function loadOtherFollowersAPI(userId) {
 
@@ -449,5 +483,6 @@ export default function* userSaga() {
         fork(watchRemoveFollower),
         fork(watchLoadOtherFollowings),
         fork(watchLoadOtherFollowers),
+        fork(watchUpdateUserProfileImage),
     ]);
 }

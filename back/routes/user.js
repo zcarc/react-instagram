@@ -1,9 +1,33 @@
+const multer = require('multer');
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models/index');
 const passport = require('passport');
 const {isLoggedIn} = require('./middleware');
+
+const upload = multer({
+    storage: multer.diskStorage({
+
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname);
+            const basename = path.basename(file.originalname, ext);
+
+            // console.log('ext: ', ext);
+            // console.log('basename: ', basename);
+
+            done(null, basename + new Date().valueOf() + ext);
+        },
+    }),
+
+    limits: {fileSize: 20 * 1024 * 1024},
+
+});
 
 // load user session
 router.get('/', isLoggedIn, async (req, res) => {
@@ -142,7 +166,6 @@ router.post('/', async (req, res, next) => {
             userId: req.body.userId,
             userPassword: hashedPassword,
             userNickname: req.body.userNickname,
-            userProfileImage: 'default',
         });
 
         // console.log('newUser: ', newUser);
@@ -211,7 +234,7 @@ router.post('/login', async (req, res, next) => {
                         as: 'Followers',
                         attributes: ['id'],
                     }],
-                    attributes: ['id', 'userId', 'userNickname'],
+                    attributes: ['id', 'userId', 'userNickname', 'userProfileImage'],
                 });
                 //  console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
 
@@ -289,7 +312,7 @@ router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
         }
 
         const userFollowings = await user.getFollowings({
-            attributes: ['id', 'userNickname'],
+            attributes: ['userId', 'userNickname', 'userProfileImage'],
         });
 
         //  console.log('userFollowings: ', JSON.stringify(userFollowings));
@@ -316,7 +339,7 @@ router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
         }
 
         const userFollowers = await user.getFollowers({
-            attributes: ['id', 'userNickname'],
+            attributes: ['userId', 'userNickname', 'userProfileImage'],
         });
 
         //  console.log('userFollowers: ', JSON.stringify(userFollowers));
@@ -464,7 +487,7 @@ router.get('/:id/other', async (req, res, next) => {
                 model: db.Post,
                 attributes: ['id'],
             }],
-            attributes: ['id', 'userNickname'],
+            attributes: ['id', 'userNickname', 'userProfileImage'],
         });
 
         console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
@@ -479,6 +502,35 @@ router.get('/:id/other', async (req, res, next) => {
         next(e);
     }
 
+});
+
+router.post('/profile/image', isLoggedIn, upload.single('image'), async(req, res, next) => {
+    try {
+
+        console.log('req.file: ', req.file);
+
+
+        await db.User.update({ userProfileImage: req.file.filename}, {
+            where: {
+                id: req.user.id,
+            },
+        });
+
+        const updatedUser = await db.User.findOne({
+            where: {
+                id: req.user.id,
+            },
+            attributes: ['id', 'userProfileImage'],
+        });
+
+        // console.log('updatedUser: ', JSON.stringify(updatedUser));
+
+        return res.json(updatedUser);
+
+    } catch (e) {
+        console.error(e);
+        next(e);
+    }
 });
 
 

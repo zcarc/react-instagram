@@ -1,22 +1,21 @@
 import {
-    ContentsContainer,
     FirstRow, Inner,
     InnerTop,
     InnerTopLeft,
-    InnerTopLeftImgWrap, Pic, PictureWrap, RowSpan,
+    InnerTopLeftImgWrap, PictureWrap, RowSpan,
     SecondRow,
-    ThirdRow,
     UserName
 } from "./style/profile";
 import Link from "next/link";
-import {useCallback} from "react";
+import {useCallback, useRef} from "react";
 import {useDispatch} from "react-redux";
-import {LOG_OUT_REQUEST} from "../reducers/user";
+import {LOG_OUT_REQUEST, UPDATE_USER_PROFILE_IMAGE_REQUEST} from "../reducers/user";
 
 const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, followingList, profileUserInfo}) => {
 
-    console.log('profileUserInfo ', profileUserInfo.id);
+    // console.log('profileUserInfo ', profileUserInfo.id);
 
+    const profileImageInput = useRef('');
 
     const dispatch = useDispatch();
 
@@ -26,15 +25,66 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
         });
     }, []);
 
+    const onChangeInput = useCallback((e) => {
+        // console.log('e.target.files: ', e.target.files[0]);
+
+        const newFormData = new FormData();
+        newFormData.append('image', e.target.files[0]);
+
+        dispatch({
+            type: UPDATE_USER_PROFILE_IMAGE_REQUEST,
+            data: newFormData,
+        });
+
+    }, []);
+
+    const onClickImageUpload = useCallback(() => {
+        profileImageInput.current.click();
+    }, []);
+
     return (
         <Inner>
             <InnerTop>
                 <InnerTopLeft>
                     <InnerTopLeftImgWrap>
-                        <img src="/img/profile_image_default.jpg" alt="post_img"/>
+                        {/*<img src="/img/profile_image_default.jpg" alt="post_img"/>*/}
+
+                        {profileUserInfo && profileUserInfo[0]
+                            ? userSessionData && userSessionData.id === profileUserInfo[0].id
+                                ? userSessionData && userSessionData.userProfileImage
+                                    ? <img className='user' onClick={onClickImageUpload}
+                                           src={`http://localhost:8080/fileslist/${userSessionData.userProfileImage}`}
+                                           alt="post_img"/>
+                                    : <img className='user' onClick={onClickImageUpload} src="/img/profile_image_default.jpg" alt="post_img"/>
+
+                                : profileUserInfo[0] && profileUserInfo[0].userProfileImage
+                                    ? <img src={`http://localhost:8080/fileslist/${profileUserInfo[0].userProfileImage}`}
+                                           alt="post_img"/>
+                                    : <img src="/img/profile_image_default.jpg" alt="post_img"/>
+
+                            : userSessionData && userSessionData.userProfileImage
+                                ? <img className='user' onClick={onClickImageUpload}
+                                       src={`http://localhost:8080/fileslist/${userSessionData.userProfileImage}`}
+                                       alt="post_img"/>
+                                : <img className='user' onClick={onClickImageUpload} src="/img/profile_image_default.jpg" alt="post_img"/>
+                        }
+
+                        {/*{profileUserInfo && profileUserInfo[0] && userSessionData && userSessionData.id === profileUserInfo[0].id*/}
+                        {/*    ? profileUserInfo[0] && profileUserInfo[0].userProfileImage*/}
+                        {/*        ? <img className='user' src={`profileUserInfo[0].userProfileImage`} alt="post_img"/>*/}
+                        {/*        : <img className='user' src="/img/profile_image_default.jpg" alt="post_img"/>*/}
+
+                        {/*    : profileUserInfo[0] && profileUserInfo[0].userProfileImage*/}
+                        {/*        ? <img src={`profileUserInfo[0].userProfileImage`} alt="post_img"/>*/}
+                        {/*        : <img className='user' src="/img/profile_image_default.jpg" alt="post_img"/>*/}
+                        {/*}*/}
+
                     </InnerTopLeftImgWrap>
+
+                    <input type="file" ref={profileImageInput} onChange={onChangeInput} hidden/>
+
                 </InnerTopLeft>
-                <div style={{display: 'flex', flexDirection: 'column',alignItems: 'center', justifyContent: 'center'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
                     <FirstRow>
                         <UserName>
 
@@ -49,18 +99,15 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                             {/*    ? userSessionData && userSessionData.userNickname*/}
                             {/*    : Object.keys(profileUserInfo).length !== 0 && profileUserInfo[0]*/}
                             {/*    && profileUserInfo[0].userNickname*/}
-
                             {/*}*/}
-
 
                             {/*{Object.keys(profileUserInfo).length !== 0 && profileUserInfo[0]*/}
                             {/*    ? profileUserInfo[0].userNickname*/}
                             {/*    : userSessionData && userSessionData.userNickname}*/}
 
-
                             {/*{userSessionData && userSessionData && userSessionData.userNickname}*/}
                         </UserName>
-                        {isLoggedIn && <div onClick={onLogout}>로그아웃</div>}
+                        {isLoggedIn && <div className="logout" onClick={onLogout}>로그아웃</div>}
                     </FirstRow>
                     <SecondRow>
                         <li>
@@ -79,12 +126,12 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                 ? userSessionData && userSessionData.id === profileUserInfo[0].id
                                     ? followerList && Object.keys(followerList).length !== 0
                                         ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
-                                        :<RowSpan>팔로워</RowSpan>
+                                        : <RowSpan>팔로워</RowSpan>
                                     : <RowSpan>팔로워</RowSpan>
                                 : userSessionData && userSessionData.id
                                     ? followerList && Object.keys(followerList).length !== 0
                                         ? <RowSpan><Link href="/followers"><a>팔로워</a></Link></RowSpan>
-                                        :<RowSpan>팔로워</RowSpan>
+                                        : <RowSpan>팔로워</RowSpan>
                                     : <RowSpan>팔로워</RowSpan>
                             }
 
@@ -104,13 +151,13 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                 ? userSessionData && userSessionData.id === profileUserInfo[0].id
                                     ? followingList && Object.keys(followingList).length !== 0
                                         ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
-                                        :<RowSpan>팔로잉</RowSpan>
-                                    : <RowSpan>팔로워</RowSpan>
+                                        : <RowSpan>팔로잉</RowSpan>
+                                    : <RowSpan>팔로잉</RowSpan>
                                 : userSessionData && userSessionData.id
                                     ? followingList && Object.keys(followingList).length !== 0
                                         ? <RowSpan><Link href="/following"><a>팔로잉</a></Link></RowSpan>
-                                        :<RowSpan>팔로잉</RowSpan>
-                                    : <RowSpan>팔로워</RowSpan>
+                                        : <RowSpan>팔로잉</RowSpan>
+                                    : <RowSpan>팔로잉</RowSpan>
                             }
 
                             {/*{userSessionData && userSessionData.Followings && Object.keys(userSessionData.Followings).length !== 0*/}
@@ -153,7 +200,11 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                         <div className="inside">
                                             <Link href={{pathname: 'post', query: {id: s.id}}} as={`/post/${s.id}`}>
                                                 <a>
-                                                    <img src={`http://localhost:8080/fileslist/${s.Images && s.Images[0].src}`}/>
+                                                    {s.Images && s.Images[0] && s.Images[0].src
+                                                        ? <img
+                                                            src={`http://localhost:8080/fileslist/${s.Images[0].src}`}/>
+                                                        : <img src="/img/xbox.jpg" alt="post_img"/>
+                                                    }
                                                 </a>
                                             </Link>
                                         </div>
@@ -164,22 +215,7 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                     )
                 })}
 
-
             </PictureWrap>
-
-            <ContentsContainer className="active">
-
-
-                {/*<Pic>*/}
-                {/*    <a href="#"><img src="/img/profile_image_default.jpg" alt="post_img"/></a>*/}
-                {/*</Pic>*/}
-
-            </ContentsContainer>
-            <ContentsContainer>
-                <Pic>
-                    <a href="#"><img src="#" alt=""/></a>
-                </Pic>
-            </ContentsContainer>
         </Inner>
     );
 };

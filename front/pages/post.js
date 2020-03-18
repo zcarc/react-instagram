@@ -12,18 +12,18 @@ const Post = () => {
     return (
         <>
             <Helmet
-                title={`${singlePost && singlePost.User && singlePost.User.userNickname}님의 글`}
+                title={`${singlePost && singlePost.User && singlePost[0].User.userNickname}님의 글`}
                 desciprtion={singlePost && singlePost.content}
                 meta={[{
                     name: 'description', content: singlePost && singlePost.content,
                 }, {
-                    property: 'og:title', content: `${singlePost && singlePost.User && singlePost.User.userNickname}님의 게시글`,
+                    property: 'og:title', content: `${singlePost && singlePost && singlePost[0] && singlePost[0].User.userNickname}님의 게시글`,
                 }, {
-                    property: 'og:description', content: singlePost && singlePost.content,
+                    property: 'og:description', content: singlePost &&  singlePost[0] && singlePost[0].content,
                 }, {
                     property: 'og:image', content: singlePost && singlePost.Images && `http://localhost:8080/${singlePost.Images[0] && singlePost.Images[0].src} || post_photo_01.jpg`,
                 }, {
-                    property: 'og:url', content: `http://localhost:8070/post/${singlePost && singlePost.id}`,
+                    property: 'og:url', content: `http://localhost:8070/post/${singlePost && singlePost[0] && singlePost[0].id}`,
                 }]}
             />
 

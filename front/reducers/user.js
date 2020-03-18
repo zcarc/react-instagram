@@ -70,6 +70,10 @@ export const LOAD_OTHER_FOLLOWERS_FAILURE = 'LOAD_OTHER_FOLLOWERS_FAILURE';
 
 export const REMOVE_PROFILE_INFO = 'REMOVE_PROFILE_INFO';
 
+export const UPDATE_USER_PROFILE_IMAGE_REQUEST = 'UPDATE_USER_PROFILE_IMAGE_REQUEST';
+export const UPDATE_USER_PROFILE_IMAGE_SUCCESS = 'UPDATE_USER_PROFILE_IMAGE_SUCCESS';
+export const UPDATE_USER_PROFILE_IMAGE_FAILURE = 'UPDATE_USER_PROFILE_IMAGE_FAILURE';
+
 
 
 export default (state = initialState, action) => {
@@ -247,6 +251,28 @@ export default (state = initialState, action) => {
                 if(draft.isSignedUp){
                     draft.isSignedUp = false;
                 }
+                break;
+            }
+
+            case UPDATE_USER_PROFILE_IMAGE_REQUEST: {
+                break;
+            }
+
+            case UPDATE_USER_PROFILE_IMAGE_SUCCESS: {
+                // console.log('UPDATE_USER_PROFILE_IMAGE_SUCCESS action.data: ', action.data);
+
+                if(Object.keys(draft.userSessionData).length !== 0) {
+                    draft.userSessionData['userProfileImage'] = action.data.userProfileImage;
+                }
+
+                if(draft.profileUserInfo.length) {
+                    draft.profileUserInfo[0].userProfileImage = action.data.userProfileImage;
+                }
+
+                break;
+            }
+
+            case UPDATE_USER_PROFILE_IMAGE_FAILURE: {
                 break;
             }
 

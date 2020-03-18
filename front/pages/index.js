@@ -1,11 +1,9 @@
-import Link from 'next/link';
 import ContentLayout from "../containers/ContentLayout";
 import React, {useEffect, useCallback, useRef} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
 import {ContentsBox, Inner} from "../components/style/content";
 import {SIGN_UP_REDIRECTION} from "../reducers/user";
-import Router from "next/router";
 
 const Home = () => {
 

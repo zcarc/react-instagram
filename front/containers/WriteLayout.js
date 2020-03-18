@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {FormSubmitButton} from "../components/style/register";
 import {ADD_POST_REQUEST, CLOSE_IMAGE, UPLOAD_IMAGES_REQUEST} from "../reducers/post";
 import Router from 'next/router';
-import {SpinnerSmall} from "../components/style/common";
+import {SpinnerSmallWrite} from "../components/style/common";
 
 const WriteLayout = () => {
 
@@ -22,7 +22,12 @@ const WriteLayout = () => {
     }, [desc]);
 
     const onSubmitForm = useCallback((e) => {
-        e.preventDefault();
+        e.preventDefault()
+
+
+        if(desc === '') {
+            return alert('내용을 입력해주세요.');
+        }
 
         const newForm = new FormData();
 
@@ -140,7 +145,8 @@ const WriteLayout = () => {
 
                     {!isAddingPost
                         ? <div>저장</div>
-                        : <SpinnerSmall style={{transform: 'translate(-45%, -50%)'}}/>}
+                        : <SpinnerSmallWrite/>}
+
                 </FormSubmitButton>
 
             </PostForm>

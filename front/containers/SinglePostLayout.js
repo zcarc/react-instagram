@@ -1,4 +1,4 @@
-import {useCallback, useRef} from 'react';
+import {useCallback, useRef, useEffect} from 'react';
 import {
     BottomIcons, Comment, CommentContainer, CommentDetail,
     Contents,
@@ -21,12 +21,15 @@ import {
 } from "../reducers/post";
 import {FollowingContainer, Inner as FollowInner} from "../components/style/follow";
 import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
+import Router from "next/router";
 
 const SinglePostLayout = ({v}) => {
 
     const {isLoggedIn, userSessionData} = useSelector(state => state.user);
+    const isPostRemoved = useSelector(state => state.post.isPostRemoved);
     const dispatch = useDispatch();
     const moreRef = useRef('');
+
     const onToggleLike = useCallback((v) => () => {
 
 
@@ -90,6 +93,12 @@ const SinglePostLayout = ({v}) => {
 
     }, []);
 
+    useEffect(() => {
+        if(isPostRemoved) {
+            Router.push('/');
+        }
+    }, [isPostRemoved]);
+
     return (
         <>
 
@@ -108,12 +117,6 @@ const SinglePostLayout = ({v}) => {
                                     style={{color: 'black'}}>{v.User && v.User.userNickname}</a></Link>
                             </div>
                         </ProfileUser>
-
-                        <div>
-                            <form action="#" method="post">
-                                <input type="submit" value="삭제"/>
-                            </form>
-                        </div>
 
                     </UserContainer>
 
@@ -224,10 +227,10 @@ const SinglePostLayout = ({v}) => {
                             <Nickname>{v.User && v.User.userNickname}</Nickname>
 
                             <div>
-                                {v.content && v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s) => {
+                                {v.content && v.content.split(/(#[^#\s]+)|([^#\s]+)/g).filter(s => !!s).map((s, i) => {
                                     if (s.match(/#[^s#]+/)) {
                                         return <Link href={{pathname: '/hashtag', query: {tag: s.slice(1)}}}
-                                                     as={`/hashtag/${s.slice(1)}`} key={s}><a>{s}</a></Link>;
+                                                     as={`/hashtag/${s.slice(1)}`} key={i}><a>{s}</a></Link>;
                                     }
                                     return <span>{s}</span>;
                                 })}

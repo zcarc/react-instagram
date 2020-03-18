@@ -6,8 +6,7 @@ import {
 }
     from './style/header'
 import React, {useCallback, useState, useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {LOG_OUT_REQUEST} from "../reducers/user";
+import {useSelector} from "react-redux";
 import Router from "next/router";
 
 
@@ -16,7 +15,6 @@ const HeaderLayout = () => {
     const [searchName, setSearchName] = useState('');
     const {isLoggedIn} = useSelector(state => state.user);
     const {isSearched} = useSelector(state => state.post);
-    const dispatch = useDispatch();
 
     // console.log('headerlayout isLoggedIn: ', isLoggedIn);
 
