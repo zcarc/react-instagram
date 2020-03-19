@@ -19,7 +19,7 @@ const HeaderLayout = () => {
     // console.log('headerlayout isLoggedIn: ', isLoggedIn);
 
     const onChangeInput = useCallback((e) => {
-        console.log('e.target.value: ', e.target.value);
+        // console.log('e.target.value: ', e.target.value);
         setSearchName(e.target.value);
     }, []);
 

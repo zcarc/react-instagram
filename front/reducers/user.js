@@ -88,7 +88,7 @@ export default (state = initialState, action) => {
             }
 
             case USER_EXISTS_SUCCESS: {
-                console.log('USER_EXISTS_SUCCESS action.data: ', action.data);
+                // console.log('USER_EXISTS_SUCCESS action.data: ', action.data);
                 draft.isLoggedIn = true;
                 draft.userSessionData = action.data;
                 break;
@@ -206,7 +206,7 @@ export default (state = initialState, action) => {
             }
             case LOAD_FOLLOWINGS_SUCCESS:
             case LOAD_OTHER_FOLLOWINGS_SUCCESS :{
-                console.log('LOAD_OTHER_FOLLOWINGS_SUCCESS: action.data', action.data);
+                // console.log('LOAD_OTHER_FOLLOWINGS_SUCCESS: action.data', action.data);
                 draft.followingList = action.data;
                 break;
             }

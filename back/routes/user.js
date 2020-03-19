@@ -36,10 +36,10 @@ router.get('/', isLoggedIn, async (req, res) => {
 // load user info
 // router.get('/:id', isLoggedIn, async (req, res, next) => {
 //
-//     // const test = req.params.id || req.user.id;
-//     // console.log('routes/user... load user info... req.user: ', req.user);
-//     // console.log('routes/user... load user info... req.params: ', req.params);
-//     // console.log('routes/user... load user info... test: ', test);
+//     const test = req.params.id || req.user.id;
+//     console.log('routes/user... load user info... req.user: ', req.user);
+//     console.log('routes/user... load user info... req.params: ', req.params);
+//     console.log('routes/user... load user info... test: ', test);
 //
 //     try {
 //
@@ -62,7 +62,7 @@ router.get('/', isLoggedIn, async (req, res) => {
 //             attributes: ['id', 'userNickname'],
 //         });
 //
-//         // console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
+//         console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
 //
 //         const jsonAnUserInfo = anUserInfo.toJSON();
 //         jsonAnUserInfo.Posts = jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
@@ -79,8 +79,8 @@ router.get('/', isLoggedIn, async (req, res) => {
 // load session user profile posts
 router.get('/:id/posts', async (req, res, next) => {
 
-    console.log('/:id/posts req.params: ', req.params);
-    console.log('/:id/posts req.user: ', req.user);
+    // console.log('/:id/posts req.params: ', req.params);
+    // console.log('/:id/posts req.user: ', req.user);
 
     // if(!parseInt(req.params.id) && req.user) {
     //     req.params.id = req.user.id;
@@ -166,9 +166,9 @@ router.post('/login', async (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
 
         // if not exists,
-        //  console.log('routes/user... passport.authenticate err: ', err); // null
-        //  console.log('routes/user... passport.authenticate user: ', user); // false
-        //  console.log('routes/user... passport.authenticate info: ', info); // undefined
+        // console.log('routes/user... passport.authenticate err: ', err); // null
+        // console.log('routes/user... passport.authenticate user: ', user); // false
+        // console.log('routes/user... passport.authenticate info: ', info); // undefined
 
         // console.log('routes/user... passport.authenticate req.user: ', req.user);
         // console.log('routes/user... passport.authenticate req.session: ', req.session);
@@ -185,9 +185,9 @@ router.post('/login', async (req, res, next) => {
 
         return req.login(user, async (loginError) => {
 
-            //  console.log('req.login()... user: ', user);
-            //  console.log('req.login()... req.user: ', req.user); // db object
-            //  console.log('req.login()... req.session: ', req.session); // { passport: { user: 1 } }
+            // console.log('req.login()... user: ', user);
+            // console.log('req.login()... req.user: ', req.user); // db object
+            // console.log('req.login()... req.session: ', req.session); // { passport: { user: 1 } }
 
 
             if (loginError) {
@@ -213,7 +213,7 @@ router.post('/login', async (req, res, next) => {
                     }],
                     attributes: ['id', 'userId', 'userNickname', 'userProfileImage'],
                 });
-                //  console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
+                // console.log('fullUser.toJSON: ', fullUser && fullUser.toJSON());
 
                 // const filteredUser = Object.assign({}, user.toJSON());
                 // delete filteredUser.userPassword;
@@ -234,7 +234,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/logout', isLoggedIn, (req, res, next) => {
-    //  console.log('/logout...');
+    // console.log('/logout...');
 
     req.logout();
     req.session.destroy();
@@ -247,7 +247,7 @@ router.post('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
         const user = await db.User.findOne({
             where: {id: req.user.id},
         });
-        //  console.log('/id:/follow... user.toJSON(): ', user.toJSON());
+        // console.log('/id:/follow... user.toJSON(): ', user.toJSON());
 
         await user.addFollowing(req.params.postUserId);
 
@@ -264,7 +264,7 @@ router.delete('/:postUserId/follow', isLoggedIn, async (req, res, next) => {
         const user = await db.User.findOne({
             where: {id: req.user.id},
         });
-        //  console.log('/postUserId/follow... user.toJSON(): ', user.toJSON());
+        // console.log('/postUserId/follow... user.toJSON(): ', user.toJSON());
 
         await user.removeFollowing(req.params.postUserId);
 
@@ -292,7 +292,7 @@ router.get('/:userId/followings', isLoggedIn, async (req, res, next) => {
             attributes: ['userId', 'userNickname', 'userProfileImage'],
         });
 
-        //  console.log('userFollowings: ', JSON.stringify(userFollowings));
+        // console.log('userFollowings: ', JSON.stringify(userFollowings));
 
         return res.json(userFollowings);
 
@@ -319,7 +319,7 @@ router.get('/:userId/followers', isLoggedIn, async (req, res, next) => {
             attributes: ['userId', 'userNickname', 'userProfileImage'],
         });
 
-        //  console.log('userFollowers: ', JSON.stringify(userFollowers));
+        // console.log('userFollowers: ', JSON.stringify(userFollowers));
 
         return res.json(userFollowers);
 
@@ -352,7 +352,7 @@ router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => {
 // load other user posts
 router.get('/:id/posts/other', async (req, res, next) => {
 
-    console.log('/:id/posts/other req.params: ', req.params);
+    // console.log('/:id/posts/other req.params: ', req.params);
     // console.log('/:id/posts/other req.user: ', req.user);
 
     // if(!parseInt(req.params.id) && req.user) {
@@ -379,7 +379,7 @@ router.get('/:id/posts/other', async (req, res, next) => {
             order: [['createdAt', 'DESC']],
         });
 
-        console.log('/:id/posts/other JSON.stringify(userPosts): ', JSON.stringify(userPosts));
+        // console.log('/:id/posts/other JSON.stringify(userPosts): ', JSON.stringify(userPosts));
 
         return res.json(userPosts);
 
@@ -407,7 +407,7 @@ router.get('/:userId/followings/other', async (req, res, next) => {
             attributes: ['id', 'userNickname'],
         });
 
-        //  console.log('userFollowings: ', JSON.stringify(userFollowings));
+        // console.log('userFollowings: ', JSON.stringify(userFollowings));
 
         return res.json(userFollowings);
 
@@ -434,7 +434,7 @@ router.get('/:userId/followers/other', async (req, res, next) => {
             attributes: ['id', 'userNickname'],
         });
 
-         console.log('/:userId/followers/other: ', JSON.stringify(userFollowers));
+         // console.log('/:userId/followers/other: ', JSON.stringify(userFollowers));
 
         return res.json(userFollowers);
 
@@ -467,7 +467,7 @@ router.get('/:id/other', async (req, res, next) => {
             attributes: ['id', 'userNickname', 'userProfileImage'],
         });
 
-        console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
+        // console.log('JSON.stringify(anUserInfo): ', JSON.stringify(anUserInfo));
 
         const jsonAnUserInfo = anUserInfo.toJSON();
         jsonAnUserInfo.Posts = jsonAnUserInfo.Posts ? jsonAnUserInfo.Posts.length : 0;
@@ -484,7 +484,7 @@ router.get('/:id/other', async (req, res, next) => {
 router.post('/profile/image', isLoggedIn, upload.single('image'), async(req, res, next) => {
     try {
 
-        console.log('req.file: ', req.file);
+        // console.log('req.file: ', req.file);
 
 
         await db.User.update({ userProfileImage: req.file.filename}, {

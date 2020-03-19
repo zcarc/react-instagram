@@ -72,7 +72,7 @@ function* watchUpdateUserProfileImage() {
 
 function loadOtherFollowersAPI(userId) {
 
-    console.log('loadOtherFollowersAPI userId: ', userId);
+    // console.log('loadOtherFollowersAPI userId: ', userId);
 
     return axios.get(`/user/${userId || 0}/followers/other`, {
         withCredentials: true,
@@ -360,7 +360,7 @@ function* watchLogout() {
 
 function loadUserAPI(data) {
 
-    console.log('loadUserAPI data: ', data);
+    // console.log('loadUserAPI data: ', data);
 
     return axios.get(`/user/${data || 0}/other`, {
         withCredentials: true,
@@ -371,7 +371,7 @@ function* loadUser(action) {
 
     try {
         const result = yield call(loadUserAPI, action.data);
-        console.log('loadUser... result: ', result && result.data);
+        // console.log('loadUser... result: ', result && result.data);
         // yield delay(800);
         yield put({
             type: LOAD_USER_SUCCESS,

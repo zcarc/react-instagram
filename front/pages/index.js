@@ -36,7 +36,7 @@ const Home = () => {
                         lastId,
                     });
                     countIdRef.current.push(lastId);
-                    console.log('countIdRef.current: ', countIdRef.current);
+                    // console.log('countIdRef.current: ', countIdRef.current);
                 }
             }
 

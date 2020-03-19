@@ -50,11 +50,11 @@ function loadOtherUserPostsAPI(data) {
 
 function* loadOtherUserPosts(action) {
 
-    console.log('loadOtherUserPosts action: ', action);
+    // console.log('loadOtherUserPosts action: ', action);
 
     try {
         const userPosts = yield call(loadOtherUserPostsAPI, action.data);
-        console.log('userPosts: ', userPosts);
+        // console.log('userPosts: ', userPosts);
         yield put({
             type: LOAD_OTHER_USER_POSTS_SUCCESS,
             data: userPosts.data,
@@ -295,11 +295,11 @@ function loadUserPostsAPI(data) {
 
 function* loadUserPosts(action) {
 
-    console.log('loadUserPosts action: ', action);
+    // console.log('loadUserPosts action: ', action);
 
     try {
         const loadedUserPosts = yield call(loadUserPostsAPI, action.data);
-        console.log('loadedUserPosts: ', loadedUserPosts);
+        // console.log('loadedUserPosts: ', loadedUserPosts);
         yield put({
             type: LOAD_USER_POSTS_SUCCESS,
             data: loadedUserPosts.data,

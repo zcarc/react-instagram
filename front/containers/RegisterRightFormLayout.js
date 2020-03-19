@@ -53,7 +53,7 @@ const RegisterRightFormLayout = ({isSigningUp, isSignedUp}) => {
 
         const userInfo = [id, nickname, password, passwordCheck];
         const whiteSpace = userInfo.findIndex(e => e === '');
-        console.log('whiteSpace: ', whiteSpace);
+        // console.log('whiteSpace: ', whiteSpace);
 
         if(whiteSpace > -1) {
             return alert('각 항목은 필수사항입니다.');

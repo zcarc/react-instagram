@@ -137,7 +137,7 @@ export default (state = initialState, action) => {
 
             case LOAD_COMMENTS_SUCCESS: {
 
-                console.log('LOAD_COMMENTS_SUCCESS action.data.comments: ', action.data.comments);
+                // console.log('LOAD_COMMENTS_SUCCESS action.data.comments: ', action.data.comments);
 
                 if (draft.singlePost.length) {
                     const postIndex = draft.singlePost.findIndex(v => v.id === action.data.postId);
@@ -171,8 +171,8 @@ export default (state = initialState, action) => {
             case LOAD_OTHER_USER_POSTS_SUCCESS: {
                 action.data.forEach(v => draft.mainPosts.push(v));
                 draft.hasMorePosts = action.data.length === 10;
-                console.log('POSTS_SUCCESS action.data: ', action.data);
-                console.log('LOAD_MAIN_POSTS_SUCCESS: ', draft.mainPosts, draft.hasMorePosts);
+                // console.log('POSTS_SUCCESS action.data: ', action.data);
+                // console.log('LOAD_MAIN_POSTS_SUCCESS: ', draft.mainPosts, draft.hasMorePosts);
                 break;
             }
 

@@ -12,7 +12,7 @@ import {LOAD_OTHER_USER_POSTS_REQUEST, LOAD_USER_POSTS_REQUEST} from "../reducer
 
 const Profile = ({id}) => {
 
-    console.log('Profile id: ', id);
+    // console.log('Profile id: ', id);
 
     const {userSessionData, isLoggedIn, followerList, followingList, profileUserInfo} = useSelector(state => state.user);
     const mainPosts = useSelector(state => state.post.mainPosts);
@@ -23,8 +23,8 @@ const Profile = ({id}) => {
         // console.log('container:', container);
         // console.log('imgs:', imgs);
 
-        console.log('isLoggedIn: ', isLoggedIn);
-        console.log('id: ', id);
+        // console.log('isLoggedIn: ', isLoggedIn);
+        // console.log('id: ', id);
 
         if (!isLoggedIn) {
             if (!id) {
@@ -54,7 +54,7 @@ const Profile = ({id}) => {
 
 Profile.getInitialProps = (context) => {
 
-    console.log('Profile.getInitialProps');
+    // console.log('Profile.getInitialProps');
 
     const {dispatch, getState} = context.store;
     const {userSessionData, profileUserInfo} = getState().user;
@@ -63,7 +63,7 @@ Profile.getInitialProps = (context) => {
     // console.log('userSessionData: ', userSessionData);
     // console.log('context.store.getState().user: ', context.store.getState().user);
     // console.log('Profile.getInitialProps context.query: ', context.query); // not exists {}
-    console.log('Object.keys(context.query).length: ', Object.keys(context.query).length);
+    // console.log('Object.keys(context.query).length: ', Object.keys(context.query).length);
 
     if (Object.keys(context.query).length === 0) {
 
@@ -119,7 +119,7 @@ Profile.getInitialProps = (context) => {
 
 // Profile.getInitialProps = (context) => {
 //
-//     console.log('Profile.getInitialProps');
+// //     console.log('Profile.getInitialProps');
 //
 //     const {dispatch, getState} = context.store;
 //     const {userSessionData} = getState().user;
