@@ -8,6 +8,7 @@ const path = require('path');
 
 
 const dev = process.env.NODE_ENV !== 'production';
+const prod = process.env.NODE_ENV === 'production';
 console.log('dev: ', dev);
 
 const app = next({dev});
@@ -60,8 +61,8 @@ app.prepare().then( () => {
     });
 
 
-    server.listen(8070, () => {
-       console.log('port 8070');
+    server.listen(prod ? process.env.PORT : 8070, () => {
+       console.log(`port 8070 ${process.env.PORT}`);
     });
 
 });
