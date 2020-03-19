@@ -3,7 +3,7 @@ dotenv.config();
 
 module.exports = {
   "development": {
-    "username": "react_user",
+    "username": "root",
     "password": process.env.DB_password,
     "database": "react",
     "host": "127.0.0.1",
@@ -12,18 +12,18 @@ module.exports = {
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": process.env.DB_password,
+    "database": "react",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": "0"
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": process.env.DB_password,
+    "database": "react",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "operatorsAliases": "0"
   }
-}
+};
