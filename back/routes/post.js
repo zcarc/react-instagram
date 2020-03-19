@@ -1,31 +1,9 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const router = express.Router();
 const db = require('../models/index');
 const {isLoggedIn, isPostExists} = require('./middleware');
+const {upload} = require('./common');
 
-const upload = multer({
-    storage: multer.diskStorage({
-
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname);
-            const basename = path.basename(file.originalname, ext);
-
-            // console.log('ext: ', ext);
-            // console.log('basename: ', basename);
-
-            done(null, basename + new Date().valueOf() + ext);
-        },
-    }),
-
-    limits: {fileSize: 20 * 1024 * 1024},
-
-});
 
 // add post
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {

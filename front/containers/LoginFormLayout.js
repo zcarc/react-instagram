@@ -39,6 +39,19 @@ const LoginFormLayout = () => {
             return;
         }
 
+        const userInfo = [id, password];
+        const whiteSpace = userInfo.findIndex(e => e === '');
+        console.log('whiteSpace: ', whiteSpace);
+
+        if(whiteSpace > -1) {
+            return alert('각 항목은 필수사항입니다.');
+        }
+
+        const test = userInfo.reduce((accumulator, current) => accumulator || (/\s/).exec(current), false);
+        if(test){
+            return alert('공백은 입력할 수 없습니다.');
+        }
+
         dispatch({
             type: 'LOG_IN_REQUEST',
             data: {

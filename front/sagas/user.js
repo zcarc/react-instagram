@@ -461,6 +461,8 @@ function* login(action) {
         yield put({
             type: LOG_IN_FAILURE,
         });
+
+        alert(e.response.data);
     }
 
 }
