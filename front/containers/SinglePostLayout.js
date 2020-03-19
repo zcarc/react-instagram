@@ -167,12 +167,11 @@ const SinglePostLayout = ({v}) => {
 
                 {v.BookmarkId &&
                 <div style={{
-                    fontSize: '12px',
-                    padding: '10px 0',
+                    fontSize: '11px',
+                    padding: '18px 0 18px 15px',
                     borderTop: '1px solid #dbdbdb',
-                    paddingLeft: '10px'
                 }}>
-                    *<span style={{fontWeight: 600}}>{v.Bookmark.User.userNickname}</span>님의 게시글입니다.
+                    <span style={{fontWeight: 600}}>{v.Bookmark.User.userNickname}</span>님의 게시글입니다.
                 </div>}
 
                 <ImgSection>

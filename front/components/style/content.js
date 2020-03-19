@@ -30,7 +30,7 @@ export const Top = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 18px 17px;
 `;
 
 export const UserContainer = styled.div`
@@ -242,5 +242,179 @@ export const MoreRow = styled.nav`
         border-bottom: 1px solid rgba(0, 0, 0, 0.35);
         padding: 12px 0;
         user-select: none;
+    }
+`;
+
+export const SideBox = styled.div`
+    width: 300px;
+    height: 500px;
+    margin-left: 25px;
+    
+    @media screen and (max-width: 1100px) {
+        display: none;
+    }
+    
+    & .first {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        margin-left: 5px;
+        margin-bottom: 10px;
+        
+        & > div:first-child {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            
+            
+            & img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        
+        & > div:last-child {
+            font-size: 14px;
+            
+            & > div:first-child {
+                font-weight: bold;
+                margin-bottom: 5px;
+             }
+            
+            & > div:last-child {
+                font-size: 12px;
+                color: #999;
+             }
+         }
+        
+    }
+    
+    & .second {
+        background: antiquewhite;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        background: white;
+        border: 1px solid rgba(0,0,0,0.09);
+        font-weight: bold;
+        
+        & .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            
+            & > div:first-child {
+                color: #999;
+                font-size: 14px;
+            }
+            
+            & > div:last-child {
+                font-size: 12px;
+            }
+
+        }
+        
+        & .userObject {
+        
+            display: flex;
+            padding: 8px 15px;
+            height: 150px;
+            
+            
+                & > div:first-child {
+                    width: 34px;
+                    height: 34px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                    & img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                    }
+                }
+                
+                & > div:last-child {
+                    margin-left: 10px;
+                    font-size: 14px;
+                    
+                        & > div:first-child {
+                            margin-bottom: 6px;
+                        }
+                        
+                        & > div:last-child {
+                            font-size: 10px;
+                            color: #999;
+                         }
+                }
+            }
+        
+    }
+    
+    
+    & .third {
+    
+        display: flex;
+        flex-direction: column;
+        background: white;
+        border: 1px solid rgba(0,0,0,0.09);
+        font-weight: bold;
+        
+        & .header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            
+            & > div:first-child {
+                color: #999;
+                font-size: 14px;
+            }
+            
+            & > div:last-child {
+                font-size: 12px;
+            }
+        }
+        
+        & .userObject {
+        
+            display: flex;
+            padding: 8px 15px;
+            
+                & > div:first-child {
+                    width: 34px;
+                    height: 34px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
+                    & img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                    }
+                }
+                
+                & > div:last-child {
+                    margin-left: 10px;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                    
+                        & > div:first-child {
+                            margin-bottom: 6px;
+                        }
+                        
+                        & > div:last-child {
+                            font-size: 10px;
+                            color: #999;
+                         }
+                }
+                
+            }
+    
     }
 `;

@@ -34,7 +34,7 @@ const FollowUsersObjectLayout = ({user, pageName}) => {
                             <Link href="#">
                                 <a>
                                     {user.userProfileImage
-                                        ? <img src={`http://localhost:8080/fileslist/${user.userProfileImage}`} alt="user image"/>
+                                        ? <img src={`http://3.34.5.76:8080/fileslist/${user.userProfileImage}`} alt="user image"/>
                                         : <img src={'/img/profile_image_default.jpg'} alt="user image"/>
                                     }
                                 </a>

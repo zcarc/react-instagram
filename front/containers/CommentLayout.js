@@ -33,7 +33,7 @@ const CommentLayout = memo(({post}) => {
 
 
         if(!content) {
-            return alert('댓글 내용이 필요합니다.');
+            return alert('댓글을 입력해주세요.');
         }
 
         const matched = content.match(/^\s+[a-z-A-Z-0-9]?|[a-z-A-Z-0-9]?[\s]+$/g);

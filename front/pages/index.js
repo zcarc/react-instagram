@@ -2,8 +2,9 @@ import ContentLayout from "../containers/ContentLayout";
 import React, {useEffect, useCallback, useRef} from "react";
 import {useDispatch, useSelector, useStore} from "react-redux";
 import {LOAD_MAIN_POSTS_REQUEST, WRITE_REDIRECTION} from "../reducers/post";
-import {ContentsBox, Inner} from "../components/style/content";
+import {ContentsBox, Inner, SideBox} from "../components/style/content";
 import {SIGN_UP_REDIRECTION} from "../reducers/user";
+import SideboxLayout from "../components/SideboxLayout";
 
 const Home = () => {
 
@@ -23,14 +24,14 @@ const Home = () => {
     const onScroll = useCallback(() => {
         // console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
 
-        if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+        if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
 
             // console.log('mainPosts: ', mainPosts);
             // console.log('mainPosts[mainPosts.length -1].id: ', mainPosts[mainPosts.length -1].id);
 
-            if(hasMorePosts) {
+            if (hasMorePosts) {
                 const lastId = mainPosts[mainPosts.length - 1].id;
-                if(!countIdRef.current.includes(lastId)) {
+                if (!countIdRef.current.includes(lastId)) {
                     dispatch({
                         type: LOAD_MAIN_POSTS_REQUEST,
                         lastId,
@@ -46,13 +47,13 @@ const Home = () => {
 
     useEffect(() => {
 
-        if(isPostAdded){
+        if (isPostAdded) {
             dispatch({
                 type: WRITE_REDIRECTION,
             });
         }
 
-        if(isSignedUp) {
+        if (isSignedUp) {
             dispatch({
                 type: SIGN_UP_REDIRECTION,
             });
@@ -69,11 +70,13 @@ const Home = () => {
 
     return (
         <>
-             <Inner>
+            <Inner>
                 <ContentsBox>
-                    {mainPosts && mainPosts.map( (v, i) => <ContentLayout key={i} v={v}/> )}
+                    {mainPosts && mainPosts.map((v, i) => <ContentLayout key={i} v={v}/>)}
                 </ContentsBox>
             </Inner>
+
+            <SideboxLayout/>
         </>
     );
 };

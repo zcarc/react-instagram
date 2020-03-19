@@ -21,9 +21,9 @@ const Post = () => {
                 }, {
                     property: 'og:description', content: singlePost &&  singlePost[0] && singlePost[0].content,
                 }, {
-                    property: 'og:image', content: singlePost && singlePost.Images && `http://localhost:8080/${singlePost.Images[0] && singlePost.Images[0].src} || post_photo_01.jpg`,
+                    property: 'og:image', content: singlePost && singlePost.Images && `http://3.34.5.76:8080/${singlePost.Images[0] && singlePost.Images[0].src} || post_photo_01.jpg`,
                 }, {
-                    property: 'og:url', content: `http://localhost:8070/post/${singlePost && singlePost[0] && singlePost[0].id}`,
+                    property: 'og:url', content: `http://3.34.5.76/post/${singlePost && singlePost[0] && singlePost[0].id}`,
                 }]}
             />
 

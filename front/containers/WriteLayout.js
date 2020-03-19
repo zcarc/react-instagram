@@ -111,7 +111,7 @@ const WriteLayout = () => {
                         <div key={index} style={{display: 'flex'}}>
                             <div style={{display: 'flex', position: 'relative', flexGrow: 1}}>
 
-                                <img src={`http://localhost:8080/fileslist/${imageName}`}
+                                <img src={`http://3.34.5.76:8080/fileslist/${imageName}`}
                                      style={{flexGrow: 1, width: '400px', margin: '3px', border: '1px solid #dbdbdb'}}/>
 
                                 <ImageClose onClick={onCloseImage(index)}>

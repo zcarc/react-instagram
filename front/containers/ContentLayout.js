@@ -114,7 +114,7 @@ const ContentLayout = ({v}) => {
     }, []);
 
     useEffect(() => {
-        if(isPostRemoved) {
+        if (isPostRemoved) {
             moreRef.current.style.opacity = 0;
             moreRef.current.style.visibility = 'hidden';
         }
@@ -127,9 +127,18 @@ const ContentLayout = ({v}) => {
                 <Top>
                     <UserContainer>
                         <ProfileImg>
-                            <Link href={{pathname: '/profile', query: {id: v.UserId}}}
-                                  as={`/profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg"
-                                                                      alt="프로필이미지"/></a></Link>
+                            {v.userProfileImage
+                                ? (
+                                    <Link href={{pathname: '/profile', query: {id: v.UserId}}}
+                                          as={`/profile/${v.UserId}`}><a><img src={`http://localhost/fileslist${v.userProfileImage}`}
+                                                                              alt="프로필이미지"/></a></Link>
+                                )
+                                : (
+                                    <Link href={{pathname: '/profile', query: {id: v.UserId}}}
+                                          as={`/profile/${v.UserId}`}><a><img src="/img/profile_image_default.jpg"
+                                                                              alt="프로필이미지"/></a></Link>
+                                )}
+
                         </ProfileImg>
                         <ProfileUser>
                             <div>
@@ -188,12 +197,11 @@ const ContentLayout = ({v}) => {
 
                 {v.BookmarkId &&
                 <div style={{
-                    fontSize: '12px',
-                    padding: '10px 0',
+                    fontSize: '11px',
+                    padding: '18px 0 18px 15px',
                     borderTop: '1px solid #dbdbdb',
-                    paddingLeft: '10px'
                 }}>
-                    *<span style={{fontWeight: 600}}>{v.Bookmark.User.userNickname}</span>님의 게시글입니다.
+                    <span style={{fontWeight: 600}}>{v.Bookmark.User.userNickname}</span>님의 게시글입니다.
                 </div>}
 
                 <ImgSection>

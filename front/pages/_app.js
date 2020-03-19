@@ -43,6 +43,8 @@ const Main = ({Component, store, pageProps}) => {
                         name: 'og:description', content: 'Main desc',
                     }, {
                         property: 'og:type', content: 'website',
+                    }, {
+                        property: 'og:image', content: 'http://3.34.5.76/favicon.ico',
                     }]}
                     link={[{
                         rel: 'stylesheet', href: '/style/reset.css',
