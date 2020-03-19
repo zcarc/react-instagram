@@ -32,6 +32,7 @@ export default class extends Document {
             <Head>{this.helmetHeadComponents}</Head>
             <body {...this.helmetBodyAttrComponents}>
             <Main />
+            <script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2Ces6%2Ces7%2CObject.isFrozen" />
             <NextScript />
             </body>
             </html>

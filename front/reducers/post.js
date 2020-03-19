@@ -1,3 +1,5 @@
+import {enableES5} from "immer";
+enableES5();
 import produce from "immer";
 import user from "./user";
 
