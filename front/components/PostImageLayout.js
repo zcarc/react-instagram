@@ -7,7 +7,7 @@ const PostImageLayout = ({images}) => {
             {images.map((image, index) => {
                 return (
                     <div key={image.src+index}>
-                        <img src={`http://3.34.5.76:8080/fileslist/${image.src}`}/>
+                        <img src={`http://wrkreactapp.site:8080/fileslist/${image.src}`}/>
                     </div>
                 );
             })}

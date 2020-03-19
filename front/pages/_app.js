@@ -44,7 +44,7 @@ const Main = ({Component, store, pageProps}) => {
                     }, {
                         property: 'og:type', content: 'website',
                     }, {
-                        property: 'og:image', content: 'http://3.34.5.76/favicon.ico',
+                        property: 'og:image', content: 'http://wrkreactapp.site/favicon.ico',
                     }]}
                     link={[{
                         rel: 'stylesheet', href: '/style/reset.css',

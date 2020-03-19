@@ -19,7 +19,7 @@ const SideboxLayout = () => {
                             <div>
                                 {userSessionData.userProfileImage
                                     ?
-                                    <img src={`http://localhost:8080/fileslist/${userSessionData.userProfileImage}`} alt=""/>
+                                    <img src={`http://wrkreactapp.site:8080/fileslist/${userSessionData.userProfileImage}`} alt=""/>
                                     : <img src="/img/profile_image_default.jpg" alt=""/>
                                 }
                             </div>

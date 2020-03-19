@@ -53,18 +53,18 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                             ? userSessionData && userSessionData.id === profileUserInfo[0].id
                                 ? userSessionData && userSessionData.userProfileImage
                                     ? <img className='user' onClick={onClickImageUpload}
-                                           src={`http://3.34.5.76:8080/fileslist/${userSessionData.userProfileImage}`}
+                                           src={`http://wrkreactapp.site:8080/fileslist/${userSessionData.userProfileImage}`}
                                            alt="post_img"/>
                                     : <img className='user' onClick={onClickImageUpload} src="/img/profile_image_default.jpg" alt="post_img"/>
 
                                 : profileUserInfo[0] && profileUserInfo[0].userProfileImage
-                                    ? <img src={`http://3.34.5.76:8080/fileslist/${profileUserInfo[0].userProfileImage}`}
+                                    ? <img src={`http://wrkreactapp.site:8080/fileslist/${profileUserInfo[0].userProfileImage}`}
                                            alt="post_img"/>
                                     : <img src="/img/profile_image_default.jpg" alt="post_img"/>
 
                             : userSessionData && userSessionData.userProfileImage
                                 ? <img className='user' onClick={onClickImageUpload}
-                                       src={`http://3.34.5.76:8080/fileslist/${userSessionData.userProfileImage}`}
+                                       src={`http://wrkreactapp.site:8080/fileslist/${userSessionData.userProfileImage}`}
                                        alt="post_img"/>
                                 : <img className='user' onClick={onClickImageUpload} src="/img/profile_image_default.jpg" alt="post_img"/>
                         }
@@ -202,7 +202,7 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                                 <a>
                                                     {s.Images && s.Images[0] && s.Images[0].src
                                                         ? <img
-                                                            src={`http://3.34.5.76:8080/fileslist/${s.Images[0].src}`}/>
+                                                            src={`http://wrkreactapp.site:8080/fileslist/${s.Images[0].src}`}/>
                                                         : <img src="/img/xbox.jpg" alt="post_img"/>
                                                     }
                                                 </a>
