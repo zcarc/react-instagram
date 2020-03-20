@@ -407,7 +407,7 @@ router.get('/:id', async (req, res, next) => {
 
             include: [{
                 model: db.User,
-                attributes: ['id', 'userNickname'],
+                attributes: ['id', 'userNickname', 'userProfileImage'],
             }, {
                 model: db.Image,
             }, {

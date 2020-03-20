@@ -106,10 +106,10 @@ const SinglePostLayout = ({v}) => {
                 <Top>
                     <UserContainer>
                         <ProfileImg>
-                            {v.userProfileImage
+                            {v.User && v.User.userProfileImage
                                 ? (
                                     <Link href={{pathname: '/profile', query: {id: v.UserId}}}
-                                          as={`/profile/${v.UserId}`}><a><img src={`http://wrkreactapp.site/fileslist${v.userProfileImage}`}
+                                          as={`/profile/${v.UserId}`}><a><img src={`http://wrkreactapp.site:8080/fileslist/${v.User.userProfileImage}`}
                                                                               alt="프로필이미지"/></a></Link>
                                 )
                                 : (

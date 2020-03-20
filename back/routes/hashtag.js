@@ -13,7 +13,7 @@ router.get('/:tag', async (req, res, next) => {
                 where: {name: decodeURIComponent(req.params.tag)},
             }, {
                 model: db.User,
-                attributes: ['id', 'userNickname'],
+                attributes: ['id', 'userNickname', 'userProfileImage'],
             }, {
                 model: db.Image,
             }, {
