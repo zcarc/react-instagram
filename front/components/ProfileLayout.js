@@ -203,7 +203,7 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                                     {s.Images && s.Images[0] && s.Images[0].src
                                                         ? <img
                                                             src={`http://wrkreactapp.site:8080/fileslist/${s.Images[0].src}`}/>
-                                                        : <img src="/img/xbox.jpg" alt="post_img"/>
+                                                        : <img src="/img/image-not-available.jpg" alt="post_img"/>
                                                     }
                                                 </a>
                                             </Link>
