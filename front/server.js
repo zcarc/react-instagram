@@ -61,8 +61,8 @@ app.prepare().then( () => {
     });
 
 
-    server.listen(prod ? process.env.PORT : 8070, () => {
-       console.log(`port ${process.env.PORT}`);
+    server.listen(80, () => {
+        console.log(`port 80`);
     });
 
 });
