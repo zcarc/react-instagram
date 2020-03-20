@@ -172,7 +172,7 @@ export default (state = initialState, action) => {
             case LOAD_USER_POSTS_SUCCESS:
             case LOAD_OTHER_USER_POSTS_SUCCESS: {
                 action.data.forEach(v => draft.mainPosts.push(v));
-                draft.hasMorePosts = action.data.length === 10;
+                draft.hasMorePosts = action.data.length === 5;
                 // console.log('POSTS_SUCCESS action.data: ', action.data);
                 // console.log('LOAD_MAIN_POSTS_SUCCESS: ', draft.mainPosts, draft.hasMorePosts);
                 break;

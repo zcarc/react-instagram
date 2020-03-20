@@ -346,7 +346,7 @@ function* watchLoadHashtagPosts() {
     yield takeLatest(LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
 
-function loadMainPostsAPI(lastId, limit = 10) {
+function loadMainPostsAPI(lastId, limit = 5) {
 
     return axios.get(`/posts?lastId=${lastId}&limit=${limit}`);
 }
