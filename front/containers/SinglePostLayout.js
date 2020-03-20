@@ -106,9 +106,17 @@ const SinglePostLayout = ({v}) => {
                 <Top>
                     <UserContainer>
                         <ProfileImg>
-                            <Link href={{pathname: '/profile', query: {id: v.UserId}}}
-                                  as={`/profile/${v.UserId}`}><a><img src="/img/profile_photo.jpg"
-                                                                      alt="프로필이미지"/></a></Link>
+                            {v.userProfileImage
+                                ? (
+                                    <Link href={{pathname: '/profile', query: {id: v.UserId}}}
+                                          as={`/profile/${v.UserId}`}><a><img src={`http://wrkreactapp.site/fileslist${v.userProfileImage}`}
+                                                                              alt="프로필이미지"/></a></Link>
+                                )
+                                : (
+                                    <Link href={{pathname: '/profile', query: {id: v.UserId}}}
+                                          as={`/profile/${v.UserId}`}><a><img src="/img/profile_image_default.jpg"
+                                                                              alt="프로필이미지"/></a></Link>
+                                )}
                         </ProfileImg>
                         <ProfileUser>
                             <div>
