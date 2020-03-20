@@ -130,7 +130,7 @@ const ContentLayout = ({v}) => {
                             {v.userProfileImage
                                 ? (
                                     <Link href={{pathname: '/profile', query: {id: v.UserId}}}
-                                          as={`/profile/${v.UserId}`}><a><img src={`http://wrkreactapp.site:8080/fileslist${v.userProfileImage}`}
+                                          as={`/profile/${v.UserId}`}><a><img src={`http://wrkreactapp.site/fileslist${v.userProfileImage}`}
                                                                               alt="프로필이미지"/></a></Link>
                                 )
                                 : (
@@ -246,7 +246,6 @@ const ContentLayout = ({v}) => {
 
                 <Reactions>
                     <span>좋아요 {v.Likers && v.Likers.length}개</span>
-                    <span>북마크 0개</span>
                 </Reactions>
 
                 <CommentContainer>
