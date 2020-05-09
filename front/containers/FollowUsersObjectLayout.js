@@ -3,6 +3,7 @@ import Link from "next/link";
 import {useDispatch} from "react-redux";
 import {useCallback} from "react";
 import {REMOVE_FOLLOWER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
+import {serverURL} from "../config/url";
 
 const FollowUsersObjectLayout = ({user, pageName}) => {
 
@@ -34,7 +35,7 @@ const FollowUsersObjectLayout = ({user, pageName}) => {
                             <Link href="#">
                                 <a>
                                     {user.userProfileImage
-                                        ? <img src={`http://wrkreactapp.site:8080/fileslist/${user.userProfileImage}`} alt="user image"/>
+                                        ? <img src={`${serverURL}/fileslist/${user.userProfileImage}`} alt="user image"/>
                                         : <img src={'/img/profile_image_default.jpg'} alt="user image"/>
                                     }
                                 </a>

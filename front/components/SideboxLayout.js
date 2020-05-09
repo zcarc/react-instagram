@@ -1,6 +1,7 @@
 import {useSelector} from "react-redux";
 import {SideBox} from "./style/content";
 import React from "react";
+import {serverURL} from "../config/url";
 
 
 
@@ -19,7 +20,7 @@ const SideboxLayout = () => {
                             <div>
                                 {userSessionData.userProfileImage
                                     ?
-                                    <img src={`http://wrkreactapp.site:8080/fileslist/${userSessionData.userProfileImage}`} alt=""/>
+                                    <img src={`${serverURL}/fileslist/${userSessionData.userProfileImage}`} alt=""/>
                                     : <img src="/img/profile_image_default.jpg" alt=""/>
                                 }
                             </div>

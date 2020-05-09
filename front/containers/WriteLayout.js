@@ -5,6 +5,7 @@ import {FormSubmitButton} from "../components/style/register";
 import {ADD_POST_REQUEST, CLOSE_IMAGE, UPLOAD_IMAGES_REQUEST} from "../reducers/post";
 import Router from 'next/router';
 import {SpinnerSmallWrite} from "../components/style/common";
+import {serverURL} from "../config/url";
 
 const WriteLayout = () => {
 
@@ -111,7 +112,7 @@ const WriteLayout = () => {
                         <div key={index} style={{display: 'flex'}}>
                             <div style={{display: 'flex', position: 'relative', flexGrow: 1}}>
 
-                                <img src={`http://wrkreactapp.site:8080/fileslist/${imageName}`}
+                                <img src={`${serverURL}/fileslist/${imageName}`}
                                      style={{flexGrow: 1, width: '400px', margin: '3px', border: '1px solid #dbdbdb'}}/>
 
                                 <ImageClose onClick={onCloseImage(index)}>

@@ -4,6 +4,7 @@ import {ContentsBox, Inner} from "../components/style/content";
 import SinglePostLayout from "../containers/SinglePostLayout";
 import {LOAD_POST_REQUEST} from "../reducers/post";
 import Helmet from "react-helmet";
+import {serverURL} from "../config/url";
 
 const Post = () => {
 
@@ -21,9 +22,9 @@ const Post = () => {
                 }, {
                     property: 'og:description', content: singlePost &&  singlePost[0] && singlePost[0].content,
                 }, {
-                    property: 'og:image', content: singlePost && singlePost.Images && `http://wrkreactapp.site:8080/${singlePost.Images[0] && singlePost.Images[0].src} || post_photo_01.jpg`,
+                    property: 'og:image', content: singlePost && singlePost.Images && `${serverURL}/${singlePost.Images[0] && singlePost.Images[0].src} || post_photo_01.jpg`,
                 }, {
-                    property: 'og:url', content: `http://wrkreactapp.site/post/${singlePost && singlePost[0] && singlePost[0].id}`,
+                    property: 'og:url', content: `${serverURL}/post/${singlePost && singlePost[0] && singlePost[0].id}`,
                 }]}
             />
 

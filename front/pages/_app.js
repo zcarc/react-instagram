@@ -15,6 +15,7 @@ import rootSaga from '../sagas/index';
 import {USER_EXISTS_REQUEST} from "../reducers/user";
 import {Helmet} from "react-helmet";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {serverURLNoPort} from "../config/url";
 
 const Main = ({Component, store, pageProps}) => {
     // console.dir(Component);
@@ -44,7 +45,7 @@ const Main = ({Component, store, pageProps}) => {
                     }, {
                         property: 'og:type', content: 'website',
                     }, {
-                        property: 'og:image', content: 'http://wrkreactapp.site/favicon.ico',
+                        property: 'og:image', content: `${serverURLNoPort}/favicon.ico`,
                     }]}
                     link={[{
                         rel: 'stylesheet', href: '/style/reset.css',

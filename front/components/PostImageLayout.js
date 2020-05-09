@@ -1,5 +1,6 @@
 import {Carousel} from 'react-responsive-carousel';
 import PropTypes from 'prop-types';
+import {serverURL} from "../config/url";
 
 const PostImageLayout = ({images}) => {
     return (
@@ -7,7 +8,7 @@ const PostImageLayout = ({images}) => {
             {images.map((image, index) => {
                 return (
                     <div key={image.src+index}>
-                        <img src={`http://wrkreactapp.site:8080/fileslist/${image.src}`}/>
+                        <img src={`${serverURL}/fileslist/${image.src}`}/>
                     </div>
                 );
             })}
