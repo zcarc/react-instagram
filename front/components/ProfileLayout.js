@@ -10,6 +10,7 @@ import Link from "next/link";
 import {useCallback, useRef} from "react";
 import {useDispatch} from "react-redux";
 import {LOG_OUT_REQUEST, UPDATE_USER_PROFILE_IMAGE_REQUEST} from "../reducers/user";
+import {serverURL} from "../config/url";
 
 const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, followingList, profileUserInfo}) => {
 
@@ -53,18 +54,18 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                             ? userSessionData && userSessionData.id === profileUserInfo[0].id
                                 ? userSessionData && userSessionData.userProfileImage
                                     ? <img className='user' onClick={onClickImageUpload}
-                                           src={`http://wrkreactapp.site:8080/fileslist/${userSessionData.userProfileImage}`}
+                                           src={`${serverURL}/fileslist/${userSessionData.userProfileImage}`}
                                            alt="post_img"/>
                                     : <img className='user' onClick={onClickImageUpload} src="/img/profile_image_default.jpg" alt="post_img"/>
 
                                 : profileUserInfo[0] && profileUserInfo[0].userProfileImage
-                                    ? <img src={`http://wrkreactapp.site:8080/fileslist/${profileUserInfo[0].userProfileImage}`}
+                                    ? <img src={`${serverURL}/fileslist/${profileUserInfo[0].userProfileImage}`}
                                            alt="post_img"/>
                                     : <img src="/img/profile_image_default.jpg" alt="post_img"/>
 
                             : userSessionData && userSessionData.userProfileImage
                                 ? <img className='user' onClick={onClickImageUpload}
-                                       src={`http://wrkreactapp.site:8080/fileslist/${userSessionData.userProfileImage}`}
+                                       src={`${serverURL}/fileslist/${userSessionData.userProfileImage}`}
                                        alt="post_img"/>
                                 : <img className='user' onClick={onClickImageUpload} src="/img/profile_image_default.jpg" alt="post_img"/>
                         }
@@ -202,7 +203,7 @@ const ProfileLayout = ({userSessionData, isLoggedIn, mainPosts, followerList, fo
                                                 <a>
                                                     {s.Images && s.Images[0] && s.Images[0].src
                                                         ? <img
-                                                            src={`http://wrkreactapp.site:8080/fileslist/${s.Images[0].src}`}/>
+                                                            src={`${serverURL}/fileslist/${s.Images[0].src}`}/>
                                                         : <img src="/img/image-not-available.jpg" alt="post_img"/>
                                                     }
                                                 </a>

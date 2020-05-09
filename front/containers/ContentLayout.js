@@ -21,6 +21,7 @@ import {
 } from "../reducers/post";
 import {FollowingContainer, Inner as FollowInner} from "../components/style/follow";
 import {FOLLOW_USER_REQUEST, UNFOLLOW_USER_REQUEST} from "../reducers/user";
+import {serverURL} from "../config/url";
 
 const ContentLayout = ({v}) => {
 
@@ -130,7 +131,7 @@ const ContentLayout = ({v}) => {
                             {v.User && v.User.userProfileImage
                                 ? (
                                     <Link href={{pathname: '/profile', query: {id: v.UserId}}}
-                                          as={`/profile/${v.UserId}`}><a><img src={`http://wrkreactapp.site:8080/fileslist/${v.User.userProfileImage}`}
+                                          as={`/profile/${v.UserId}`}><a><img src={`${serverURL}/fileslist/${v.User.userProfileImage}`}
                                                                               alt="프로필이미지"/></a></Link>
                                 )
                                 : (

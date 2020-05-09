@@ -27,20 +27,12 @@ const RegisterLeftLayout = () => {
         }
 
         if (imgs) {
-            // console.log('imgs');
-            // console.log('curNumber: ', curNumber);
-            // console.log('imgs[curNumber]: ', imgs[curNumber]);
-
             timer = setTimeout(() => {
-                // console.log(`${curNumber}: imgs[curNumber]: `, imgs[curNumber]);
-                // console.log('imgs[curNumber].nextElementSibling: ', imgs[curNumber].nextElementSibling);
-
                 imgs[curNumber].classList.remove('show');
 
                 if (imgs[curNumber].nextElementSibling) {
                     imgs[curNumber].nextElementSibling.classList.add('show');
                     setCurNumber(curNumber + 1);
-                    // setCurNumber(curNumber === 4 ? 0 : (curNumber + 1));
 
                 } else {
                     imgs[0].classList.add('show');

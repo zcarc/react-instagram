@@ -2,8 +2,9 @@ import {all, call} from 'redux-saga/effects';
 import user from './user';
 import post from './post';
 import axios from "axios";
+import {serverURL} from "../config/url";
 
-axios.defaults.baseURL = 'http://wrkreactapp.site:8080/api/';
+axios.defaults.baseURL = `${serverURL}/api/`;
 
 export default function* rootSaga() {
     yield all([
